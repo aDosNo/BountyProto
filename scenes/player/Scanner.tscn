@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/scanner.gd" id="1_scanner"]
+
+[sub_resource type="StandardMaterial3D" id="Material_scanner"]
+albedo_color = Color(0.08, 0.55, 0.7, 1)
+emission_enabled = true
+emission = Color(0.02, 0.28, 0.4, 1)
+emission_energy_multiplier = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_scanner"]
+size = Vector3(0.12, 0.08, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_unused"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Scanner" type="Node3D"]
+script = ExtResource("1_scanner")
+
+[node name="ScannerBody" type="MeshInstance3D" parent="."]
+visible = false
+position = Vector3(-0.28, -0.28, -0.45)
+mesh = SubResource("BoxMesh_scanner")
+surface_material_override/0 = SubResource("Material_scanner")
+
+[node name="ScanRay" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+enabled = false
+target_position = Vector3(0, 0, -25)

@@ -1,0 +1,189 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/TargetDummy.tscn" id="2_dummy"]
+
+[sub_resource type="Environment" id="Environment_test"]
+background_mode = 1
+background_color = Color(0.025, 0.028, 0.035, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.28, 0.32, 0.36, 1)
+ambient_light_energy = 0.55
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.22, 0.22, 0.2, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.32, 0.34, 0.37, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Material_crate"]
+albedo_color = Color(0.45, 0.28, 0.16, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="Material_platform"]
+albedo_color = Color(0.24, 0.3, 0.38, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_floor"]
+size = Vector3(22, 0.2, 22)
+
+[sub_resource type="BoxShape3D" id="Shape_floor"]
+size = Vector3(22, 0.2, 22)
+
+[sub_resource type="BoxMesh" id="Mesh_wall_long"]
+size = Vector3(22, 3, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_long"]
+size = Vector3(22, 3, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_wall_short"]
+size = Vector3(0.5, 3, 22)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_short"]
+size = Vector3(0.5, 3, 22)
+
+[sub_resource type="BoxMesh" id="Mesh_crate"]
+size = Vector3(1.2, 1.2, 1.2)
+
+[sub_resource type="BoxShape3D" id="Shape_crate"]
+size = Vector3(1.2, 1.2, 1.2)
+
+[sub_resource type="BoxMesh" id="Mesh_platform"]
+size = Vector3(4, 0.5, 3)
+
+[sub_resource type="BoxShape3D" id="Shape_platform"]
+size = Vector3(4, 0.5, 3)
+
+[sub_resource type="BoxMesh" id="Mesh_ramp"]
+size = Vector3(4, 0.3, 3.2)
+
+[sub_resource type="BoxShape3D" id="Shape_ramp"]
+size = Vector3(4, 0.3, 3.2)
+
+[node name="FPS_TestRoom" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_test")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.8, -0.65, 0)
+light_energy = 1.2
+
+[node name="RoomLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 5, 0)
+light_energy = 3.0
+omni_range = 16.0
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector3(0, 0.1, 6)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("Mesh_floor")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("Shape_floor")
+
+[node name="NorthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1.5, -11)
+
+[node name="Mesh" type="MeshInstance3D" parent="NorthWall"]
+mesh = SubResource("Mesh_wall_long")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NorthWall"]
+shape = SubResource("Shape_wall_long")
+
+[node name="SouthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1.5, 11)
+
+[node name="Mesh" type="MeshInstance3D" parent="SouthWall"]
+mesh = SubResource("Mesh_wall_long")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SouthWall"]
+shape = SubResource("Shape_wall_long")
+
+[node name="WestWall" type="StaticBody3D" parent="."]
+position = Vector3(-11, 1.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="WestWall"]
+mesh = SubResource("Mesh_wall_short")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WestWall"]
+shape = SubResource("Shape_wall_short")
+
+[node name="EastWall" type="StaticBody3D" parent="."]
+position = Vector3(11, 1.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="EastWall"]
+mesh = SubResource("Mesh_wall_short")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EastWall"]
+shape = SubResource("Shape_wall_short")
+
+[node name="RaisedPlatform" type="StaticBody3D" parent="."]
+position = Vector3(4, 0.75, -5.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="RaisedPlatform"]
+mesh = SubResource("Mesh_platform")
+surface_material_override/0 = SubResource("Material_platform")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RaisedPlatform"]
+shape = SubResource("Shape_platform")
+
+[node name="Ramp" type="StaticBody3D" parent="."]
+position = Vector3(4, 0.55, -2.8)
+rotation = Vector3(-0.34, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ramp"]
+mesh = SubResource("Mesh_ramp")
+surface_material_override/0 = SubResource("Material_platform")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramp"]
+shape = SubResource("Shape_ramp")
+
+[node name="CrateA" type="StaticBody3D" parent="."]
+position = Vector3(-4, 0.6, 1)
+
+[node name="Mesh" type="MeshInstance3D" parent="CrateA"]
+mesh = SubResource("Mesh_crate")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CrateA"]
+shape = SubResource("Shape_crate")
+
+[node name="CrateB" type="StaticBody3D" parent="."]
+position = Vector3(-5.5, 0.6, -2)
+
+[node name="Mesh" type="MeshInstance3D" parent="CrateB"]
+mesh = SubResource("Mesh_crate")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CrateB"]
+shape = SubResource("Shape_crate")
+
+[node name="CrateC" type="StaticBody3D" parent="."]
+position = Vector3(2, 0.6, 2.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="CrateC"]
+mesh = SubResource("Mesh_crate")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CrateC"]
+shape = SubResource("Shape_crate")
+
+[node name="TargetDummyNear" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(0, 0, -4.5)
+
+[node name="TargetDummyMid" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(-5.5, 0, -7.5)
+
+[node name="TargetDummyFar" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(6.5, 0, -8.5)

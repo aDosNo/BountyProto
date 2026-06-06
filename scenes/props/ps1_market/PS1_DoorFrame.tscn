@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Material_grimy_metal"]
+albedo_color = Color(0.12, 0.15, 0.17, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="PS1_DoorFrame" type="Node3D"]
+
+[node name="LeftPost" type="StaticBody3D" parent="."]
+position = Vector3(-0.9, 1.45, 0)
+scale = Vector3(0.35, 2.9, 0.45)
+
+[node name="Mesh" type="MeshInstance3D" parent="LeftPost"]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_grimy_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftPost"]
+shape = SubResource("Shape_box")
+
+[node name="RightPost" type="StaticBody3D" parent="."]
+position = Vector3(0.9, 1.45, 0)
+scale = Vector3(0.35, 2.9, 0.45)
+
+[node name="Mesh" type="MeshInstance3D" parent="RightPost"]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_grimy_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightPost"]
+shape = SubResource("Shape_box")
+
+[node name="Lintel" type="StaticBody3D" parent="."]
+position = Vector3(0, 2.8, 0)
+scale = Vector3(2.2, 0.35, 0.45)
+
+[node name="Mesh" type="MeshInstance3D" parent="Lintel"]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_grimy_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lintel"]
+shape = SubResource("Shape_box")

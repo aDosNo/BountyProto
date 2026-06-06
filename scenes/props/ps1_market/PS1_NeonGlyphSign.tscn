@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/ps1_neon_glyph_sign.gd" id="1_sign"]
+
+[sub_resource type="StandardMaterial3D" id="Material_sign_back"]
+albedo_color = Color(0.04, 0.04, 0.055, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_neon"]
+albedo_color = Color(0.15, 0.95, 1, 1)
+emission_enabled = true
+emission = Color(0.02, 0.7, 1, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[node name="PS1_NeonGlyphSign" type="Node3D"]
+script = ExtResource("1_sign")
+
+[node name="BackPlate" type="MeshInstance3D" parent="."]
+scale = Vector3(2.2, 0.75, 0.12)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_sign_back")
+
+[node name="GlyphLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+position = Vector3(0, 0.02, -0.08)
+text = "XII  VRA  7"
+font_size = 42
+modulate = Color(0.25, 0.95, 1, 1)
+
+[node name="GlyphStrokeA" type="MeshInstance3D" parent="."]
+position = Vector3(-0.65, -0.25, -0.09)
+scale = Vector3(0.12, 0.5, 0.04)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon")
+
+[node name="GlyphStrokeB" type="MeshInstance3D" parent="."]
+position = Vector3(0.68, 0.22, -0.09)
+rotation = Vector3(0, 0, 0.75)
+scale = Vector3(0.1, 0.55, 0.04)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon")

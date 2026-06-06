@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/stun_net_launcher.gd" id="1_launcher"]
+
+[sub_resource type="StandardMaterial3D" id="Material_launcher"]
+albedo_color = Color(0.05, 0.16, 0.18, 1)
+roughness = 0.58
+
+[sub_resource type="StandardMaterial3D" id="Material_flash"]
+albedo_color = Color(0.2, 0.9, 1, 1)
+emission_enabled = true
+emission = Color(0.05, 0.7, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+size = Vector3(0.34, 0.2, 0.48)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_flash"]
+size = Vector2(0.34, 0.34)
+
+[node name="StunNetLauncher" type="Node3D"]
+script = ExtResource("1_launcher")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_body")
+surface_material_override/0 = SubResource("Material_launcher")
+
+[node name="MuzzleFlash" type="Node3D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector3(0, 0.04, -0.48)
+
+[node name="FlashMesh" type="MeshInstance3D" parent="MuzzleFlash"]
+rotation = Vector3(0, 0, 0.785398)
+mesh = SubResource("PlaneMesh_flash")
+surface_material_override/0 = SubResource("Material_flash")
+
+[node name="MuzzleLight" type="OmniLight3D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector3(0, 0.04, -0.52)
+light_color = Color(0.15, 0.85, 1, 1)
+light_energy = 2.0
+omni_range = 3.0

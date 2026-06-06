@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bydlc8d6fcntp" path="res://assets/kit/walls/wall_base_4m.glb" id="1_wall_glb"]
+[ext_resource type="Material" path="res://assets/materials/walls/M_Wall_Test_01.tres" id="2_wall_material"]
+[ext_resource type="Script" path="res://scripts/props/wall_material_override.gd" id="3_wall_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_collision"]
+size = Vector3(4, 3, 0.35)
+
+[node name="Wall_Test_01" type="StaticBody3D"]
+script = ExtResource("3_wall_script")
+wall_material = ExtResource("2_wall_material")
+
+[node name="WallModel" parent="." instance=ExtResource("1_wall_glb")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall_collision")

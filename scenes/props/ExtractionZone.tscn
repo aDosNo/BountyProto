@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/extraction_zone.gd" id="1_extraction"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_zone"]
+size = Vector3(3, 2, 3)
+
+[sub_resource type="StandardMaterial3D" id="Material_zone"]
+albedo_color = Color(0.08, 0.85, 0.32, 0.55)
+emission_enabled = true
+emission = Color(0.03, 0.5, 0.12, 1)
+emission_energy_multiplier = 1.15
+transparency = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_zone"]
+size = Vector3(3, 0.12, 3)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_beacon"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 2.0
+radial_segments = 8
+
+[node name="ExtractionZone" type="Area3D"]
+script = ExtResource("1_extraction")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+position = Vector3(0, 1, 0)
+shape = SubResource("BoxShape3D_zone")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Pad" type="MeshInstance3D" parent="VisualRoot"]
+mesh = SubResource("BoxMesh_zone")
+surface_material_override/0 = SubResource("Material_zone")
+
+[node name="Beacon" type="MeshInstance3D" parent="VisualRoot"]
+position = Vector3(0, 1.0, 0)
+mesh = SubResource("CylinderMesh_beacon")
+surface_material_override/0 = SubResource("Material_zone")
+
+[node name="ExtractionLight" type="OmniLight3D" parent="VisualRoot"]
+position = Vector3(0, 1.4, 0)
+light_color = Color(0.25, 1, 0.45, 1)
+light_energy = 2.0
+omni_range = 5.0
+
+[node name="ExtractionLabel" type="Label3D" parent="VisualRoot"]
+position = Vector3(0, 2.35, 0)
+text = "EXTRACTION"
+font_size = 34
+modulate = Color(0.35, 1, 0.45, 1)

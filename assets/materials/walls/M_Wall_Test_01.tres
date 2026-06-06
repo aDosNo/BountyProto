@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dudcj4u83dift"]
+
+[ext_resource type="Texture2D" path="res://assets/materials/walls/T_Wall_Test_01_Source.res" id="1_wall_texture"]
+
+[resource]
+albedo_texture = ExtResource("1_wall_texture")
+metallic_specular = 0.1
+roughness = 0.9
+texture_filter = 0

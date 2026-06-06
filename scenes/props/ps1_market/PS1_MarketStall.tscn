@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Material_stall"]
+albedo_color = Color(0.42, 0.22, 0.13, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Material_goods"]
+albedo_color = Color(0.55, 0.38, 0.16, 1)
+roughness = 0.75
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="PS1_MarketStall" type="Node3D"]
+
+[node name="Counter" type="StaticBody3D" parent="."]
+position = Vector3(0, 0.55, 0)
+scale = Vector3(2.8, 1.1, 0.9)
+
+[node name="Mesh" type="MeshInstance3D" parent="Counter"]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_stall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Counter"]
+shape = SubResource("Shape_box")
+
+[node name="BackPanel" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.25, 0.55)
+scale = Vector3(3.1, 1.3, 0.18)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_stall")
+
+[node name="GoodsA" type="MeshInstance3D" parent="."]
+position = Vector3(-0.75, 1.25, -0.15)
+scale = Vector3(0.38, 0.28, 0.38)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_goods")
+
+[node name="GoodsB" type="MeshInstance3D" parent="."]
+position = Vector3(0.05, 1.22, -0.2)
+scale = Vector3(0.5, 0.22, 0.32)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_goods")
+
+[node name="GoodsC" type="MeshInstance3D" parent="."]
+position = Vector3(0.8, 1.28, -0.12)
+scale = Vector3(0.32, 0.35, 0.32)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_goods")

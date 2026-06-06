@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="Material_cable"]
+albedo_color = Color(0.015, 0.018, 0.02, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="Mesh_cable"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 3.8
+radial_segments = 6
+
+[node name="PS1_CableBundle" type="Node3D"]
+
+[node name="CableA" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0)
+rotation = Vector3(1.5708, 0.15, 0)
+mesh = SubResource("Mesh_cable")
+surface_material_override/0 = SubResource("Material_cable")
+
+[node name="CableB" type="MeshInstance3D" parent="."]
+position = Vector3(0.12, -0.08, 0.04)
+rotation = Vector3(1.5708, -0.05, 0.12)
+mesh = SubResource("Mesh_cable")
+surface_material_override/0 = SubResource("Material_cable")
+
+[node name="CableC" type="MeshInstance3D" parent="."]
+position = Vector3(-0.12, -0.04, -0.04)
+rotation = Vector3(1.5708, 0.05, -0.1)
+mesh = SubResource("Mesh_cable")
+surface_material_override/0 = SubResource("Material_cable")

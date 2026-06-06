@@ -1,0 +1,549 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/TargetDummy.tscn" id="2_dummy"]
+[ext_resource type="Script" path="res://scripts/arena_manager.gd" id="3_arena_manager"]
+[ext_resource type="PackedScene" path="res://scenes/bounties/BountyManager.tscn" id="4_bounty_manager"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/KorvaxiTarget.tscn" id="5_korvaxi"]
+[ext_resource type="PackedScene" path="res://scenes/ui/RewardScreen.tscn" id="6_reward"]
+[ext_resource type="PackedScene" path="res://scenes/props/ClueObject.tscn" id="7_clue"]
+[ext_resource type="PackedScene" path="res://scenes/props/ExtractionZone.tscn" id="8_extraction"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/GangGuard.tscn" id="9_guard"]
+
+[sub_resource type="Environment" id="Environment_arena"]
+background_mode = 1
+background_color = Color(0.018, 0.02, 0.026, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.32, 0.34, 0.38, 1)
+ambient_light_energy = 0.72
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.24, 0.235, 0.22, 1)
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.3, 0.31, 0.33, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="Material_crate"]
+albedo_color = Color(0.46, 0.3, 0.16, 1)
+roughness = 0.78
+
+[sub_resource type="StandardMaterial3D" id="Material_metal"]
+albedo_color = Color(0.19, 0.23, 0.28, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="Material_cyan"]
+albedo_color = Color(0.1, 0.75, 0.9, 1)
+emission_enabled = true
+emission = Color(0.02, 0.35, 0.5, 1)
+emission_energy_multiplier = 0.75
+
+[sub_resource type="StandardMaterial3D" id="Material_red"]
+albedo_color = Color(0.75, 0.16, 0.12, 1)
+emission_enabled = true
+emission = Color(0.45, 0.05, 0.03, 1)
+emission_energy_multiplier = 0.65
+
+[sub_resource type="StandardMaterial3D" id="Material_green"]
+albedo_color = Color(0.12, 0.72, 0.28, 1)
+emission_enabled = true
+emission = Color(0.04, 0.38, 0.1, 1)
+emission_energy_multiplier = 0.65
+
+[sub_resource type="BoxMesh" id="Mesh_unit_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_unit_box"]
+size = Vector3(1, 1, 1)
+
+[node name="FPS_VerticalArena" type="Node3D"]
+
+[node name="ArenaManager" type="Node" parent="."]
+script = ExtResource("3_arena_manager")
+updates_hud_objective = false
+
+[node name="BountyManager" parent="." instance=ExtResource("4_bounty_manager")]
+target_path = NodePath("../KorvaxiTarget")
+reward_screen_path = NodePath("../RewardLayer/RewardScreen")
+extraction_zone_path = NodePath("../ExtractionZone")
+
+[node name="RewardLayer" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="RewardScreen" parent="RewardLayer" instance=ExtResource("6_reward")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_arena")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.85, -0.45, 0)
+light_energy = 1.35
+
+[node name="SpawnLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 3.0, 10.0)
+light_color = Color(0.35, 0.75, 1, 1)
+light_energy = 2.0
+omni_range = 8.0
+
+[node name="EnemyAreaLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 5.2, -12.0)
+light_color = Color(1, 0.36, 0.24, 1)
+light_energy = 2.2
+omni_range = 12.0
+
+[node name="ExtractionLight" type="OmniLight3D" parent="."]
+position = Vector3(-11.5, 3.0, -13.5)
+light_color = Color(0.35, 1, 0.42, 1)
+light_energy = 1.5
+omni_range = 6.0
+
+[node name="Markers" type="Node3D" parent="."]
+
+[node name="PlayerSpawn" type="Marker3D" parent="Markers"]
+position = Vector3(0, 0.1, 11.0)
+
+[node name="DummySpawn_01_Lower" type="Marker3D" parent="Markers"]
+position = Vector3(0, 0, 1.5)
+
+[node name="DummySpawn_02_CrateCover" type="Marker3D" parent="Markers"]
+position = Vector3(-3.8, 0, -2.4)
+
+[node name="DummySpawn_03_Catwalk" type="Marker3D" parent="Markers"]
+position = Vector3(3.0, 4.2, -8.0)
+
+[node name="DummySpawn_04_BackPlatform" type="Marker3D" parent="Markers"]
+position = Vector3(-9.5, 0, -13.0)
+
+[node name="FutureKorvaxiSpawn" type="Marker3D" parent="Markers"]
+position = Vector3(9.5, 4.2, -8.0)
+
+[node name="FutureExtractionPoint" type="Marker3D" parent="Markers"]
+position = Vector3(-11.5, 0, -13.5)
+
+[node name="DebugLabels" type="Node3D" parent="."]
+
+[node name="LowerPlazaLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(0, 0.05, 2.8)
+rotation = Vector3(-1.5708, 0, 0)
+text = "LOWER PLAZA"
+font_size = 42
+modulate = Color(0.7, 0.78, 0.85, 1)
+
+[node name="LeftRouteLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(-10.5, 0.05, -3.0)
+rotation = Vector3(-1.5708, 0, 0)
+text = "LEFT ROUTE"
+font_size = 36
+modulate = Color(0.55, 0.9, 1, 1)
+
+[node name="RampLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(8.0, 0.15, 1.8)
+rotation = Vector3(-1.5708, 0, 0)
+text = "RAMP TO CATWALK"
+font_size = 32
+modulate = Color(0.85, 0.9, 0.55, 1)
+
+[node name="CatwalkLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(0, 4.25, -8.0)
+text = "UPPER CATWALK"
+font_size = 36
+modulate = Color(0.85, 0.95, 1, 1)
+
+[node name="ExtractionLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(-11.5, 1.1, -13.5)
+text = "FUTURE EXTRACTION"
+font_size = 30
+modulate = Color(0.45, 1, 0.5, 1)
+
+[node name="KorvaxiLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(9.5, 5.2, -8.0)
+text = "FUTURE KORVAXI START"
+font_size = 28
+modulate = Color(1, 0.45, 0.35, 1)
+
+[node name="EscapeNode01Label" type="Label3D" parent="DebugLabels"]
+position = Vector3(6.0, 5.2, -8.0)
+text = "NODE 1"
+font_size = 22
+modulate = Color(1, 0.62, 0.3, 1)
+
+[node name="EscapeNode02Label" type="Label3D" parent="DebugLabels"]
+position = Vector3(1.0, 5.2, -8.0)
+text = "NODE 2"
+font_size = 22
+modulate = Color(1, 0.62, 0.3, 1)
+
+[node name="EscapeNode03Label" type="Label3D" parent="DebugLabels"]
+position = Vector3(-6.0, 5.2, -8.0)
+text = "NODE 3"
+font_size = 22
+modulate = Color(1, 0.62, 0.3, 1)
+
+[node name="EscapeFinalLabel" type="Label3D" parent="DebugLabels"]
+position = Vector3(-7.5, 5.2, -8.0)
+text = "FINAL"
+font_size = 24
+modulate = Color(1, 0.3, 0.25, 1)
+
+[node name="KorvaxiEscapeRoute" type="Node3D" parent="."]
+
+[node name="EscapeNode_01" type="Marker3D" parent="KorvaxiEscapeRoute"]
+position = Vector3(6.0, 4.2, -8.0)
+
+[node name="EscapeNode_02" type="Marker3D" parent="KorvaxiEscapeRoute"]
+position = Vector3(1.0, 4.2, -8.0)
+
+[node name="EscapeNode_03" type="Marker3D" parent="KorvaxiEscapeRoute"]
+position = Vector3(-6.0, 4.2, -8.0)
+
+[node name="EscapeNode_04_Final" type="Marker3D" parent="KorvaxiEscapeRoute"]
+position = Vector3(-7.5, 4.2, -8.0)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector3(0, 0.1, 11.0)
+
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Geometry"]
+position = Vector3(0, -0.1, -2.0)
+scale = Vector3(28, 0.2, 32)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/Floor"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Floor"]
+shape = SubResource("Shape_unit_box")
+
+[node name="NorthBackWall" type="StaticBody3D" parent="Geometry"]
+position = Vector3(0, 2.5, -18)
+scale = Vector3(28, 5, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/NorthBackWall"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/NorthBackWall"]
+shape = SubResource("Shape_unit_box")
+
+[node name="SouthSpawnWall" type="StaticBody3D" parent="Geometry"]
+position = Vector3(0, 2.5, 14)
+scale = Vector3(28, 5, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/SouthSpawnWall"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/SouthSpawnWall"]
+shape = SubResource("Shape_unit_box")
+
+[node name="WestBoundaryWall" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-14, 2.5, -2)
+scale = Vector3(0.5, 5, 32)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/WestBoundaryWall"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/WestBoundaryWall"]
+shape = SubResource("Shape_unit_box")
+
+[node name="EastBoundaryWall" type="StaticBody3D" parent="Geometry"]
+position = Vector3(14, 2.5, -2)
+scale = Vector3(0.5, 5, 32)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/EastBoundaryWall"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/EastBoundaryWall"]
+shape = SubResource("Shape_unit_box")
+
+[node name="LeftCorridorInnerWallA" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-6.0, 1.7, 2.5)
+scale = Vector3(0.5, 3.4, 7.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/LeftCorridorInnerWallA"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/LeftCorridorInnerWallA"]
+shape = SubResource("Shape_unit_box")
+
+[node name="LeftCorridorInnerWallB" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-6.0, 1.7, -8.5)
+scale = Vector3(0.5, 3.4, 5.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/LeftCorridorInnerWallB"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/LeftCorridorInnerWallB"]
+shape = SubResource("Shape_unit_box")
+
+[node name="RightDoorWallA" type="StaticBody3D" parent="Geometry"]
+position = Vector3(5.5, 1.8, 3.0)
+scale = Vector3(0.5, 3.6, 5.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/RightDoorWallA"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/RightDoorWallA"]
+shape = SubResource("Shape_unit_box")
+
+[node name="BackRouteWall" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-3.5, 1.7, -12.5)
+scale = Vector3(5.0, 3.4, 0.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/BackRouteWall"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/BackRouteWall"]
+shape = SubResource("Shape_unit_box")
+
+[node name="Catwalk" type="StaticBody3D" parent="Geometry"]
+position = Vector3(1.0, 4.0, -8.0)
+scale = Vector3(18, 0.35, 3.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/Catwalk"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/Catwalk"]
+shape = SubResource("Shape_unit_box")
+
+[node name="CatwalkFrontRailLeft" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-4.2, 4.75, -6.15)
+scale = Vector3(7.0, 0.9, 0.22)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/CatwalkFrontRailLeft"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/CatwalkFrontRailLeft"]
+shape = SubResource("Shape_unit_box")
+
+[node name="CatwalkFrontRailRight" type="StaticBody3D" parent="Geometry"]
+position = Vector3(7.0, 4.75, -6.15)
+scale = Vector3(4.0, 0.9, 0.22)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/CatwalkFrontRailRight"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/CatwalkFrontRailRight"]
+shape = SubResource("Shape_unit_box")
+
+[node name="CatwalkBackRail" type="StaticBody3D" parent="Geometry"]
+position = Vector3(1.0, 4.75, -9.85)
+scale = Vector3(18, 0.9, 0.22)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/CatwalkBackRail"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/CatwalkBackRail"]
+shape = SubResource("Shape_unit_box")
+
+[node name="RightRamp" type="StaticBody3D" parent="Geometry"]
+position = Vector3(8.0, 2.1, -2.0)
+rotation = Vector3(0.38, 0, 0)
+scale = Vector3(4.0, 0.35, 10.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/RightRamp"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/RightRamp"]
+shape = SubResource("Shape_unit_box")
+
+[node name="RampLeftRail" type="StaticBody3D" parent="Geometry"]
+position = Vector3(5.75, 2.55, -2.0)
+rotation = Vector3(0.38, 0, 0)
+scale = Vector3(0.25, 0.9, 10.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/RampLeftRail"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/RampLeftRail"]
+shape = SubResource("Shape_unit_box")
+
+[node name="RampRightRail" type="StaticBody3D" parent="Geometry"]
+position = Vector3(10.25, 2.55, -2.0)
+rotation = Vector3(0.38, 0, 0)
+scale = Vector3(0.25, 0.9, 10.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/RampRightRail"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/RampRightRail"]
+shape = SubResource("Shape_unit_box")
+
+[node name="SmallRaisedPlatform" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-9.5, 1.0, -12.5)
+scale = Vector3(5.0, 0.35, 4.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/SmallRaisedPlatform"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/SmallRaisedPlatform"]
+shape = SubResource("Shape_unit_box")
+
+[node name="PlatformRamp" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-9.5, 0.55, -9.4)
+rotation = Vector3(0.34, 0, 0)
+scale = Vector3(4.4, 0.28, 3.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/PlatformRamp"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/PlatformRamp"]
+shape = SubResource("Shape_unit_box")
+
+[node name="CentralCoverA" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-1.8, 0.75, 1.0)
+scale = Vector3(2.2, 1.5, 1.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/CentralCoverA"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/CentralCoverA"]
+shape = SubResource("Shape_unit_box")
+
+[node name="CentralCoverB" type="StaticBody3D" parent="Geometry"]
+position = Vector3(1.8, 0.6, -1.6)
+scale = Vector3(1.4, 1.2, 1.4)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/CentralCoverB"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/CentralCoverB"]
+shape = SubResource("Shape_unit_box")
+
+[node name="LeftRouteCover" type="StaticBody3D" parent="Geometry"]
+position = Vector3(-10.0, 0.7, -4.5)
+scale = Vector3(1.5, 1.4, 1.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/LeftRouteCover"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/LeftRouteCover"]
+shape = SubResource("Shape_unit_box")
+
+[node name="RightDoorCover" type="StaticBody3D" parent="Geometry"]
+position = Vector3(4.0, 0.55, 5.5)
+scale = Vector3(1.3, 1.1, 1.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/RightDoorCover"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/RightDoorCover"]
+shape = SubResource("Shape_unit_box")
+
+[node name="CatwalkCover" type="StaticBody3D" parent="Geometry"]
+position = Vector3(5.0, 4.8, -8.0)
+scale = Vector3(1.4, 1.2, 1.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Geometry/CatwalkCover"]
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_crate")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geometry/CatwalkCover"]
+shape = SubResource("Shape_unit_box")
+
+[node name="SpawnMarkerBlock" type="MeshInstance3D" parent="Geometry"]
+position = Vector3(0, 0.05, 10.2)
+scale = Vector3(1.6, 0.1, 1.6)
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_cyan")
+
+[node name="KorvaxiMarkerBlock" type="MeshInstance3D" parent="Geometry"]
+position = Vector3(9.5, 4.22, -8.0)
+scale = Vector3(1.2, 0.12, 1.2)
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_red")
+
+[node name="ExtractionMarkerBlock" type="MeshInstance3D" parent="Geometry"]
+visible = false
+position = Vector3(-11.5, 0.08, -13.5)
+scale = Vector3(1.5, 0.16, 1.5)
+mesh = SubResource("Mesh_unit_box")
+surface_material_override/0 = SubResource("Material_green")
+
+[node name="ExtractionZone" parent="." instance=ExtResource("8_extraction")]
+position = Vector3(-11.5, 0, -13.5)
+
+[node name="PressureEnemies" type="Node3D" parent="."]
+
+[node name="PressureGuard_01" parent="PressureEnemies" instance=ExtResource("9_guard")]
+position = Vector3(-6.5, 0, -10.5)
+
+[node name="PressureGuard_02" parent="PressureEnemies" instance=ExtResource("9_guard")]
+position = Vector3(-10.5, 0, -6.2)
+
+[node name="PressureGuard_03" parent="PressureEnemies" instance=ExtResource("9_guard")]
+position = Vector3(-2.5, 4.2, -8.0)
+
+[node name="PressureGuard_04" parent="PressureEnemies" instance=ExtResource("9_guard")]
+position = Vector3(4.5, 0, 3.8)
+
+[node name="Clues" type="Node3D" parent="."]
+
+[node name="Clue_01_MarketTrace" parent="Clues" instance=ExtResource("7_clue")]
+position = Vector3(-2.4, 0.0, 1.8)
+clue_id = "clue_01_market_trace"
+next_clue_id = "clue_02_broken_crate"
+scan_text = "Unusual heat residue. Trail continues toward the side route."
+completed_text = "Heat residue logged."
+active = true
+
+[node name="Clue_02_BrokenCrate" parent="Clues" instance=ExtResource("7_clue")]
+position = Vector3(-9.8, 0.0, -3.2)
+clue_id = "clue_02_broken_crate"
+next_clue_id = "clue_03_rooftop_residue"
+scan_text = "Broken crate. Korvaxi moved upward."
+completed_text = "Broken crate logged."
+
+[node name="Clue_03_RooftopResidue" parent="Clues" instance=ExtResource("7_clue")]
+position = Vector3(7.6, 4.2, -5.9)
+clue_id = "clue_03_rooftop_residue"
+scan_text = "Fresh residue. Target confirmed nearby."
+completed_text = "Target confirmed."
+reveals_target = true
+
+[node name="TargetDummy_QuickTest" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(0, 0, 6.0)
+
+[node name="TargetDummy_LowerPlaza" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(0, 0, 1.5)
+
+[node name="TargetDummy_CrateCover" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(-3.8, 0, -2.4)
+
+[node name="TargetDummy_LeftDoorway" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(-10.5, 0, -6.5)
+
+[node name="TargetDummy_Catwalk" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(3.0, 4.2, -8.0)
+
+[node name="TargetDummy_BackPlatform" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(-9.5, 1.2, -13.0)
+
+[node name="TargetDummy_FarEnd" parent="." instance=ExtResource("2_dummy")]
+position = Vector3(-6.8, 4.2, -8.0)
+
+[node name="KorvaxiTarget" parent="." instance=ExtResource("5_korvaxi")]
+position = Vector3(9.5, 4.2, -8.0)
+escape_route_parent = NodePath("../KorvaxiEscapeRoute")
+player_path = NodePath("../Player")

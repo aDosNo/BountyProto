@@ -1,0 +1,987 @@
+[gd_scene format=3 uid="uid://dm3h4e6bk05xe"]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/bounties/BountyManager.tscn" id="2_bounty"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/KorvaxiTarget.tscn" id="3_korvaxi"]
+[ext_resource type="PackedScene" path="res://scenes/props/ClueObject.tscn" id="4_clue"]
+[ext_resource type="PackedScene" path="res://scenes/props/ExtractionZone.tscn" id="5_extraction"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/GangGuard.tscn" id="6_guard"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/TargetDummy.tscn" id="7_dummy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/RewardScreen.tscn" id="8_reward"]
+
+[sub_resource type="Environment" id="Environment_hesperus"]
+background_mode = 1
+background_color = Color(0.018, 0.017, 0.022, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.28, 0.31, 0.36, 1)
+ambient_light_energy = 0.66
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+
+[sub_resource type="StandardMaterial3D" id="Material_marker"]
+albedo_color = Color(1, 0.72, 0.12, 1)
+emission_enabled = true
+emission = Color(0.72, 0.34, 0.02, 1)
+emission_energy_multiplier = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_path_blue"]
+albedo_color = Color(0.08, 0.36, 1, 1)
+emission_enabled = true
+emission = Color(0.02, 0.12, 0.7, 1)
+emission_energy_multiplier = 1.15
+
+[sub_resource type="StandardMaterial3D" id="Material_interactable"]
+albedo_color = Color(0.06, 0.72, 0.9, 1)
+emission_enabled = true
+emission = Color(0.02, 0.36, 0.58, 1)
+emission_energy_multiplier = 1.1
+
+[sub_resource type="StandardMaterial3D" id="Material_path_purple"]
+albedo_color = Color(0.6, 0.4, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.12, 0.7, 1)
+emission_energy_multiplier = 1.1
+
+[sub_resource type="StandardMaterial3D" id="Material_capture"]
+transparency = 1
+albedo_color = Color(0.08, 0.9, 0.34, 0.62)
+emission_enabled = true
+emission = Color(0.02, 0.5, 0.12, 1)
+emission_energy_multiplier = 1.15
+
+[sub_resource type="StandardMaterial3D" id="Material_escape"]
+albedo_color = Color(0.95, 0.18, 0.12, 1)
+emission_enabled = true
+emission = Color(0.58, 0.03, 0.02, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_neon_green"]
+albedo_color = Color(0.18, 1, 0.42, 1)
+emission_enabled = true
+emission = Color(0.04, 0.58, 0.16, 1)
+emission_energy_multiplier = 1.35
+
+[sub_resource type="StandardMaterial3D" id="Material_metal"]
+albedo_color = Color(0.11, 0.13, 0.15, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.21, 0.2, 0.18, 1)
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="Material_walkway"]
+albedo_color = Color(0.16, 0.14, 0.2, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_maejr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gnmwk"]
+
+[sub_resource type="StandardMaterial3D" id="Material_wall_dark"]
+albedo_color = Color(0.085, 0.09, 0.105, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="Material_wall_panel"]
+albedo_color = Color(0.14, 0.16, 0.19, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Material_cover"]
+albedo_color = Color(0.34, 0.25, 0.16, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="Material_neon_magenta"]
+albedo_color = Color(1, 0.18, 0.72, 1)
+emission_enabled = true
+emission = Color(0.8, 0.04, 0.42, 1)
+emission_energy_multiplier = 1.7
+
+[sub_resource type="StandardMaterial3D" id="Material_neon_cyan"]
+albedo_color = Color(0.08, 0.85, 1, 1)
+emission_enabled = true
+emission = Color(0.02, 0.48, 0.8, 1)
+emission_energy_multiplier = 1.7
+
+[node name="HesperusMarket_Blockout" type="Node3D" unique_id=1956279085]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1299849640]
+environment = SubResource("Environment_hesperus")
+
+[node name="Lighting" type="Node3D" parent="." unique_id=1635754460]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting" unique_id=731739665]
+transform = Transform3D(0.90044713, 0.3267811, -0.28706992, 0, 0.65998316, 0.7512804, 0.43496552, -0.6764883, 0.59427994, 0, 0, 0)
+light_energy = 1.1
+
+[node name="DockLight" type="OmniLight3D" parent="Lighting" unique_id=523216788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 4, 14)
+light_color = Color(0.35, 0.8, 1, 1)
+light_energy = 1.7
+omni_range = 9.0
+
+[node name="BazaarLightSouth" type="OmniLight3D" parent="Lighting" unique_id=1579986224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 8)
+light_color = Color(1, 0.58, 0.35, 1)
+light_energy = 1.7
+omni_range = 13.0
+
+[node name="BazaarLightNorth" type="OmniLight3D" parent="Lighting" unique_id=1900386130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -4)
+light_color = Color(1, 0.5, 0.4, 1)
+light_energy = 1.6
+omni_range = 13.0
+
+[node name="AlleyLight" type="OmniLight3D" parent="Lighting" unique_id=13907234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 4, 6)
+light_color = Color(0.5, 0.85, 1, 1)
+light_energy = 1.4
+omni_range = 9.0
+
+[node name="WalkwayLight" type="OmniLight3D" parent="Lighting" unique_id=1822719077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -16)
+light_color = Color(0.7, 0.5, 1, 1)
+light_energy = 1.6
+omni_range = 16.0
+
+[node name="CourtyardLight" type="OmniLight3D" parent="Lighting" unique_id=1696507207]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 6, -2)
+light_color = Color(1, 0.32, 0.24, 1)
+light_energy = 2.0
+omni_range = 16.0
+
+[node name="Markers" type="Node3D" parent="." unique_id=783799108]
+
+[node name="PlayerSpawn" type="Marker3D" parent="Markers" unique_id=2025052235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.92447, 4.052351, -6.4696484)
+
+[node name="BountyBoardMarker" type="Marker3D" parent="Markers" unique_id=1886579235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1.2, 12)
+
+[node name="Clue01_MainStreet" type="Marker3D" parent="Markers" unique_id=727855265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7)
+
+[node name="Clue02_SideAlley" type="Marker3D" parent="Markers" unique_id=1490002553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 6)
+
+[node name="Clue03_UpperWalkway" type="Marker3D" parent="Markers" unique_id=1553263642]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4.2, -16)
+
+[node name="WitnessNpcMarker" type="Marker3D" parent="Markers" unique_id=1401225763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, 9)
+
+[node name="TargetSpawnMarker" type="Marker3D" parent="Markers" unique_id=643710157]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -14)
+
+[node name="TargetEscapeRouteMarker" type="Marker3D" parent="Markers" unique_id=829322716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
+
+[node name="CaptureZoneMarker" type="Marker3D" parent="Markers" unique_id=1821950711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -2)
+
+[node name="ReturnToExtractionMarker" type="Marker3D" parent="Markers" unique_id=1520357057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+
+[node name="KorvaxiEscapeRoute" type="Node3D" parent="." unique_id=1963590148]
+
+[node name="EscapeNode_01" type="Marker3D" parent="KorvaxiEscapeRoute" unique_id=398779078]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
+
+[node name="EscapeNode_02" type="Marker3D" parent="KorvaxiEscapeRoute" unique_id=1488274941]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0, -8)
+
+[node name="EscapeNode_03" type="Marker3D" parent="KorvaxiEscapeRoute" unique_id=2061879562]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, -2)
+
+[node name="EscapeNode_04_Final" type="Marker3D" parent="KorvaxiEscapeRoute" unique_id=2111280122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 4)
+
+[node name="DebugLabels" type="Node3D" parent="." unique_id=80788858]
+
+[node name="DistrictLabel" type="Label3D" parent="DebugLabels" unique_id=74140804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 4.4, 15)
+modulate = Color(0.65, 0.9, 1, 1)
+text = "HESPERUS MARKET / LOWER SPIRE BAZAAR"
+font_size = 26
+
+[node name="Zone1_Label" type="Label3D" parent="DebugLabels" unique_id=873518986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2.9, 12)
+modulate = Color(0.35, 0.95, 0.55, 1)
+text = "1 EXTRACTION DOCK / START"
+font_size = 24
+
+[node name="Zone2_Label" type="Label3D" parent="DebugLabels" unique_id=1637115812]
+transform = Transform3D(1, 0, 0, 0, -3.6199901e-06, 1, 0, -1, -3.6199901e-06, 0, 0.08, 4)
+modulate = Color(0.5, 0.78, 1, 1)
+text = "3 MAIN BAZAAR STREET"
+font_size = 30
+
+[node name="Zone3_Label" type="Label3D" parent="DebugLabels" unique_id=608498992]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.6, 6)
+modulate = Color(0.4, 0.85, 1, 1)
+text = "4 SIDE ALLEY INVESTIGATION"
+font_size = 22
+
+[node name="Zone4_Label" type="Label3D" parent="DebugLabels" unique_id=1692149816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.4, -20)
+modulate = Color(0.7, 0.55, 1, 1)
+text = "5 UPPER WALKWAY / OBSERVATION"
+font_size = 26
+
+[node name="Zone5_Label" type="Label3D" parent="DebugLabels" unique_id=888275666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 3.4, -10)
+modulate = Color(1, 0.42, 0.32, 1)
+text = "6 CAPTURE COURTYARD"
+font_size = 26
+
+[node name="Zone7_Label" type="Label3D" parent="DebugLabels" unique_id=59970370]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 18)
+modulate = Color(0.35, 0.95, 0.55, 1)
+text = "7 RETURN ROUTE TO EXTRACTION"
+font_size = 22
+
+[node name="BountyBoardLabel" type="Label3D" parent="DebugLabels" unique_id=650866266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 2.2, 11.6)
+modulate = Color(1, 0.86, 0.22, 1)
+text = "BOUNTY BOARD (BountyBoard_01)"
+font_size = 18
+
+[node name="TargetSpawnLabel" type="Label3D" parent="DebugLabels" unique_id=1911729518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 2.4, -14)
+modulate = Color(1, 0.3, 0.24, 1)
+text = "TARGET SPAWN"
+font_size = 20
+
+[node name="TargetSightingLabel" type="Label3D" parent="DebugLabels" unique_id=34358601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4.9, -16)
+modulate = Color(0.8, 0.55, 1, 1)
+text = "TARGET SIGHTING (FROM WALKWAY)"
+font_size = 18
+
+[node name="EscapeRouteLabel" type="Label3D" parent="DebugLabels" unique_id=1239336914]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1.9, 0)
+modulate = Color(1, 0.32, 0.22, 1)
+text = "TARGET ESCAPE ROUTE"
+font_size = 20
+
+[node name="GameplayRoutePlaceholders" type="Node3D" parent="." unique_id=920800271]
+
+[node name="BountyBoard_Entry" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=213284139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.08, 11.4)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/BountyBoard_Entry" unique_id=1718032237]
+transform = Transform3D(1.2, 0, 0, 0, 0.12, 0, 0, 0, 1.2, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_marker")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/BountyBoard_Entry" unique_id=50724181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+modulate = Color(1, 0.86, 0.22, 1)
+text = "BOUNTY BOARD"
+font_size = 20
+
+[node name="Clue_01" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=1562164592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.08, 7)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Clue_01" unique_id=498715626]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_path_blue")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Clue_01" unique_id=817920105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+modulate = Color(0.35, 0.65, 1, 1)
+text = "CLUE 01 (MAIN STREET)"
+font_size = 18
+
+[node name="Clue_02" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=1965022960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.08, 6)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Clue_02" unique_id=976818982]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_path_blue")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Clue_02" unique_id=1871520239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+modulate = Color(0.35, 0.65, 1, 1)
+text = "CLUE 02 (SIDE ALLEY)"
+font_size = 18
+
+[node name="Witness_Spot" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=2085607867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0.08, 9)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Witness_Spot" unique_id=663311443]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_interactable")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Witness_Spot" unique_id=1210903141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+modulate = Color(0.35, 0.75, 1, 1)
+text = "WITNESS SPOT (TALK)"
+font_size = 18
+
+[node name="Clue_03_Sighting" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=213216464]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4.28, -16)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Clue_03_Sighting" unique_id=91771567]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_path_purple")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Clue_03_Sighting" unique_id=376320019]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+modulate = Color(0.7, 0.5, 1, 1)
+text = "CLUE 03 SIGHTING"
+font_size = 18
+
+[node name="TargetSpawn" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=1795744804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.08, -14)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/TargetSpawn" unique_id=1565894361]
+transform = Transform3D(1.2, 0, 0, 0, 0.12, 0, 0, 0, 1.2, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_marker")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/TargetSpawn" unique_id=946663951]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+modulate = Color(1, 0.35, 0.28, 1)
+text = "TARGET SPAWN"
+font_size = 20
+
+[node name="CaptureZone" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=2101234803]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.08, -2)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/CaptureZone" unique_id=628298680]
+transform = Transform3D(3, 0, 0, 0, 0.12, 0, 0, 0, 3, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_capture")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/CaptureZone" unique_id=704177960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+modulate = Color(0.35, 1, 0.45, 1)
+text = "CAPTURE ZONE"
+font_size = 22
+
+[node name="TargetEscape" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=183647759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0.08, 0)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/TargetEscape" unique_id=1671178844]
+transform = Transform3D(1.2, 0, 0, 0, 0.12, 0, 0, 0, 1.2, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_escape")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/TargetEscape" unique_id=1167606674]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+modulate = Color(1, 0.35, 0.28, 1)
+text = "TARGET ESCAPE"
+font_size = 20
+
+[node name="PatrolA" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=1030940607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.08, 2)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/PatrolA" unique_id=92628198]
+transform = Transform3D(0.8, 0, 0, 0, 0.1, 0, 0, 0, 0.8, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_escape")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/PatrolA" unique_id=324297157]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+modulate = Color(1, 0.4, 0.3, 1)
+text = "PATROL A"
+font_size = 16
+
+[node name="PatrolB" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=1404125764]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.08, 4)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/PatrolB" unique_id=827211821]
+transform = Transform3D(0.8, 0, 0, 0, 0.1, 0, 0, 0, 0.8, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_escape")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/PatrolB" unique_id=2090937309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+modulate = Color(1, 0.4, 0.3, 1)
+text = "PATROL B"
+font_size = 16
+
+[node name="ExtractionReturn" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=180859449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.08, 13)
+
+[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/ExtractionReturn" unique_id=1782441734]
+transform = Transform3D(1.6, 0, 0, 0, 0.12, 0, 0, 0, 1.6, 0, 0.08, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon_green")
+
+[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/ExtractionReturn" unique_id=1331335433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+modulate = Color(0.35, 1, 0.45, 1)
+text = "EXTRACTION RETURN"
+font_size = 20
+
+[node name="WorldGeometry" type="Node3D" parent="." unique_id=1581408648]
+
+[node name="Floors" type="Node3D" parent="WorldGeometry" unique_id=1415052030]
+
+[node name="DockFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=1580164158]
+transform = Transform3D(12, 0, 0, 0, 8, 0, 0, 0, 25, -65.28475, -0.1, -8.809555)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/DockFloor" unique_id=2000414460]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/DockFloor" unique_id=2130332913]
+shape = SubResource("Shape_box")
+
+[node name="DockToBazaarFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=986359987]
+transform = Transform3D(9.848078, 0.17364818, 0, -1.7364818, 0.9848077, 0, 0, 0, 5, -54.799873, 2.516273, -13.46026)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/DockToBazaarFloor" unique_id=1599586548]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/DockToBazaarFloor" unique_id=1445957072]
+shape = SubResource("Shape_box")
+
+[node name="ReturnCorridorFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=464118315]
+transform = Transform3D(38, 0, 0, 0, 0.2, 0, 0, 0, 5, -5.9260464, 10.11314, 71.343124)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/ReturnCorridorFloor" unique_id=1412464995]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/ReturnCorridorFloor" unique_id=851049085]
+shape = SubResource("Shape_box")
+
+[node name="ReturnCorridorEastFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=1898242490]
+transform = Transform3D(6, 0, 0, 0, 0.2, 0, 0, 0, 16, 20, 10.332136, 67.00214)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/ReturnCorridorEastFloor" unique_id=1674011509]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/ReturnCorridorEastFloor" unique_id=1281424404]
+shape = SubResource("Shape_box")
+
+[node name="WalkwayNorth" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=369290321]
+transform = Transform3D(20, 0, 0, 0, 0.3, 0, 0, 0, 3, 0, 3.9, -20)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/WalkwayNorth" unique_id=1125041902]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_walkway")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/WalkwayNorth" unique_id=1887035512]
+shape = SubResource("Shape_box")
+
+[node name="WalkwayWest" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=654930701]
+transform = Transform3D(3, 0, 0, 0, 0.3, 0, 0, 0, 17, -9, 3.9, -13)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/WalkwayWest" unique_id=292656525]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_walkway")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/WalkwayWest" unique_id=1125192719]
+shape = SubResource("Shape_box")
+
+[node name="WalkwayEast" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=1193423282]
+transform = Transform3D(3, 0, 0, 0, 0.3, 0, 0, 0, 11, 9, 3.9, -16)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/WalkwayEast" unique_id=900715519]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_walkway")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/WalkwayEast" unique_id=598619795]
+shape = SubResource("Shape_box")
+
+[node name="AlleyFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=1450052700]
+transform = Transform3D(1, 0, 0, 0, 5, 0, 0, 0, 1, -29.12222, -0.06442022, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldGeometry/Floors/AlleyFloor" unique_id=83239622]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.5165582, 0)
+mesh = SubResource("BoxMesh_maejr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/AlleyFloor" unique_id=2067611751]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.517, 0)
+shape = SubResource("BoxShape3D_gnmwk")
+
+[node name="CaptureFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=212384074]
+transform = Transform3D(1, 0, 0, 0, 5, 0, 0, 0, 1, 60.891636, -0.06442022, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldGeometry/Floors/CaptureFloor" unique_id=1284297153]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.5165582, 0)
+mesh = SubResource("BoxMesh_maejr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/CaptureFloor" unique_id=1704347685]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.517, 0)
+shape = SubResource("BoxShape3D_gnmwk")
+
+[node name="BazaarFloor" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=460761745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.027687, -2.8138938, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldGeometry/Floors/BazaarFloor" unique_id=1819517641]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.5165582, 0)
+mesh = SubResource("BoxMesh_maejr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/BazaarFloor" unique_id=2103922428]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 100, 0, -0.517, 0)
+shape = SubResource("BoxShape3D_gnmwk")
+
+[node name="WallsAndFacades" type="Node3D" parent="WorldGeometry" unique_id=1284273235]
+
+[node name="BazaarWestFacade" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1173676063]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 22, -5, 4, 1)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/BazaarWestFacade" unique_id=457976871]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_dark")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/BazaarWestFacade" unique_id=337380433]
+shape = SubResource("Shape_box")
+
+[node name="BazaarEastFacadeSouth" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1554447177]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 12, 5, 4, 6)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/BazaarEastFacadeSouth" unique_id=719092687]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_dark")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/BazaarEastFacadeSouth" unique_id=990601254]
+shape = SubResource("Shape_box")
+
+[node name="BazaarEastFacadeNorth" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1080875390]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 6, 5, 4, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/BazaarEastFacadeNorth" unique_id=1353451554]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_dark")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/BazaarEastFacadeNorth" unique_id=793202038]
+shape = SubResource("Shape_box")
+
+[node name="BazaarNorthWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=646634092]
+transform = Transform3D(6, 0, 0, 0, 8, 0, 0, 0, 1, -2, 4, -11)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/BazaarNorthWall" unique_id=1937284715]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/BazaarNorthWall" unique_id=72902175]
+shape = SubResource("Shape_box")
+
+[node name="DockBackWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1066815240]
+transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 80, -86.10014, 3, -4.92054)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/DockBackWall" unique_id=1219745287]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/DockBackWall" unique_id=1948689751]
+shape = SubResource("Shape_box")
+
+[node name="AlleyNorthWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=208686526]
+transform = Transform3D(20, 0, 0, 0, 25, 0, 0, 0, 10, -31.622885, 2.7666245, -33.511993)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/AlleyNorthWall" unique_id=529071606]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/AlleyNorthWall" unique_id=226808436]
+shape = SubResource("Shape_box")
+
+[node name="Mesh2" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/AlleyNorthWall" unique_id=1729060939]
+transform = Transform3D(0.7071065, 0, 0.7071065, 0, 1, 0, -0.7071065, 0, 0.7071065, -0.827219, -0.121648066, 0.5000503)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/AlleyNorthWall/Mesh2" unique_id=1189534672]
+shape = SubResource("Shape_box")
+
+[node name="AlleyWestWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=958593878]
+transform = Transform3D(5, 0, 0, 0, 15, 0, 0, 0, 20, -23.751749, 3.4771624, -1.030952)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/AlleyWestWall" unique_id=1878371284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.007254213)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/AlleyWestWall" unique_id=430651992]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardNorthWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1160653933]
+transform = Transform3D(18, 0, 0, 0, 8, 0, 0, 0, 1, 40.222443, 4, -12)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/CourtyardNorthWall" unique_id=923816165]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_dark")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/CourtyardNorthWall" unique_id=1845016934]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardEastWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1720003103]
+transform = Transform3D(1, 0, 0, 0, 8, 0, 0, 0, 16, 45.956734, 4, -4)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/CourtyardEastWall" unique_id=781742467]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_dark")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/CourtyardEastWall" unique_id=387709644]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardSouthWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=605550700]
+transform = Transform3D(12, 0, 0, 0, 8, 0, 0, 0, 1, 11, 4, 8)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/CourtyardSouthWall" unique_id=354980269]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_dark")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/CourtyardSouthWall" unique_id=1984982772]
+shape = SubResource("Shape_box")
+
+[node name="ReturnSouthWall" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=202872968]
+transform = Transform3D(38, 0, 0, 0, 6, 0, 0, 0, 1, 15.700497, -0.030347824, 49.589252)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/ReturnSouthWall" unique_id=1137246993]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/ReturnSouthWall" unique_id=191289357]
+shape = SubResource("Shape_box")
+
+[node name="Building1" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=652823348]
+transform = Transform3D(12, 0, 0, 0, 30, 0, 0, 0, 30, -51.134132, 9.357492, -32.081566)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building1" unique_id=1770510789]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building1" unique_id=1275122441]
+shape = SubResource("Shape_box")
+
+[node name="Building2" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1312473790]
+transform = Transform3D(10, 0, 0, 0, 28, 0, 0, 0, 28, -52.97917, 5.970997, -61.103756)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building2" unique_id=1305997143]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building2" unique_id=1722258239]
+shape = SubResource("Shape_box")
+
+[node name="Building3" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=549517493]
+transform = Transform3D(8, 0, 0, 0, 25, 0, 0, 0, 25, -61.77192, 4.0284653, -60.419403)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building3" unique_id=1034797668]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building3" unique_id=864851993]
+shape = SubResource("Shape_box")
+
+[node name="Building4" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=989396138]
+transform = Transform3D(15, 0, 0, 0, 30, 0, 0, 0, 20, -50.48616, 5.931093, 18.954205)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building4" unique_id=1334312916]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building4" unique_id=1632394182]
+shape = SubResource("Shape_box")
+
+[node name="Building5" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1931868772]
+transform = Transform3D(12, 0, 0, 0, 30, 0, 0, 0, 20, -49.997158, 3.138545, 38.890144)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building5" unique_id=319198060]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building5" unique_id=1633864131]
+shape = SubResource("Shape_box")
+
+[node name="Building6" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=347484403]
+transform = Transform3D(25, 0, 0, 0, 30, 0, 0, 0, 20, -36.44021, -0.513566, 56.122658)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building6" unique_id=1345741787]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building6" unique_id=375120101]
+shape = SubResource("Shape_box")
+
+[node name="Building7" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1111763912]
+transform = Transform3D(25, 0, 0, 0, 30, 0, 0, 0, 20, -15.343158, 5.931093, 18.954205)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building7" unique_id=181593715]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building7" unique_id=1891540430]
+shape = SubResource("Shape_box")
+
+[node name="AlleyNorthWall2" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1377443704]
+transform = Transform3D(-1.5298986e-06, 0, 5, 0, 25, 0, -35, 0, -2.1855695e-07, -19.092686, 3, -15.840693)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/AlleyNorthWall2" unique_id=109853041]
+transform = Transform3D(1, 0, 4.440892e-16, 0, 1, 0, 2.842171e-14, 0, 1, 0, 0, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/AlleyNorthWall2" unique_id=1072925240]
+shape = SubResource("Shape_box")
+
+[node name="Building8" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1988350968]
+transform = Transform3D(25, 0, 0, 0, 30, 0, 0, 0, 20, -11.265949, -7.3551426, 60.096565)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building8" unique_id=738565755]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_wall_panel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building8" unique_id=490824903]
+shape = SubResource("Shape_box")
+
+[node name="RampsAndCatwalk" type="Node3D" parent="WorldGeometry" unique_id=1318974410]
+
+[node name="WalkwayRamp" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=1699484597]
+transform = Transform3D(3, 0, 0, 0, 0.29218844, -4.485365, 0, 0.13048334, 10.043978, -9, 2, -3)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRamp" unique_id=1788915953]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRamp" unique_id=799925102]
+shape = SubResource("Shape_box")
+
+[node name="WalkwayDescentEast" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=1790566799]
+transform = Transform3D(3, 0, 0, 0, 0.29218844, 3.669844, 0, -0.13048334, 8.2178, 9, 2, -9)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayDescentEast" unique_id=1130284187]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayDescentEast" unique_id=1419693634]
+shape = SubResource("Shape_box")
+
+[node name="BazaarBridge" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=493294683]
+transform = Transform3D(4, 0, 0, 0, 0.3, 0, 0, 0, 3, 0, 3.9, -11)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/BazaarBridge" unique_id=1734861222]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/RampsAndCatwalk/BazaarBridge" unique_id=401611582]
+shape = SubResource("Shape_box")
+
+[node name="WalkwayRailNorth" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=1680799798]
+transform = Transform3D(20, 0, 0, 0, 0.7, 0, 0, 0, 0.2, 0, 4.7, -21.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRailNorth" unique_id=1195578699]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRailNorth" unique_id=564873017]
+shape = SubResource("Shape_box")
+
+[node name="WalkwayRailInner" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=1919567790]
+transform = Transform3D(14, 0, 0, 0, 0.7, 0, 0, 0, 0.2, 0, 4.7, -18.6)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRailInner" unique_id=1873300398]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRailInner" unique_id=808086810]
+shape = SubResource("Shape_box")
+
+[node name="StallsAndCover" type="Node3D" parent="WorldGeometry" unique_id=1383186882]
+
+[node name="StallWestA" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=1275388549]
+transform = Transform3D(1.4, 0, 0, 0, 1.3, 0, 0, 0, 2, -3, 0.65, 7)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/StallWestA" unique_id=646248582]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/StallWestA" unique_id=1206535207]
+shape = SubResource("Shape_box")
+
+[node name="StallEastA" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=1719755985]
+transform = Transform3D(1.4, 0, 0, 0, 1.3, 0, 0, 0, 2, 3, 0.65, 3)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/StallEastA" unique_id=522077785]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/StallEastA" unique_id=136298741]
+shape = SubResource("Shape_box")
+
+[node name="StallWestB" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=1933294830]
+transform = Transform3D(1.4, 0, 0, 0, 1.3, 0, 0, 0, 2, -3, 0.65, -3)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/StallWestB" unique_id=418975571]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/StallWestB" unique_id=684184558]
+shape = SubResource("Shape_box")
+
+[node name="CrateAlley" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=256401324]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, -13, 0.7, 5)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/CrateAlley" unique_id=1754086994]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/CrateAlley" unique_id=1131703536]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardCoverNW" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=1235053345]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 9, 0.8, -7)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverNW" unique_id=2075755941]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverNW" unique_id=787269446]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardCoverNE" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=447698523]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 19, 0.8, -7)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverNE" unique_id=277738406]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverNE" unique_id=1122836834]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardCoverSW" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=2080397355]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 9, 0.8, 4)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverSW" unique_id=1110091336]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverSW" unique_id=293785540]
+shape = SubResource("Shape_box")
+
+[node name="CourtyardCoverSE" type="StaticBody3D" parent="WorldGeometry/StallsAndCover" unique_id=1595232297]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 19, 0.8, 4)
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverSE" unique_id=932413847]
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_cover")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/StallsAndCover/CourtyardCoverSE" unique_id=1467280860]
+shape = SubResource("Shape_box")
+
+[node name="NeonSignsAndCables" type="Node3D" parent="WorldGeometry" unique_id=808021004]
+
+[node name="DockExitNeon" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=2113226606]
+transform = Transform3D(3, 0, 0, 0, 0.45, 0, 0, 0, 0.08, -9, 3.2, 9)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon_green")
+
+[node name="BazaarSignA" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=603752387]
+transform = Transform3D(0.11760799, -0.298004, 0, 0.02384032, 1.4700999, 0, 0, 0, 0.08, -2.6, 4.4, 3)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon_magenta")
+
+[node name="BazaarSignB" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=398408822]
+transform = Transform3D(0.11806124, 0.28644735, 0, -0.02148355, 1.57415, 0, 0, 0, 0.08, 2.6, 5, -4)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon_cyan")
+
+[node name="AlleyNeon" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=2086649363]
+transform = Transform3D(2.4, 0, 0, 0, 0.35, 0, 0, 0, 0.08, -11, 2.9, 4.45)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_neon_cyan")
+
+[node name="CourtyardWarningNeon" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=1394469071]
+transform = Transform3D(3.4, 0, 0, 0, 0.45, 0, 0, 0, 0.08, 14, 3.6, -11.45)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_escape")
+
+[node name="EscapeNeon" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=1082173724]
+transform = Transform3D(-9.411974e-06, 0, 0.08, 0, 0.4, 0, -2.6, 0, -2.895992e-07, 22.45, 3.4, 0)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_escape")
+
+[node name="OverheadCableA" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=116367852]
+transform = Transform3D(-1.809995e-07, -6, 0, 0.05, -2.1719941e-05, 0, 0, 0, 0.05, 0, 5.9, 3)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="OverheadCableB" type="MeshInstance3D" parent="WorldGeometry/NeonSignsAndCables" unique_id=278812972]
+transform = Transform3D(-1.809995e-07, -6, 0, 0.05, -2.1719941e-05, 0, 0, 0, 0.05, 0, 6.4, -6)
+mesh = SubResource("Mesh_box")
+surface_material_override/0 = SubResource("Material_metal")
+
+[node name="Gameplay" type="Node3D" parent="." unique_id=2029199255]
+
+[node name="Player" parent="Gameplay" unique_id=524339665 instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.92447, 4.5, -6.4696484)
+
+[node name="BountyManager" parent="Gameplay" unique_id=879069237 instance=ExtResource("2_bounty")]
+target_path = NodePath("../KorvaxiTarget")
+reward_screen_path = NodePath("../../UI/RewardLayer/RewardScreen")
+extraction_zone_path = NodePath("../ExtractionZone")
+location = "Hesperus Market / Lower Spire Bazaar"
+
+[node name="KorvaxiTarget" parent="Gameplay" unique_id=532085859 instance=ExtResource("3_korvaxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -14)
+escape_route_parent = NodePath("../../KorvaxiEscapeRoute")
+player_path = NodePath("../Player")
+
+[node name="ExtractionZone" parent="Gameplay" unique_id=1451946803 instance=ExtResource("5_extraction")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 13)
+
+[node name="Clues" type="Node3D" parent="Gameplay" unique_id=2039683029]
+
+[node name="Clue_01_MainStreet" parent="Gameplay/Clues" unique_id=1986592981 instance=ExtResource("4_clue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7)
+clue_id = "clue_01_market_trace"
+next_clue_id = "clue_02_side_alley_residue"
+scan_text = "Dock feed confirms Korvaxi entered the bazaar."
+completed_text = "Main street trace logged."
+active = true
+
+[node name="Clue_02_SideAlley" parent="Gameplay/Clues" unique_id=1429238115 instance=ExtResource("4_clue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 6)
+clue_id = "clue_02_side_alley_residue"
+next_clue_id = "clue_03_upper_walkway_residue"
+scan_text = "Witness points to the upper walkway crossing."
+completed_text = "Side alley clue logged."
+
+[node name="Clue_03_UpperWalkway" parent="Gameplay/Clues" unique_id=907681065 instance=ExtResource("4_clue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4.2, -16)
+clue_id = "clue_03_upper_walkway_residue"
+scan_text = "Target sighted from the walkway. Korvaxi is in the courtyard."
+completed_text = "Target location confirmed."
+reveals_target = true
+
+[node name="PressureEnemies" type="Node3D" parent="Gameplay" unique_id=198124532]
+
+[node name="PatrolGuard_A" parent="Gameplay/PressureEnemies" unique_id=792511206 instance=ExtResource("6_guard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 2)
+
+[node name="PatrolGuard_B" parent="Gameplay/PressureEnemies" unique_id=1764413972 instance=ExtResource("6_guard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 4)
+
+[node name="PressureGuard_Courtyard" parent="Gameplay/PressureEnemies" unique_id=237881236 instance=ExtResource("6_guard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -8)
+
+[node name="PressureGuard_Walkway" parent="Gameplay/PressureEnemies" unique_id=383518011 instance=ExtResource("6_guard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4.2, -16)
+
+[node name="AmbientDummies" type="Node3D" parent="Gameplay" unique_id=1299399501]
+
+[node name="SpriteNpc_Bazaar" parent="Gameplay/AmbientDummies" unique_id=2047937999 instance=ExtResource("7_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 9)
+
+[node name="SpriteNpc_Witness" parent="Gameplay/AmbientDummies" unique_id=1651862869 instance=ExtResource("7_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, 9)
+
+[node name="UI" type="Node" parent="." unique_id=1177521911]
+
+[node name="RewardLayer" type="CanvasLayer" parent="UI" unique_id=1915160437]
+layer = 20
+
+[node name="RewardScreen" parent="UI/RewardLayer" unique_id=1945925184 instance=ExtResource("8_reward")]
