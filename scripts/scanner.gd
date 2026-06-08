@@ -12,6 +12,7 @@ var _hud: CanvasLayer
 var _shooter: CollisionObject3D
 var _focused_clue: Node
 var _was_active_last_frame: bool = false
+var _completed_clues: Dictionary = {}
 
 
 func setup(camera: Camera3D, hud: CanvasLayer, shooter: CollisionObject3D = null) -> void:
@@ -69,10 +70,13 @@ func _scan_forward(delta: float) -> void:
 			clue.call("begin_focus")
 		print("Scanning clue: %s" % _get_clue_id(clue))
 
-	_set_hud_text("SCANNING...")
+	_set_hud_text(_get_clue_scan_text(clue))
 	if clue.has_method("scan"):
+		var previous_progress := current_scan_progress
 		var progress := clue.call("scan", delta) as float
 		current_scan_progress = progress
+		if previous_progress < scan_time_required and progress >= scan_time_required:
+			_show_clue_completed(clue)
 	else:
 		current_scan_progress = minf(current_scan_progress + delta, scan_time_required)
 
@@ -132,3 +136,28 @@ func _get_clue_id(clue: Node) -> String:
 	if clue_value is String:
 		return clue_value
 	return str(clue)
+
+
+func _get_clue_scan_text(clue: Node) -> String:
+	if clue != null and clue.has_method("get_scan_text"):
+		var text := clue.call("get_scan_text") as String
+		if not text.is_empty():
+			return text
+	return "SCANNING..."
+
+
+func _show_clue_completed(clue: Node) -> void:
+	var clue_key := _get_clue_id(clue)
+	if _completed_clues.has(clue_key):
+		return
+	_completed_clues[clue_key] = true
+
+	if _hud == null or not _hud.has_method("show_toast"):
+		return
+
+	var text := "Trace logged."
+	if clue != null and clue.has_method("get_completed_text"):
+		var completed_text := clue.call("get_completed_text") as String
+		if not completed_text.is_empty():
+			text = completed_text
+	_hud.call("show_toast", text)

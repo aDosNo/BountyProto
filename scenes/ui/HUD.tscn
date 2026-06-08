@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="Shader" path="res://shaders/retro_pixelate.gdshader" id="2_retro_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_retro"]
+shader = ExtResource("2_retro_shader")
+shader_parameter/virtual_resolution = Vector2(426, 240)
+shader_parameter/color_steps = 32.0
+shader_parameter/scanline_strength = 0.16
+shader_parameter/vignette_strength = 0.22
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -14,6 +22,18 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="RetroOverlay" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+material = SubResource("ShaderMaterial_retro")
+color = Color(1, 1, 1, 1)
+
 [node name="HealthLabel" type="Label" parent="Root"]
 unique_name_in_owner = true
 layout_mode = 1
@@ -25,6 +45,18 @@ offset_bottom = 42.0
 theme_override_colors/font_color = Color(0.85, 1, 0.85, 1)
 theme_override_font_sizes/font_size = 22
 text = "Health: 100"
+
+[node name="DamageFlash" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.04, 0.02, 0)
 
 [node name="AmmoLabel" type="Label" parent="Root"]
 unique_name_in_owner = true
@@ -226,6 +258,55 @@ max_value = 1.0
 step = 0.01
 show_percentage = false
 
+[node name="ToastLabel" type="Label" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -280.0
+offset_top = 54.0
+offset_right = 280.0
+offset_bottom = 112.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9, 1, 0.76, 1)
+theme_override_font_sizes/font_size = 18
+text = "Trace logged."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="InteractionOverlay" type="Control" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -168.0
+offset_right = 240.0
+offset_bottom = -128.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="InteractionPromptLabel" type="Label" parent="Root/InteractionOverlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.34, 1)
+theme_override_font_sizes/font_size = 20
+text = "Press E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CaptureOverlay" type="Control" parent="Root"]
 unique_name_in_owner = true
 visible = false
@@ -281,3 +362,67 @@ grow_vertical = 0
 max_value = 1.0
 step = 0.01
 show_percentage = false
+
+[node name="WeaponSpriteOverlay" type="Control" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -42.0
+offset_top = -182.0
+offset_right = 178.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="BackBlock" type="ColorRect" parent="Root/WeaponSpriteOverlay"]
+layout_mode = 1
+offset_left = 50.0
+offset_top = 72.0
+offset_right = 174.0
+offset_bottom = 184.0
+color = Color(0.045, 0.04, 0.05, 1)
+
+[node name="GripBlock" type="ColorRect" parent="Root/WeaponSpriteOverlay"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 118.0
+offset_right = 84.0
+offset_bottom = 196.0
+color = Color(0.12, 0.09, 0.07, 1)
+
+[node name="BarrelBlock" type="ColorRect" parent="Root/WeaponSpriteOverlay"]
+layout_mode = 1
+offset_left = 98.0
+offset_top = 42.0
+offset_right = 218.0
+offset_bottom = 88.0
+color = Color(0.13, 0.15, 0.18, 1)
+
+[node name="MuzzleBlock" type="ColorRect" parent="Root/WeaponSpriteOverlay"]
+layout_mode = 1
+offset_left = 190.0
+offset_top = 50.0
+offset_right = 226.0
+offset_bottom = 78.0
+color = Color(0.015, 0.014, 0.016, 1)
+
+[node name="CyanSight" type="ColorRect" parent="Root/WeaponSpriteOverlay"]
+layout_mode = 1
+offset_left = 122.0
+offset_top = 28.0
+offset_right = 154.0
+offset_bottom = 38.0
+color = Color(0.05, 0.88, 1, 1)
+
+[node name="AmberPlate" type="ColorRect" parent="Root/WeaponSpriteOverlay"]
+layout_mode = 1
+offset_left = 72.0
+offset_top = 92.0
+offset_right = 132.0
+offset_bottom = 110.0
+color = Color(1, 0.56, 0.08, 1)

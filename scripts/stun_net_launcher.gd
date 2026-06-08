@@ -33,8 +33,8 @@ func setup(new_shooter: CollisionObject3D, new_camera: Camera3D, new_hud: Canvas
 
 func on_equipped() -> void:
 	_update_hud()
-	if hud != null and hud.has_method("set_objective"):
-		hud.call("set_objective", "Stun Net Equipped")
+	if hud != null and hud.has_method("show_toast"):
+		hud.call("show_toast", "Stun net equipped")
 
 
 func try_fire() -> void:

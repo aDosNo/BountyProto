@@ -16,6 +16,7 @@ enum MissionState {
 @export var extraction_zone_path: NodePath
 @export var pressure_enemies: Array[NodePath] = []
 @export var first_clue_id: String = "clue_01_market_trace"
+@export var auto_accept: bool = true
 
 @export var target_name: String = "Korvaxi Jurraal"
 @export var location: String = "Hesperus Market / FPS Vertical Arena placeholder"
@@ -45,12 +46,18 @@ func _ready() -> void:
 	_connect_extraction_zone()
 	_deactivate_pressure_enemies()
 	_register_clues()
-	accept_bounty()
+	if auto_accept:
+		accept_bounty()
+	else:
+		_set_objective("Accept a contract at the bounty board")
 
 
 func accept_bounty() -> void:
+	if _mission_is_closed() or state != MissionState.INACTIVE:
+		return
+
 	state = MissionState.ACCEPTED
-	_set_objective("Scan for Korvaxi's trail")
+	_set_objective("Hold RMB to scan Korvaxi's trace in the bazaar")
 	_activate_first_clue()
 	print("Bounty accepted: %s" % target_name)
 
@@ -82,15 +89,18 @@ func on_clue_scanned(clue_id: String, next_clue_id: String, reveals_target: bool
 	print("Clue scanned: %s" % clue_id)
 
 	if reveals_target:
+		_show_toast_for_clue(clue_id)
 		_identify_target()
 		return
 
 	if next_clue_id.is_empty():
-		_set_objective("Trail logged. Search for the next trace.")
+		_show_toast_for_clue(clue_id)
+		_set_objective("Trail logged. Sweep the district for another trace")
 		return
 
 	_activate_clue(next_clue_id)
-	_set_objective("Follow Korvaxi's trail")
+	_show_toast_for_clue(clue_id)
+	_set_objective(_objective_for_next_clue(next_clue_id))
 	print("Activating next clue: %s" % next_clue_id)
 
 
@@ -101,7 +111,7 @@ func start_extraction_phase(status: String, reward: int) -> void:
 	_target_status = status
 	_pending_reward = reward
 	state = MissionState.EXTRACTING
-	_set_objective("Bounty secured. Reach extraction.")
+	_set_objective("Bounty secured. Return to the dock extraction")
 	_activate_extraction_zone()
 	_activate_pressure_enemies()
 	print("Extraction phase started. Status: %s. Pending reward: %d" % [_target_status, _pending_reward])
@@ -217,7 +227,7 @@ func _identify_target() -> void:
 		return
 
 	state = MissionState.TARGET_IDENTIFIED
-	_set_objective("Target identified: Korvaxi is fleeing!")
+	_set_objective("Target identified in the courtyard. Chase Korvaxi!")
 	print("Target identified: %s" % target_name)
 
 	if _target == null:
@@ -233,14 +243,14 @@ func _on_target_flee_started() -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
 
-	_set_objective("Chase Korvaxi Jurraal")
+	_set_objective("Chase Korvaxi through the courtyard")
 
 
 func _on_target_reached_final_node() -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
 
-	_set_objective("Korvaxi cornered. Neutralize target.")
+	_set_objective("Korvaxi cornered. Shoot or stun and capture")
 
 
 func _on_target_stunned() -> void:
@@ -334,6 +344,33 @@ func _set_objective(text: String) -> void:
 		_hud.call("set_objective", text)
 	else:
 		print("Objective: %s" % text)
+
+
+func _show_toast_for_clue(clue_id: String) -> void:
+	if _hud == null:
+		_hud = _find_hud()
+	if _hud == null or not _hud.has_method("show_toast"):
+		return
+	if not _clues_by_id.has(clue_id):
+		return
+
+	var clue := _clues_by_id[clue_id] as Node
+	if clue == null:
+		return
+
+	var text_value = clue.get("completed_text")
+	if text_value is String and not text_value.is_empty():
+		_hud.call("show_toast", text_value)
+
+
+func _objective_for_next_clue(clue_id: String) -> String:
+	match clue_id:
+		"clue_02_side_alley_residue":
+			return "Trace points to the side alley. Hold RMB to scan"
+		"clue_03_upper_walkway_residue":
+			return "Witness trail points upward. Scan the upper walkway"
+		_:
+			return "Follow Korvaxi's trail to the next highlighted trace"
 
 
 func _find_hud() -> CanvasLayer:

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cful77vet1xl7"]
 
 [ext_resource type="Script" uid="uid://cbfk7s3tuiwjy" path="res://scripts/weapon_base.gd" id="1_weapon"]
-[ext_resource type="PackedScene" uid="uid://crpa4rjp72r3f" path="res://assets/kit/weapons/scifi_revolver_cohesive.glb" id="2_8qgpr"]
+[ext_resource type="PackedScene" uid="uid://b7ups4awn1m6j" path="res://assets/kit/weapons/VM_RetroSciFi_Pistol_RightHand.glb" id="2_viewmodel"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
 size = Vector3(0.28, 0.18, 0.52)
@@ -25,8 +25,8 @@ emission_energy_multiplier = 2.5
 [node name="Pistol" type="Node3D" unique_id=971176971]
 script = ExtResource("1_weapon")
 
-[node name="scifi_revolver_cohesive" parent="." unique_id=1678363711 instance=ExtResource("2_8qgpr")]
-transform = Transform3D(-6.5567085e-09, 0, 0.15, 0, 0.15, 0, -0.15, 0, -6.5567085e-09, 0, 0, -0.11066973)
+[node name="VM_RetroSciFi_Pistol_RightHand" parent="." unique_id=1678363711 instance=ExtResource("2_viewmodel")]
+transform = Transform3D(0.32, 0, 0, 0, 0.32, 0, 0, 0, 0.32, -0.12, 0.0, -0.18)
 
 [node name="Body" type="MeshInstance3D" parent="." unique_id=694571914]
 visible = false

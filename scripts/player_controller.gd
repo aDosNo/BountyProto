@@ -11,6 +11,10 @@ signal died
 @export var ground_deceleration: float = 90.0
 @export var starting_health: int = 100
 @export var capture_mouse_on_focus: bool = true
+@export var interaction_range: float = 3.5
+@export var damage_shake_duration: float = 0.18
+@export var damage_shake_position_strength: float = 0.08
+@export var damage_shake_rotation_strength: float = 0.018
 
 const PISTOL_SCENE: PackedScene = preload("res://scenes/weapons/Pistol.tscn")
 const STUN_NET_SCENE: PackedScene = preload("res://scenes/weapons/StunNetLauncher.tscn")
@@ -28,6 +32,13 @@ var hud: CanvasLayer
 var current_health: int
 var _is_dead: bool = false
 var _pitch: float = 0.0
+var _focused_interactable: Node
+var _camera_base_position: Vector3
+var _shake_time_left: float = 0.0
+var _shake_duration: float = 0.0
+var _shake_position_strength: float = 0.0
+var _shake_rotation_strength: float = 0.0
+var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -35,7 +46,9 @@ func _ready() -> void:
 	add_to_group("damageable")
 	current_health = starting_health
 	camera.current = true
+	_camera_base_position = camera.position
 	_pitch = camera.rotation.x
+	_rng.randomize()
 	_capture_mouse()
 	await _spawn_hud()
 	_spawn_weapon()
@@ -71,6 +84,9 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("reload") and active_weapon != null and active_weapon.has_method("reload"):
 		active_weapon.call("reload")
 
+	if event.is_action_pressed("interact"):
+		_try_interact()
+
 
 func _physics_process(delta: float) -> void:
 	if _is_dead:
@@ -82,10 +98,15 @@ func _physics_process(delta: float) -> void:
 		return
 
 	_apply_movement(delta)
+	_update_interaction_focus()
 
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_action_pressed("fire"):
 		if active_weapon != null and active_weapon.has_method("try_fire"):
 			active_weapon.call("try_fire")
+
+
+func _process(delta: float) -> void:
+	_update_damage_shake(delta)
 
 
 func _apply_movement(delta: float) -> void:
@@ -130,6 +151,58 @@ func _capture_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
+func _update_interaction_focus() -> void:
+	if camera == null:
+		return
+
+	var from := camera.global_position
+	var to := from + (-camera.global_transform.basis.z * interaction_range)
+	var query := PhysicsRayQueryParameters3D.create(from, to)
+	query.exclude = [get_rid()]
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+
+	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+	_focused_interactable = _extract_interactable(hit)
+
+	if hud == null or not hud.has_method("set_interaction_prompt"):
+		return
+
+	if _focused_interactable == null:
+		hud.call("set_interaction_prompt", "", false)
+		return
+
+	var prompt := "Press E"
+	if _focused_interactable.has_method("get_interaction_text"):
+		prompt = _focused_interactable.call("get_interaction_text") as String
+	hud.call("set_interaction_prompt", prompt, not prompt.is_empty())
+
+
+func _try_interact() -> void:
+	if _is_dead:
+		return
+
+	if _focused_interactable == null:
+		_update_interaction_focus()
+
+	if _focused_interactable != null and _focused_interactable.has_method("interact"):
+		_focused_interactable.call("interact", self)
+		_update_interaction_focus()
+
+
+func _extract_interactable(hit: Dictionary) -> Node:
+	if hit.is_empty():
+		return null
+
+	var candidate := hit["collider"] as Node
+	while candidate != null:
+		if candidate.has_method("interact") and candidate.has_method("get_interaction_text"):
+			return candidate
+		candidate = candidate.get_parent()
+
+	return null
+
+
 func take_damage(amount: int) -> void:
 	if _is_dead:
 		return
@@ -141,10 +214,44 @@ func take_damage(amount: int) -> void:
 	if hud != null and hud.has_method("set_health"):
 		hud.call("set_health", current_health)
 	if hud != null and hud.has_method("flash_damage"):
-		hud.call("flash_damage")
+		hud.call("flash_damage", amount)
+	_start_damage_shake(amount)
 
 	if current_health <= 0:
 		_die()
+
+
+func _start_damage_shake(amount: int) -> void:
+	var scaled_amount := clampf(float(amount) / 12.0, 0.65, 1.6)
+	_shake_duration = damage_shake_duration
+	_shake_time_left = damage_shake_duration
+	_shake_position_strength = damage_shake_position_strength * scaled_amount
+	_shake_rotation_strength = damage_shake_rotation_strength * scaled_amount
+
+
+func _update_damage_shake(delta: float) -> void:
+	if camera == null:
+		return
+
+	if _shake_time_left <= 0.0:
+		camera.position = _camera_base_position
+		camera.rotation = Vector3(_pitch, 0.0, 0.0)
+		return
+
+	_shake_time_left = maxf(_shake_time_left - delta, 0.0)
+	var falloff := _shake_time_left / maxf(_shake_duration, 0.001)
+	falloff *= falloff
+
+	var offset := Vector3(
+		_rng.randf_range(-1.0, 1.0) * _shake_position_strength * falloff,
+		_rng.randf_range(-1.0, 1.0) * _shake_position_strength * 0.65 * falloff,
+		0.0
+	)
+	var pitch_offset := _rng.randf_range(-1.0, 1.0) * _shake_rotation_strength * 0.6 * falloff
+	var roll_offset := _rng.randf_range(-1.0, 1.0) * _shake_rotation_strength * falloff
+
+	camera.position = _camera_base_position + offset
+	camera.rotation = Vector3(_pitch + pitch_offset, 0.0, roll_offset)
 
 
 func _die() -> void:

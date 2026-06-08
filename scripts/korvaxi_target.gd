@@ -36,10 +36,17 @@ enum TargetState {
 @onready var target_marker: Node3D = %TargetMarker
 @onready var stunned_marker: Node3D = %StunnedMarker
 
+# State-feedback colors (shared by mesh-mode and sprite-mode).
+const COLOR_HIT := Color(1.0, 0.12, 0.2)
+const COLOR_STUN := Color(0.18, 0.82, 1.0)
+const COLOR_CAPTURED := Color(0.3, 1.0, 0.45)
+const COLOR_DEATH := Color(1.0, 0.3, 1.0)
+
 var state: TargetState = TargetState.IDLE_HIDDEN
 
 var _meshes: Array[MeshInstance3D] = []
 var _base_materials: Dictionary = {}
+var _sprite: DirectionalSprite3D = null   # set if VisualRoot holds a sprite
 var _base_scale: Vector3
 var _is_dead: bool = false
 var _is_captured: bool = false
@@ -63,11 +70,18 @@ func _ready() -> void:
 	_player = get_node_or_null(player_path) as Node3D
 	_hud = _find_hud()
 
-	for child in visual_root.get_children():
-		if child is MeshInstance3D:
-			var mesh_instance := child as MeshInstance3D
-			_meshes.append(mesh_instance)
-			_base_materials[mesh_instance] = mesh_instance.get_active_material(0)
+	# Discover the visual representation. A DirectionalSprite3D may be a direct
+	# child of VisualRoot or be VisualRoot itself; otherwise collect meshes.
+	if visual_root is DirectionalSprite3D:
+		_sprite = visual_root
+	else:
+		for child in visual_root.get_children():
+			if child is DirectionalSprite3D:
+				_sprite = child
+			elif child is MeshInstance3D:
+				var mesh_instance := child as MeshInstance3D
+				_meshes.append(mesh_instance)
+				_base_materials[mesh_instance] = mesh_instance.get_active_material(0)
 
 
 func _physics_process(delta: float) -> void:
@@ -138,14 +152,16 @@ func apply_stun(duration: float) -> void:
 
 
 func _flash_hit() -> void:
-	var hit_material := StandardMaterial3D.new()
-	hit_material.albedo_color = Color(1.0, 0.12, 0.2)
-	hit_material.emission_enabled = true
-	hit_material.emission = Color(0.8, 0.02, 0.08)
-	hit_material.emission_energy_multiplier = 1.3
-
-	for mesh_instance in _meshes:
-		mesh_instance.set_surface_override_material(0, hit_material)
+	if _sprite != null:
+		_sprite.set_state_tint(COLOR_HIT)
+	else:
+		var hit_material := StandardMaterial3D.new()
+		hit_material.albedo_color = COLOR_HIT
+		hit_material.emission_enabled = true
+		hit_material.emission = Color(0.8, 0.02, 0.08)
+		hit_material.emission_energy_multiplier = 1.3
+		for mesh_instance in _meshes:
+			mesh_instance.set_surface_override_material(0, hit_material)
 
 	await get_tree().create_timer(hit_flash_duration).timeout
 	if _is_dead or _is_captured:
@@ -155,8 +171,7 @@ func _flash_hit() -> void:
 		_apply_stun_material()
 		return
 
-	for mesh_instance in _meshes:
-		mesh_instance.set_surface_override_material(0, _base_materials[mesh_instance])
+	_restore_base_materials()
 
 
 func _pulse_hit() -> void:
@@ -305,8 +320,11 @@ func _hide_capture_prompt() -> void:
 
 
 func _apply_stun_material() -> void:
+	if _sprite != null:
+		_sprite.set_state_tint(COLOR_STUN)
+		return
 	var stun_material := StandardMaterial3D.new()
-	stun_material.albedo_color = Color(0.08, 0.82, 1.0)
+	stun_material.albedo_color = COLOR_STUN
 	stun_material.emission_enabled = true
 	stun_material.emission = Color(0.02, 0.45, 0.75)
 	stun_material.emission_energy_multiplier = 1.45
@@ -315,8 +333,11 @@ func _apply_stun_material() -> void:
 
 
 func _apply_captured_material() -> void:
+	if _sprite != null:
+		_sprite.set_state_tint(COLOR_CAPTURED)
+		return
 	var captured_material := StandardMaterial3D.new()
-	captured_material.albedo_color = Color(0.18, 0.85, 0.38)
+	captured_material.albedo_color = COLOR_CAPTURED
 	captured_material.emission_enabled = true
 	captured_material.emission = Color(0.04, 0.35, 0.12)
 	captured_material.emission_energy_multiplier = 0.9
@@ -325,6 +346,9 @@ func _apply_captured_material() -> void:
 
 
 func _restore_base_materials() -> void:
+	if _sprite != null:
+		_sprite.clear_state_tint()
+		return
 	for mesh_instance in _meshes:
 		mesh_instance.set_surface_override_material(0, _base_materials[mesh_instance])
 
@@ -368,21 +392,25 @@ func _die() -> void:
 	killed.emit()
 	print("Korvaxi Jurraal killed.")
 
-	var death_material := StandardMaterial3D.new()
-	death_material.albedo_color = Color(0.95, 0.2, 1.0)
-	death_material.emission_enabled = true
-	death_material.emission = Color(0.7, 0.08, 0.9)
-	death_material.emission_energy_multiplier = 2.0
-	for mesh_instance in _meshes:
-		mesh_instance.set_surface_override_material(0, death_material)
-
 	if _hit_tween != null:
 		_hit_tween.kill()
 
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(visual_root, "scale", _base_scale * 1.25, death_pop_duration * 0.45)
-	for mesh_instance in _meshes:
-		tween.tween_property(mesh_instance, "transparency", 1.0, death_pop_duration)
+
+	if _sprite != null:
+		_sprite.set_state_tint(COLOR_DEATH)
+		tween.tween_method(_sprite.set_visual_transparency, 0.0, 1.0, death_pop_duration)
+	else:
+		var death_material := StandardMaterial3D.new()
+		death_material.albedo_color = COLOR_DEATH
+		death_material.emission_enabled = true
+		death_material.emission = Color(0.7, 0.08, 0.9)
+		death_material.emission_energy_multiplier = 2.0
+		for mesh_instance in _meshes:
+			mesh_instance.set_surface_override_material(0, death_material)
+			tween.tween_property(mesh_instance, "transparency", 1.0, death_pop_duration)
+
 	tween.chain().tween_property(visual_root, "scale", Vector3.ONE * 0.01, death_pop_duration * 0.55)
 	tween.chain().tween_callback(queue_free)

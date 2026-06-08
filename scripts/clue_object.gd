@@ -47,7 +47,7 @@ func begin_focus() -> void:
 	if not is_scannable():
 		return
 	clue_light.light_energy = 2.2
-	label.text = "CLUE DETECTED"
+	label.text = "HOLD RMB TO SCAN"
 
 
 func end_focus() -> void:
@@ -65,6 +65,14 @@ func scan(delta: float) -> float:
 		_complete_scan()
 
 	return _scan_progress
+
+
+func get_scan_text() -> String:
+	return scan_text
+
+
+func get_completed_text() -> String:
+	return completed_text
 
 
 func _complete_scan() -> void:
