@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Market_Metal.tres" id="1_market"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Bounty_Yellow.tres" id="2_bounty"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="3_trim"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_VendorStallBlock" type="StaticBody3D"]
+
+[node name="Counter" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.55, 0)
+scale = Vector3(3, 1.1, 1)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_market")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.55, 0)
+scale = Vector3(3, 1.1, 1)
+shape = SubResource("Shape_box")
+
+[node name="BackSign" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.55, 0.58)
+scale = Vector3(3.2, 0.85, 0.15)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_bounty")
+
+[node name="TrimLip" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.15, -0.52)
+scale = Vector3(3.2, 0.12, 0.14)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("3_trim")

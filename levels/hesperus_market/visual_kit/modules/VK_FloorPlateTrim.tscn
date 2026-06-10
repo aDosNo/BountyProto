@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="1_trim"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Service_ConcreteMetal.tres" id="2_floor"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_FloorPlateTrim" type="StaticBody3D"]
+
+[node name="Plate" type="MeshInstance3D" parent="."]
+scale = Vector3(4, 0.12, 4)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+scale = Vector3(4, 0.12, 4)
+shape = SubResource("Shape_box")
+
+[node name="TrimNorth" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.08, -1.92)
+scale = Vector3(4.1, 0.08, 0.12)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")
+
+[node name="TrimEast" type="MeshInstance3D" parent="."]
+position = Vector3(1.92, 0.08, 0)
+scale = Vector3(0.12, 0.08, 4.1)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")

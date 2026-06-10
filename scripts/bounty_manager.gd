@@ -111,9 +111,10 @@ func start_extraction_phase(status: String, reward: int) -> void:
 	_target_status = status
 	_pending_reward = reward
 	state = MissionState.EXTRACTING
-	_set_objective("Bounty secured. Return to the dock extraction")
+	_set_objective("Bounty secured. South gate open — return to dock extraction")
 	_activate_extraction_zone()
 	_activate_pressure_enemies()
+	_open_return_routes()
 	print("Extraction phase started. Status: %s. Pending reward: %d" % [_target_status, _pending_reward])
 
 
@@ -313,27 +314,53 @@ func _activate_extraction_zone() -> void:
 func _deactivate_pressure_enemies() -> void:
 	for enemy_path in pressure_enemies:
 		var enemy := get_node_or_null(enemy_path)
-		if enemy != null and enemy.has_method("set_active"):
+		if enemy != null and not _is_sentry(enemy) and enemy.has_method("set_active"):
 			enemy.call("set_active", false)
 
 	if pressure_enemies.is_empty():
 		for enemy in get_tree().get_nodes_in_group("pressure_enemy"):
-			if enemy.has_method("set_active"):
+			if not _is_sentry(enemy) and enemy.has_method("set_active"):
 				enemy.call("set_active", false)
+
+
+func _is_sentry(enemy: Node) -> bool:
+	var sentry_value = enemy.get("sentry")
+	return sentry_value is bool and sentry_value
 
 
 func _activate_pressure_enemies() -> void:
 	for enemy_path in pressure_enemies:
 		var enemy := get_node_or_null(enemy_path)
-		if enemy != null and enemy.has_method("set_active"):
-			enemy.call("set_active", true)
+		if enemy != null:
+			_pressure_on(enemy)
 
 	if pressure_enemies.is_empty():
 		for enemy in get_tree().get_nodes_in_group("pressure_enemy"):
-			if enemy.has_method("set_active"):
-				enemy.call("set_active", true)
+			_pressure_on(enemy)
 
 	print("Pressure wave activated.")
+
+
+func _pressure_on(enemy: Node) -> void:
+	if enemy.has_method("trigger_pressure"):
+		enemy.call("trigger_pressure")
+	elif enemy.has_method("set_active"):
+		enemy.call("set_active", true)
+
+
+## Securing the bounty unlocks the south return route: gates in the
+## "extraction_unlock" group sink open and stop colliding.
+func _open_return_routes() -> void:
+	for gate in get_tree().get_nodes_in_group("extraction_unlock"):
+		if not gate is Node3D:
+			continue
+		for child in gate.get_children():
+			if child is CollisionShape3D:
+				(child as CollisionShape3D).set_deferred("disabled", true)
+		var tween := create_tween()
+		tween.tween_property(gate, "position:y", (gate as Node3D).position.y - 4.6, 0.9)\
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		print("Return gate opened: %s" % gate.name)
 
 
 func _set_objective(text: String) -> void:

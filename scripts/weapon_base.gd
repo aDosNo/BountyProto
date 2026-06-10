@@ -62,6 +62,12 @@ func try_fire() -> void:
 	_show_muzzle_flash()
 	_play_fire_feedback()
 	_fire_hitscan()
+	_emit_gunshot_noise()
+
+
+func _emit_gunshot_noise() -> void:
+	var noise_origin := global_position if shooter == null else shooter.global_position
+	get_tree().call_group("perceptive", "hear_noise", noise_origin, 35.0)
 
 
 func reload() -> void:

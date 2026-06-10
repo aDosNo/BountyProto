@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "DBG_Service_ConcreteMetal"
+albedo_color = Color(0.23, 0.22, 0.2, 1)
+roughness = 0.94
+texture_filter = 0

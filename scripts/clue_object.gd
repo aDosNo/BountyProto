@@ -9,6 +9,9 @@ signal clue_scanned(clue_id: String, next_clue_id: String, reveals_target: bool)
 @export var scan_time_required: float = 1.5
 @export var reveals_target: bool = false
 @export var active: bool = false
+@export_group("Intel")
+@export var intel_category: String = ""  # build/appearance/movement_tell/location_habit/scanner_signature
+@export var intel_value: String = ""
 
 @onready var mesh: MeshInstance3D = %ClueMesh
 @onready var clue_light: OmniLight3D = %ClueLight
@@ -94,4 +97,8 @@ func _complete_scan() -> void:
 	mesh.set_surface_override_material(0, completed_material)
 
 	print("Clue scanned: %s" % clue_id)
+	if not intel_category.is_empty() and not intel_value.is_empty():
+		var intel := get_node_or_null("/root/BountyIntel")
+		if intel != null and intel.has_method("learn"):
+			intel.call("learn", intel_category, intel_value, clue_id)
 	clue_scanned.emit(clue_id, next_clue_id, reveals_target)

@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Emissive_Sign.tres" id="1_sign"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="2_trim"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_HangingSignBlock" type="Node3D"]
+
+[node name="SignPanel" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0)
+scale = Vector3(2.2, 0.72, 0.12)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_sign")
+
+[node name="TopBar" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.48, 0)
+scale = Vector3(2.4, 0.08, 0.16)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")
+
+[node name="CableA" type="MeshInstance3D" parent="."]
+position = Vector3(-0.75, 0.9, 0)
+scale = Vector3(0.06, 0.8, 0.06)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")
+
+[node name="CableB" type="MeshInstance3D" parent="."]
+position = Vector3(0.75, 0.9, 0)
+scale = Vector3(0.06, 0.8, 0.06)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")

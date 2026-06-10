@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="1_trim"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Utility_Orange.tres" id="2_utility"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_CableBundle" type="Node3D"]
+
+[node name="CableA" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, -0.12)
+scale = Vector3(3.2, 0.08, 0.08)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")
+
+[node name="CableB" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.14, 0)
+scale = Vector3(3.2, 0.08, 0.08)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_utility")
+
+[node name="CableC" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.28, 0.12)
+scale = Vector3(3.2, 0.08, 0.08)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")

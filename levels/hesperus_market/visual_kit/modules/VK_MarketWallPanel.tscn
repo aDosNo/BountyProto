@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Market_Metal.tres" id="1_market"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="2_trim"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Emissive_Sign.tres" id="3_sign"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_MarketWallPanel" type="StaticBody3D"]
+
+[node name="Panel" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.5, 0)
+scale = Vector3(4, 3, 0.32)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_market")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1.5, 0)
+scale = Vector3(4, 3, 0.32)
+shape = SubResource("Shape_box")
+
+[node name="TopTrim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.95, -0.19)
+scale = Vector3(4.2, 0.18, 0.12)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")
+
+[node name="LowerTrim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.18, -0.2)
+scale = Vector3(4.2, 0.24, 0.14)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")
+
+[node name="NeonInset" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.75, -0.23)
+scale = Vector3(2.7, 0.12, 0.04)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("3_sign")

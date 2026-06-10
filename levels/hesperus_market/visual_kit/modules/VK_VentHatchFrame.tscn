@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Service_ConcreteMetal.tres" id="1_service"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Utility_Orange.tres" id="2_utility"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_VentHatchFrame" type="StaticBody3D"]
+
+[node name="Frame" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.1, 0)
+scale = Vector3(2, 0.2, 2)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_service")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.1, 0)
+scale = Vector3(2, 0.2, 2)
+shape = SubResource("Shape_box")
+
+[node name="OpeningDark" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.22, 0)
+scale = Vector3(1.2, 0.04, 1.2)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_utility")
+
+[node name="RibA" type="MeshInstance3D" parent="."]
+position = Vector3(-0.35, 0.28, 0)
+scale = Vector3(0.08, 0.08, 1.3)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_service")
+
+[node name="RibB" type="MeshInstance3D" parent="."]
+position = Vector3(0.35, 0.28, 0)
+scale = Vector3(0.08, 0.08, 1.3)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_service")

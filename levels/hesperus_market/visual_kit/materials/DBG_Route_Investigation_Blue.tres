@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "DBG_Route_Investigation_Blue"
+albedo_color = Color(0.08, 0.45, 1, 1)
+emission_enabled = true
+emission = Color(0.04, 0.28, 0.9, 1)
+emission_energy_multiplier = 1.25
+roughness = 0.72
+texture_filter = 0

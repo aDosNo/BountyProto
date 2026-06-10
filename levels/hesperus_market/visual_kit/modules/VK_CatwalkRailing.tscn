@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Upper_Purple.tres" id="1_upper"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="2_trim"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_CatwalkRailing" type="StaticBody3D"]
+
+[node name="TopRail" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.05, 0)
+scale = Vector3(4, 0.16, 0.16)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_upper")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.62, 0)
+scale = Vector3(4, 1.24, 0.16)
+shape = SubResource("Shape_box")
+
+[node name="PostA" type="MeshInstance3D" parent="."]
+position = Vector3(-1.8, 0.52, 0)
+scale = Vector3(0.14, 1.04, 0.14)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")
+
+[node name="PostB" type="MeshInstance3D" parent="."]
+position = Vector3(1.8, 0.52, 0)
+scale = Vector3(0.14, 1.04, 0.14)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")

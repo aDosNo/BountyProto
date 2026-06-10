@@ -15,6 +15,8 @@ signal died
 @export var damage_shake_duration: float = 0.18
 @export var damage_shake_position_strength: float = 0.08
 @export var damage_shake_rotation_strength: float = 0.018
+@export var sprint_noise_radius: float = 9.0
+@export var sprint_noise_interval: float = 0.4
 
 const PISTOL_SCENE: PackedScene = preload("res://scenes/weapons/Pistol.tscn")
 const STUN_NET_SCENE: PackedScene = preload("res://scenes/weapons/StunNetLauncher.tscn")
@@ -39,6 +41,7 @@ var _shake_duration: float = 0.0
 var _shake_position_strength: float = 0.0
 var _shake_rotation_strength: float = 0.0
 var _rng := RandomNumberGenerator.new()
+var _sprint_noise_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -135,7 +138,22 @@ func _apply_movement(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration)
 		velocity.z = move_toward(velocity.z, 0.0, deceleration)
 
+	_update_sprint_noise(delta)
+
 	move_and_slide()
+
+
+func _update_sprint_noise(delta: float) -> void:
+	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
+	var sprinting := is_on_floor() and horizontal.length() > walk_speed + 0.5
+	if not sprinting:
+		_sprint_noise_timer = 0.0
+		return
+
+	_sprint_noise_timer -= delta
+	if _sprint_noise_timer <= 0.0:
+		_sprint_noise_timer = sprint_noise_interval
+		get_tree().call_group("perceptive", "hear_noise", global_position, sprint_noise_radius)
 
 
 func _apply_mouse_look(relative_motion: Vector2) -> void:

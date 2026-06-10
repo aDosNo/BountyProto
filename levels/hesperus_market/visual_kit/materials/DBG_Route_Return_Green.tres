@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "DBG_Route_Return_Green"
+albedo_color = Color(0.1, 0.95, 0.32, 1)
+emission_enabled = true
+emission = Color(0.1, 0.95, 0.32, 1)
+emission_energy_multiplier = 1.35
+roughness = 0.72
+texture_filter = 0

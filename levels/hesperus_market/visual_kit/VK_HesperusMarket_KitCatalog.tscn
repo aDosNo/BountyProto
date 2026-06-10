@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://5auauaallnxv"]
+
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_MarketWallPanel.tscn" id="1_market_wall"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_ServiceWallPanel.tscn" id="2_service_wall"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_DockWallPanel.tscn" id="3_dock_wall"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_FloorPlateTrim.tscn" id="4_floor_trim"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_PortDoorFrame.tscn" id="5_port_frame"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_VentHatchFrame.tscn" id="6_hatch"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_CrateStack.tscn" id="7_crate"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_VendorStallBlock.tscn" id="8_stall"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_HangingSignBlock.tscn" id="9_sign"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_CableBundle.tscn" id="10_cable"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_AwningCanopyBlock.tscn" id="11_awning"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_CatwalkRailing.tscn" id="12_railing"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_PipeBundle.tscn" id="13_pipe"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_UtilityGrate.tscn" id="14_grate"]
+[ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_NeonRouteStrip.tscn" id="15_neon"]
+
+[node name="VK_HesperusMarket_KitCatalog" type="Node3D" unique_id=550882440]
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1451579327]
+transform = Transform3D(0.70710677, -0.35355338, 0.6123724, 0, 0.8660254, 0.5, -0.70710677, -0.35355338, 0.6123724, 12, 10, 12)
+light_energy = 1.2
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=786499110]
+transform = Transform3D(0.76604444, -0.32139382, 0.5566704, 0, 0.8660254, 0.5, -0.64278764, -0.38302222, 0.66341394, 12, 14, 22)
+current = true
+
+[node name="MarketWallPanel" parent="." unique_id=1238640606 instance=ExtResource("1_market_wall")]
+
+[node name="ServiceWallPanel" parent="." unique_id=934033640 instance=ExtResource("2_service_wall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[node name="DockWallPanel" parent="." unique_id=1241427121 instance=ExtResource("3_dock_wall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="FloorPlateTrim" parent="." unique_id=1219908182 instance=ExtResource("4_floor_trim")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
+
+[node name="PortDoorFrame" parent="." unique_id=2101275162 instance=ExtResource("5_port_frame")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
+
+[node name="VentHatchFrame" parent="." unique_id=1160191633 instance=ExtResource("6_hatch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 0)
+
+[node name="CrateStack" parent="." unique_id=1674176229 instance=ExtResource("7_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="VendorStallBlock" parent="." unique_id=583211860 instance=ExtResource("8_stall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+
+[node name="HangingSignBlock" parent="." unique_id=1118642545 instance=ExtResource("9_sign")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 5)
+
+[node name="CableBundle" parent="." unique_id=1965745866 instance=ExtResource("10_cable")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1.5, 5)
+
+[node name="AwningCanopyBlock" parent="." unique_id=463318295 instance=ExtResource("11_awning")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.5, 5)
+
+[node name="CatwalkRailing" parent="." unique_id=249669412 instance=ExtResource("12_railing")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 5)
+
+[node name="PipeBundle" parent="." unique_id=653263561 instance=ExtResource("13_pipe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="UtilityGrate" parent="." unique_id=1542103539 instance=ExtResource("14_grate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 10)
+
+[node name="NeonRouteStrip" parent="." unique_id=50205120 instance=ExtResource("15_neon")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.2, 10)

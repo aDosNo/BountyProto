@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "DBG_Route_Utility_Orange"
+albedo_color = Color(1, 0.48, 0.08, 1)
+emission_enabled = true
+emission = Color(1, 0.34, 0.02, 1)
+emission_energy_multiplier = 1.2
+roughness = 0.72
+texture_filter = 0

@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Return_Green.tres" id="1_green"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Bounty_Yellow.tres" id="2_yellow"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Investigation_Blue.tres" id="3_blue"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Upper_Purple.tres" id="4_purple"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Utility_Orange.tres" id="5_orange"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Target_Red.tres" id="6_red"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="7_trim"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_NeonRouteStrip" type="Node3D"]
+
+[node name="BaseTrim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0)
+scale = Vector3(4.2, 0.08, 0.34)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("7_trim")
+
+[node name="ReturnGreen" type="MeshInstance3D" parent="."]
+position = Vector3(-1.65, 0.08, 0)
+scale = Vector3(0.55, 0.08, 0.18)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_green")
+
+[node name="BountyYellow" type="MeshInstance3D" parent="."]
+position = Vector3(-1, 0.08, 0)
+scale = Vector3(0.55, 0.08, 0.18)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_yellow")
+
+[node name="InvestigationBlue" type="MeshInstance3D" parent="."]
+position = Vector3(-0.35, 0.08, 0)
+scale = Vector3(0.55, 0.08, 0.18)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("3_blue")
+
+[node name="UpperPurple" type="MeshInstance3D" parent="."]
+position = Vector3(0.35, 0.08, 0)
+scale = Vector3(0.55, 0.08, 0.18)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("4_purple")
+
+[node name="UtilityOrange" type="MeshInstance3D" parent="."]
+position = Vector3(1, 0.08, 0)
+scale = Vector3(0.55, 0.08, 0.18)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("5_orange")
+
+[node name="TargetRed" type="MeshInstance3D" parent="."]
+position = Vector3(1.65, 0.08, 0)
+scale = Vector3(0.55, 0.08, 0.18)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("6_red")

@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dock_Metal.tres" id="1_dock"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="2_trim"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_CrateStack" type="StaticBody3D"]
+
+[node name="CrateA" type="MeshInstance3D" parent="."]
+position = Vector3(-0.55, 0.45, 0)
+scale = Vector3(1.1, 0.9, 1.1)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_dock")
+
+[node name="CrateB" type="MeshInstance3D" parent="."]
+position = Vector3(0.55, 0.35, 0.1)
+scale = Vector3(1, 0.7, 1)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_dock")
+
+[node name="CrateC" type="MeshInstance3D" parent="."]
+position = Vector3(-0.15, 1.18, -0.1)
+scale = Vector3(0.9, 0.65, 0.9)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_trim")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.75, 0)
+scale = Vector3(2.2, 1.5, 1.2)
+shape = SubResource("Shape_box")

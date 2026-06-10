@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "DBG_Route_Bounty_Yellow"
+albedo_color = Color(1, 0.78, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.72, 0.08, 1)
+emission_energy_multiplier = 1.25
+roughness = 0.72
+texture_filter = 0

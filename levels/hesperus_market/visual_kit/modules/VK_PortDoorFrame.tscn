@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="1_trim"]
+[ext_resource type="StandardMaterial3D" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Bounty_Yellow.tres" id="2_route"]
+
+[sub_resource type="BoxMesh" id="Mesh_box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_box"]
+size = Vector3(1, 1, 1)
+
+[node name="VK_PortDoorFrame" type="Node3D"]
+
+[node name="LeftPost" type="StaticBody3D" parent="."]
+position = Vector3(-1.4, 1.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="LeftPost"]
+scale = Vector3(0.25, 3, 0.3)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftPost"]
+scale = Vector3(0.25, 3, 0.3)
+shape = SubResource("Shape_box")
+
+[node name="RightPost" type="StaticBody3D" parent="."]
+position = Vector3(1.4, 1.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="RightPost"]
+scale = Vector3(0.25, 3, 0.3)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightPost"]
+scale = Vector3(0.25, 3, 0.3)
+shape = SubResource("Shape_box")
+
+[node name="Header" type="StaticBody3D" parent="."]
+position = Vector3(0, 3.05, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Header"]
+scale = Vector3(3.1, 0.28, 0.32)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("1_trim")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Header"]
+scale = Vector3(3.1, 0.28, 0.32)
+shape = SubResource("Shape_box")
+
+[node name="RouteStrip" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, -0.22)
+scale = Vector3(2.4, 0.12, 0.05)
+mesh = SubResource("Mesh_box")
+material_override = ExtResource("2_route")

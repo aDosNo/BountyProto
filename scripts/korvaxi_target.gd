@@ -63,6 +63,7 @@ var _state_before_stun: TargetState = TargetState.COMBAT
 func _ready() -> void:
 	add_to_group("bounty_target")
 	add_to_group("damageable")
+	add_to_group("perceptive")
 	_base_scale = visual_root.scale
 	set_identified(false)
 	stunned_marker.visible = false
@@ -108,6 +109,35 @@ func take_damage(amount: int) -> void:
 
 	_flash_hit()
 	_pulse_hit()
+
+
+## Noise event: gunfire near the unidentified target spooks it into bolting.
+## Systems ruling: a loud approach forfeits the calm confrontation.
+func hear_noise(noise_position: Vector3, loudness: float) -> void:
+	if _is_dead or _is_captured:
+		return
+	if loudness < 25.0:
+		return
+	if state != TargetState.HIDDEN and state != TargetState.IDLE_HIDDEN:
+		return
+	if global_position.distance_to(noise_position) > loudness * 0.6:
+		return
+
+	print("Korvaxi spooked by nearby gunfire.")
+	reveal_and_flee()
+
+
+## A guard shouted an alert nearby: the target bolts as well.
+func on_ally_alert(shouter_position: Vector3, _threat_position: Vector3) -> void:
+	if _is_dead or _is_captured:
+		return
+	if state != TargetState.HIDDEN and state != TargetState.IDLE_HIDDEN:
+		return
+	if global_position.distance_to(shouter_position) > 20.0:
+		return
+
+	print("Korvaxi spooked by guard alert.")
+	reveal_and_flee()
 
 
 func set_identified(active: bool) -> void:
