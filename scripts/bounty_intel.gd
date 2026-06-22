@@ -3,6 +3,7 @@ extends Node
 ## and compares them against crowd NPC identities (funnel system).
 
 signal intel_updated(category: String, value: String, source: String)
+signal intel_reset
 
 const CATEGORIES := ["build", "appearance", "movement_tell", "location_habit", "scanner_signature"]
 
@@ -19,7 +20,10 @@ var known: Dictionary = {}
 
 
 func reset() -> void:
+	if known.is_empty():
+		return
 	known.clear()
+	intel_reset.emit()
 
 
 func learn(category: String, value: String, source: String = "") -> void:
@@ -52,15 +56,16 @@ func match_report(npc: Node) -> Dictionary:
 		if npc_value.is_empty():
 			continue
 		var label: String = CATEGORY_LABELS[category]
-		if known.has(category):
-			if known[category]["value"] == npc_value:
-				matches += 1
-				lines.append("%s: %s [MATCH]" % [label, npc_value])
-			else:
-				mismatches += 1
-				lines.append("%s: %s [X]" % [label, npc_value])
+		if not known.has(category):
+			lines.append("%s: UNKNOWN" % label)
+			continue
+
+		if known[category]["value"] == npc_value:
+			matches += 1
+			lines.append("%s: %s [MATCH]" % [label, npc_value])
 		else:
-			lines.append("%s: %s" % [label, npc_value])
+			mismatches += 1
+			lines.append("%s: %s [X]" % [label, npc_value])
 
 	return {"matches": matches, "known": known.size(), "mismatches": mismatches, "lines": lines}
 

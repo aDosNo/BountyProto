@@ -28,6 +28,9 @@ func show_reward(target_name: String, status: String, reward: int) -> void:
 	status_label.text = "Status: %s" % status
 	status_label.add_theme_color_override("font_color", COLOR_NEUTRAL)
 	reward_label.text = "Reward: %d CR" % reward
+	var ledger := get_node_or_null("/root/HunterLedger")
+	if ledger != null and ledger.has_method("total"):
+		reward_label.text += "    |    Account: %d CR" % int(ledger.call("total"))
 	reward_label.add_theme_color_override("font_color", COLOR_REWARD)
 	_show()
 

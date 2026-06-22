@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/sprite_civilian.gd" id="1_civscript"]
+[ext_resource type="Script" path="res://scripts/directional_sprite_3d.gd" id="2_dirsprite"]
+[ext_resource type="Texture2D" path="res://art/sprites/npc/civ_rat_teal_sheet.png" id="3_sheet"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape_civ"]
+radius = 0.38
+height = 1.8
+
+[node name="Civilian_RatTeal" type="CharacterBody3D"]
+script = ExtResource("1_civscript")
+npc_name = "OFF-SHIFT DOCKHAND"
+
+[node name="NpcMesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.891, 0)
+pixel_size = 0.008009
+script = ExtResource("2_dirsprite")
+sheet = ExtResource("3_sheet")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape_civ")
+
+[node name="NameLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15, 0)
+billboard = 1
+modulate = Color(0.6, 0.9, 1, 1)
+text = "CIVILIAN"
+font_size = 16

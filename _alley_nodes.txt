@@ -1,0 +1,53 @@
+[node name="Alley_N1" parent="." instance=ExtResource("24_8uskt")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 54, -0.2, -47)
+
+[node name="Alley_N2" parent="." instance=ExtResource("1_m0fmx")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 63, -0.2, -46)
+
+[node name="Alley_N3" parent="." instance=ExtResource("25_dro85")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 72, -0.2, -43)
+
+[node name="Alley_N4" parent="." instance=ExtResource("24_8uskt")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 81, -0.2, -40)
+
+[node name="Alley_S1" parent="." instance=ExtResource("25_dro85")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 63.5, -0.2, -34)
+
+[node name="Alley_S2" parent="." instance=ExtResource("24_8uskt")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 73, -0.2, -33)
+
+[node name="Alley_S3" parent="." instance=ExtResource("1_m0fmx")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 82.5, -0.2, -31)
+
+[node name="Alley_S4" parent="." instance=ExtResource("25_dro85")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 92, -0.2, -30)
+
+[node name="Alley_Crate_1" parent="." instance=ExtResource("13_crate")]
+Transform3D(1.1, 0, 0.0, 0, 1.1, 0, 0.0, 0, 1.1, 66, -0.2, -39)
+
+[node name="Alley_Crate_2" parent="." instance=ExtResource("13_crate")]
+Transform3D(0.86933, 0, 0.23294, 0, 0.9, 0, -0.23294, 0, 0.86933, 75, -0.2, -37)
+
+[node name="Alley_Crate_3" parent="." instance=ExtResource("13_crate")]
+Transform3D(1.2, 0, 0.0, 0, 1.2, 0, 0.0, 0, 1.2, 58, -0.2, -44)
+
+[node name="Alley_Crate_4" parent="." instance=ExtResource("13_crate")]
+Transform3D(0.98481, 0, -0.17365, 0, 1.0, 0, 0.17365, 0, 0.98481, 86, -0.2, -34)
+
+[node name="Alley_Cable_1" parent="." instance=ExtResource("15_cable")]
+Transform3D(1.4, 0, 0.0, 0, 1.4, 0, 0.0, 0, 1.4, 67, 1.9, -38)
+
+[node name="Alley_Cable_2" parent="." instance=ExtResource("15_cable")]
+Transform3D(1.4, 0, 0.0, 0, 1.4, 0, 0.0, 0, 1.4, 78, 1.9, -35)
+
+[node name="Alley_Sign_1" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(-1.6, 0, 0.0, 0, 1.6, 0, 0.0, 0, -1.6, 63, 1.6, -45.6)
+
+[node name="Alley_Sign_2" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(-1.6, 0, 0.0, 0, 1.6, 0, 0.0, 0, -1.6, 81, 1.6, -39.6)
+
+[node name="Alley_BB_1" parent="." instance=ExtResource("16_billboard")]
+Transform3D(-1.15, 0, 0.0, 0, 1.15, 0, 0.0, 0, -1.15, 54, 1.4, -46.6)
+
+[node name="Alley_Sign_Court" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(-1.8, 0, 0.0, 0, 1.8, 0, 0.0, 0, -1.8, 95, 1.7, -28)

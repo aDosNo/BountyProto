@@ -24,8 +24,13 @@ emission_energy_multiplier = 2.5
 
 [node name="Pistol" type="Node3D" unique_id=971176971]
 script = ExtResource("1_weapon")
+magazine_size = 6
+ammo_current = 6
+ammo_reserve = 72
+fire_rate = 2.5
 
 [node name="VM_RetroSciFi_Pistol_RightHand" parent="." unique_id=1678363711 instance=ExtResource("2_viewmodel")]
+visible = false
 transform = Transform3D(0.32, 0, 0, 0, 0.32, 0, 0, 0, 0.32, -0.12, 0.0, -0.18)
 
 [node name="Body" type="MeshInstance3D" parent="." unique_id=694571914]

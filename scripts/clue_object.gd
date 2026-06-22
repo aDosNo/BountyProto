@@ -78,6 +78,10 @@ func get_completed_text() -> String:
 	return completed_text
 
 
+func get_scan_time_required() -> float:
+	return scan_time_required
+
+
 func _complete_scan() -> void:
 	if is_completed:
 		return

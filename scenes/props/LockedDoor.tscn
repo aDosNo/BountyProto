@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/locked_door.gd" id="1_door_script"]
+
+[sub_resource type="StandardMaterial3D" id="Material_door"]
+albedo_color = Color(0.45, 0.18, 0.1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.08, 0.03, 1)
+emission_energy_multiplier = 0.35
+
+[sub_resource type="BoxMesh" id="Mesh_door"]
+material = SubResource("Material_door")
+size = Vector3(2.4, 3.2, 0.3)
+
+[sub_resource type="BoxShape3D" id="Shape_door"]
+size = Vector3(2.4, 3.2, 0.3)
+
+[node name="LockedDoor" type="StaticBody3D"]
+script = ExtResource("1_door_script")
+
+[node name="DoorMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_door")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape_door")

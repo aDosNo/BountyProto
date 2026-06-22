@@ -9,12 +9,17 @@ class_name DirectionalSprite3D
 ## hit-flash, stun, captured, and death are expressed via `modulate` /
 ## `transparency` instead of per-mesh StandardMaterial3D overrides.
 ##
-## Sheet layout: 1 row, 8 columns, in this column order:
+## Sheet layout: 1 row, 8 directions, in this column order:
 ##   N, NE, E, SE, S, SW, W, NW
-## Cell size is read from the texture (width / 8, full height).
+## Each direction may have one or more adjacent animation frames.
+## If direction_frame_counts is empty, every direction uses frames_per_direction.
 
 @export var sheet: Texture2D
 @export var columns: int = 8
+@export_range(1, 8, 1) var frames_per_direction: int = 1
+@export var direction_frame_counts: PackedInt32Array = PackedInt32Array()
+@export var walk_fps: float = 4.0
+@export var movement_speed_threshold: float = 0.05
 @export var base_modulate: Color = Color(1, 1, 1, 1)
 
 # Column index per compass direction (matches the packed sheet order).
@@ -31,6 +36,8 @@ var _body: Node3D
 var _cell_w: float
 var _cell_h: float
 var _current_col: int = -1
+var _current_frame: int = -1
+var _anim_time: float = 0.0
 var _state_tint: Color = Color(1, 1, 1, 1)   # set by state methods; multiplies base
 
 
@@ -42,13 +49,13 @@ func _ready() -> void:
 	if sheet:
 		texture = sheet
 		region_enabled = true
-		_cell_w = float(sheet.get_width()) / float(columns)
+		_cell_w = float(sheet.get_width()) / float(_total_frame_count())
 		_cell_h = float(sheet.get_height())
-		_apply_column(DIR_N)
+		_apply_column(DIR_N, 0)
 	_refresh_modulate()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _body == null or sheet == null:
 		return
 	var cam := get_viewport().get_camera_3d()
@@ -72,15 +79,15 @@ func _process(_delta: float) -> void:
 	var sector := int(round(ang / (PI / 4.0)))
 	sector = ((sector % 8) + 8) % 8
 
-	# sector 0 = front (N). Positive rotates toward the body's left/right
-	# consistently; the column table maps sector -> sheet column.
+	# The packed character sheets label a frame by the side of the character
+	# visible to the camera. That is opposite the signed camera-orbit sector:
+	# camera-left reveals the character's right side, and vice versa.
 	var col := _sector_to_column(sector)
-	_apply_column(col)
+	var frame := _animation_frame(delta, col)
+	_apply_column(col, frame)
 
 
 func _sector_to_column(sector: int) -> int:
-	# sector measured CCW from front. Sheet columns laid out CW visually,
-	# so map explicitly to keep left/right correct.
 	match sector:
 		0: return DIR_N
 		1: return DIR_NW
@@ -93,11 +100,55 @@ func _sector_to_column(sector: int) -> int:
 		_: return DIR_N
 
 
-func _apply_column(col: int) -> void:
-	if col == _current_col:
+func _animation_frame(delta: float, col: int) -> int:
+	var frame_count := _frame_count_for_column(col)
+	if frame_count <= 1:
+		return 0
+	if _body is CharacterBody3D:
+		var body := _body as CharacterBody3D
+		var planar_speed := Vector2(body.velocity.x, body.velocity.z).length()
+		if planar_speed > movement_speed_threshold:
+			_anim_time += delta * walk_fps
+		else:
+			_anim_time = 0.0
+	return int(floor(_anim_time)) % frame_count
+
+
+func _apply_column(col: int, frame: int) -> void:
+	if col == _current_col and frame == _current_frame:
 		return
 	_current_col = col
-	region_rect = Rect2(col * _cell_w, 0.0, _cell_w, _cell_h)
+	_current_frame = frame
+	var packed_col := _packed_column_offset(col) + frame
+	region_rect = Rect2(packed_col * _cell_w, 0.0, _cell_w, _cell_h)
+
+
+func _uses_direction_frame_counts() -> bool:
+	return direction_frame_counts.size() == columns
+
+
+func _frame_count_for_column(col: int) -> int:
+	if _uses_direction_frame_counts():
+		return max(1, direction_frame_counts[col])
+	return max(1, frames_per_direction)
+
+
+func _packed_column_offset(col: int) -> int:
+	if not _uses_direction_frame_counts():
+		return col * max(1, frames_per_direction)
+	var offset := 0
+	for i in range(col):
+		offset += max(1, direction_frame_counts[i])
+	return offset
+
+
+func _total_frame_count() -> int:
+	if not _uses_direction_frame_counts():
+		return columns * max(1, frames_per_direction)
+	var total := 0
+	for count in direction_frame_counts:
+		total += max(1, count)
+	return max(1, total)
 
 
 func _refresh_modulate() -> void:

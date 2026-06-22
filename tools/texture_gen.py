@@ -146,6 +146,88 @@ def vent():
     noise_overlay(img, 6)
     return quantize_dither(img)
 
+def bazaar_pavers():
+    img = Image.new('RGB', (SIZE,SIZE), (72,80,92))
+    d = ImageDraw.Draw(img)
+    tile = 32
+    for y in range(0, SIZE, tile):
+        row_offset = 16 if (y // tile) % 2 else 0
+        for x in range(-row_offset, SIZE, tile):
+            shade = random.randint(-14, 10)
+            base = (96 + shade, 86 + shade, 72 + shade)
+            d.rectangle([x, y, x + tile - 1, y + tile - 1], fill=base)
+            d.line([(x, y), (x + tile - 1, y)], fill=(42, 44, 50), width=2)
+            d.line([(x, y), (x, y + tile - 1)], fill=(42, 44, 50), width=2)
+            d.line([(x + tile - 1, y), (x + tile - 1, y + tile - 1)], fill=(118, 128, 140), width=1)
+            d.line([(x, y + tile - 1), (x + tile - 1, y + tile - 1)], fill=(118, 128, 140), width=1)
+            if random.random() < 0.35:
+                sx = random.randint(x + 5, x + tile - 6)
+                sy = random.randint(y + 5, y + tile - 6)
+                d.line([(sx, sy), (sx + random.randint(-8, 8), sy + random.randint(5, 16))], fill=(54, 60, 70), width=1)
+    for _ in range(260):
+        x, y = random.randint(0, SIZE - 1), random.randint(0, SIZE - 1)
+        c = random.choice([(54,60,70), (96,66,48), (128,84,52), (38,42,50)])
+        d.point((x, y), fill=c)
+    noise_overlay(img, 7)
+    return quantize_dither(img)
+
+def grated_catwalk():
+    img = Image.new('RGB', (SIZE,SIZE), (38,42,50))
+    d = ImageDraw.Draw(img)
+    for y in range(0, SIZE, 32):
+        d.rectangle([0, y, SIZE, y + 4], fill=(94,104,116))
+        d.rectangle([0, y + 25, SIZE, y + 29], fill=(20,20,24))
+    for x in range(0, SIZE, 24):
+        d.rectangle([x, 0, x + 4, SIZE], fill=(72,80,92))
+        d.rectangle([x + 15, 0, x + 18, SIZE], fill=(20,20,24))
+    for y in range(12, SIZE, 32):
+        for x in range(8, SIZE, 24):
+            d.rectangle([x, y, x + 10, y + 8], fill=(20,22,28))
+            d.line([(x, y), (x + 10, y)], fill=(118,128,140), width=1)
+    for _ in range(120):
+        x, y = random.randint(0, SIZE - 1), random.randint(0, SIZE - 1)
+        d.point((x, y), fill=random.choice([(96,66,48), (128,84,52), (54,60,70)]))
+    noise_overlay(img, 6)
+    return quantize_dither(img)
+
+def oil_service_floor():
+    img = Image.new('RGB', (SIZE,SIZE), (60,72,76))
+    d = ImageDraw.Draw(img)
+    for y in range(0, SIZE, 64):
+        d.rectangle([0, y, SIZE, y + 62], fill=(60 + random.randint(-8, 5), 72 + random.randint(-8, 5), 76 + random.randint(-8, 5)))
+        d.line([(0, y), (SIZE, y)], fill=(24,26,32), width=3)
+        d.line([(0, y + 62), (SIZE, y + 62)], fill=(94,104,116), width=1)
+    for _ in range(7):
+        cx, cy = random.randint(0, SIZE), random.randint(0, SIZE)
+        rx, ry = random.randint(18, 55), random.randint(8, 32)
+        stain = random.choice([(20,20,24), (38,42,50), (70,50,40)])
+        for _ in range(rx * ry // 2):
+            x = int(random.gauss(cx, rx / 2.5)) % SIZE
+            y = int(random.gauss(cy, ry / 2.5)) % SIZE
+            d.point((x, y), fill=stain)
+    for x in range(16, SIZE, 64):
+        d.line([(x, 0), (x, SIZE)], fill=(38,42,50), width=1)
+    noise_overlay(img, 9)
+    return quantize_dither(img)
+
+def painted_metal_wall():
+    img = Image.new('RGB', (SIZE,SIZE), (54,60,70))
+    d = ImageDraw.Draw(img)
+    for y in range(0, SIZE, 48):
+        shade = random.randint(-8, 8)
+        base = (54 + shade, 60 + shade, 70 + shade)
+        d.rectangle([0, y, SIZE, y + 47], fill=base)
+        d.line([(0, y), (SIZE, y)], fill=(118,128,140), width=2)
+        d.line([(0, y + 45), (SIZE, y + 45)], fill=(24,26,32), width=3)
+        for x in range(18, SIZE, 48):
+            d.ellipse([x - 3, y + 8, x + 3, y + 14], fill=(24,26,32))
+    for _ in range(12):
+        x = random.randint(0, SIZE - 1)
+        y = random.randint(0, SIZE - 1)
+        d.line([(x, y), (x + random.randint(-8, 8), y + random.randint(16, 48))], fill=(96,66,48), width=1)
+    noise_overlay(img, 7)
+    return quantize_dither(img)
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     random.seed(77)
@@ -153,4 +235,8 @@ if __name__ == "__main__":
     hazard_strip().save(os.path.join(OUT, "T_HazardStrip_256x64.png"))
     concrete().save(os.path.join(OUT, "T_ConcreteGrime_256.png"))
     vent().save(os.path.join(OUT, "T_VentGrille_128.png"))
-    print("Wrote 4 textures to", os.path.abspath(OUT))
+    bazaar_pavers().save(os.path.join(OUT, "T_BazaarPavers_256.png"))
+    grated_catwalk().save(os.path.join(OUT, "T_GratedCatwalk_256.png"))
+    oil_service_floor().save(os.path.join(OUT, "T_OilServiceFloor_256.png"))
+    painted_metal_wall().save(os.path.join(OUT, "T_PaintedMetalWall_256.png"))
+    print("Wrote 8 textures to", os.path.abspath(OUT))

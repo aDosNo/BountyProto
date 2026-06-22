@@ -9,7 +9,7 @@ and its contract (`docs/level_design/hesperus_market/00_LOCKED_LAYOUT.md`) are
 their coordinates as authoritative. The blockout was chosen because its scale and
 density feel better in playtest.
 
-This document describes the blockout **as it actually exists** (audited 2026-06-09
+This document describes the blockout **as it actually exists** (audited 2026-06-21
 from the live .tscn), plus explicitly marked TODO route gaps. Any agent (Claude,
 Codex, or human) editing the map must read this doc and re-audit the live scene
 first — the scene changes between sessions.
@@ -57,9 +57,12 @@ green = extraction/return · yellow = bounty/interactable · blue = clue/investi
 ### Z3 — Side Alley / Investigation (southwest)
 - Roughly x −45 → −25, z 5 → 35. Ground y ≈ −0.15 to 0.15.
 - `Clue_02_SideAlley`: (−36.02, 0.15, 28.68). Witness spot/dummy: ≈ (−33, 26).
-- Dressing: alley neon, overhead beams, crate stacks, cable bundle,
-  `Hesperus_SideAlley_AssembledOnly_WideGap.glb` at (−35.4, 16.8),
-  `Hesperus_DockBayCorner_SideAlleyJunction_ModuleSet.glb` at (−32.6, −17.2).
+- Dressing: alley neon, overhead beams, crate stacks, cable bundle. Current live
+  scene references use the modular zone GLBs under `assets/blender_models/`,
+  with `Hesperus_SideAlley2.glb` superseding the earlier
+  `Hesperus_SideAlley_AssembledOnly_WideGap.glb` export. The root-level
+  `Hesperus_DockBayCorner_SideAlleyJunction_ModuleSet.glb` remains live at
+  (−32.6, −17.2).
 
 ### Z4 — Main Bazaar Street (center)
 - Floor plate `BazaarFloor` (sized 50×1×100) at (16.03, −3.33, 0); walk y ≈ −2.83.
@@ -81,6 +84,39 @@ green = extraction/return · yellow = bounty/interactable · blue = clue/investi
   `Gameplay/GuardRoutes/PatrolRoute_A|B` (ordered Marker3D children, same
   contract as KorvaxiEscapeRoute). Courtyard warning neon + courtyard-entry
   neon sign at x ≈ 85.7.
+
+### North Courtyard Service Street (rebuilt 2026-06-21)
+- The former curved courtyard-alley spine was replaced with a straight east-west
+  street from x ≈ 52 → 130, centered at z ≈ −32. The primary road is 7 m wide,
+  with activity sidewalks on both sides and a south connector near x ≈ 86.
+- `Hesperus_AlienBar_CourtyardAlley.glb` retains the established set-piece
+  language while using a straight layout: ten detailed multi-story building
+  assemblies, stepped rooflines, taller rear towers, windows, awnings, blade
+  signs, antennas, cables, an overhead bridge, street floor, sidewalks, the
+  alien-bar west gate, and the AccessRamp east threshold. Loose props, NPCs,
+  doors, permissions, power state, and traversal remain Godot-owned under
+  `EastMicroHub`.
+- West→east landmarks: alien bar/package (x ≈ 58), courier/vendor pocket
+  (x ≈ 68–80), utility grid room (x ≈ 87), credential checkpoint (x ≈ 104),
+  AccessRamp forecourt (x ≈ 126).
+- Four approaches share the same destination:
+  1. Social: recover the alien-bar package, return it to the courier, receive
+     `courtyard_service`, and pass the credential checkpoint.
+  2. Stealth/systemic: enter with `utility` access, cut street power, and use
+     the checkpoint's fail-open state under reduced lighting.
+  3. Vertical: use either western ladder and one continuous exposed upper
+     catwalk to reach the existing AccessLanding.
+  4. Force: cross the open street through the dedicated guard patrol and cover.
+- Six civilians populate the courier pocket; their spacing supports the existing
+  two-person crowd-blend rule. Three cover clusters leave a clear central lane.
+- The street power grid consistently controls five street lights, the powered
+  vendor shutter, and the checkpoint. Cutting power emits noise and therefore
+  trades access for guard attention.
+- Access tags were normalized to existing project vocabulary:
+  `vendor_staff`, `utility`, and earned `courtyard_service`.
+- The old procedural freight-catwalk, rear-service, diagonal conduit, and
+  multi-roof chain were removed. Their route count was high, but their tactical
+  distinctions and spatial readability were weak.
 
 ### Z5 — Upper Walkway / Observation (north, elevated)
 - Deck y ≈ 11.26. North strip: x −8.6 → 51.4, z ≈ −47 → −42 (`WalkwayNorth`).
@@ -105,8 +141,8 @@ green = extraction/return · yellow = bounty/interactable · blue = clue/investi
   | Entry | Where | Status |
   |---|---|---|
   | Front gate + ramp | west wall, z −2 → 2 | WORKS (open, force/social route) |
-  | Back door "SHOP BACKROUTE" | west wall, z ≈ 11.5 | VISUAL ONLY — locked StaticBody, no open/lockpick |
-  | Utility grate | east wall, (136.9, 2) | VISUAL ONLY — MeshInstance, no opening, no crawl |
+  | Back door "SHOP BACKROUTE" | west wall, z ≈ 11.5 | FUNCTIONAL (built 2026-06-11, pending playtest) — `BackDoor_Locked` LockedDoor instance, slides up after `BackDoor_Breaker` is used |
+  | Utility grate | east wall, (136.9, 2) | VISUAL ONLY — MeshInstance, no opening, no crawl. NOTE: a SEPARATE functional service-tunnel now exists under the bazaar — `WorldGeometry/UndergroundRoute` (added since 6/11, UNTESTED): EntryManhole LockedDoor at (30,-2.98,22) + EntryBreaker BypassSwitch at (29.8,-1.9,18.3), two LadderZones, tunnel floor z22→43 at y-9.2 exiting near the south plaza. This is a second lock-kit stealth route, not the courtyard grate. |
   | Roof ladder | east wall, (136.9, −19) | VISUAL ONLY — no climb interaction |
   | Return gate (door+ramp) | south wall, x ≈ 128 | DOOR IS A CLOSED StaticBody — not traversable |
   | North balcony + rope drop | y 4.3, z ≈ −22.9 | **FUNCTIONAL (built 2026-06-09, pending playtest)** — see Balcony access route below |
@@ -114,8 +150,8 @@ green = extraction/return · yellow = bounty/interactable · blue = clue/investi
 ### Z6 balcony access route (stealth entry, built 2026-06-09)
 - Nodes: `WorldGeometry/CourtyardArena/BalconyAccess` (AccessRamp, AccessLanding,
   RampRail_Outer, RampBaseNeon, LandingNeon — purple route markers per color language).
-- Path: East Approach → north service lane (between courtyard north wall z −24.5
-  and Building13 z −38) → purple-marked scaffold ramp (base x ≈ 125.5, ground
+- Path: East Approach or North Courtyard Service Street → purple-marked
+  scaffold ramp (base x ≈ 125.5, ground
   y −0.2; slope ≈ 22°) → landing at (112, top y 4.55, z −28.6…−25.0) → through the
   pre-existing 4 m gap in the upper north wall (x 110–114) over the lower wall top
   → balcony (top y 4.55) → rail gap (x 110–114) → drop onto stage (y 0.95) → arena.
@@ -158,16 +194,37 @@ A zone is DONE only when stealth, social, and force columns are all real.
 
 | Zone | Force | Social | Stealth | Verdict |
 |---|---|---|---|---|
-| Z6 Courtyard | front gate ✔ | front gate (disguise TODO) | balcony route ✔ BUILT (pending playtest); door / grate / ladder still visual only | STEALTH ROUTE IN |
+| Z6 Courtyard | front gate ✔; disguise Tier 1 supports social approach at range (pending playtest) | front gate + disguise Tier 1 pickup (pending playtest) | balcony route ✔ BUILT (pending playtest); back door bypass ✔ BUILT (pending playtest); grate / ladder still visual only | STEALTH/SOCIAL ROUTES IN |
+| North service street | open force lane + patrol ✔ | courier credential + crowd blend ✔ | power fail-open + upper catwalk ✔ | BUILT, NEEDS PLAYTEST |
 | Z4 Bazaar | street ✔ | crowd lane ✔ (NPCs sparse) | upper walkway flank ✔ | PASSABLE |
 | Z5 Walkway | n/a (route) | n/a | observation + flank ✔ | DONE for slice |
 | Z7 Return | gate route ✔ (opens at extraction) | n/a (route) | catwalk line ✔ BUILT (pending playtest) | BUILT, NEEDS PLAYTEST |
 
-**Priority gap (updated 2026-06-09):** balcony stealth entry is built; needs a
-playtest pass (slope feel, drop feel, guard pressure on the balcony). Remaining
-visual-only entries: back door (needs lock/key system), utility grate (needs
-crawl), roof ladder (needs climb). Next-highest leverage after playtest: disguise
-ruling for the social column, or Z7 layout decision.
+**Priority gap (updated 2026-06-11):** balcony stealth entry, back-door bypass,
+and disguise Tier 1 are built; they need a playtest pass together (slope feel,
+drop feel, guard pressure on the balcony, breaker readability, disguise scrutiny
+range). Remaining visual-only entries: utility grate (needs crawl), roof ladder
+(needs climb). Next-highest leverage after playtest: Z7 layout decision or a
+small ruling for heat/vendor lockdown.
+
+### North street im-sim reassessment (2026-06-21)
+
+- **Problems, not puzzles:** credentials, power sabotage, vertical traversal,
+  and force solve the same courtyard-access problem through existing verbs.
+- **Meaningful distinction:** each route changes preparation, visibility,
+  permission state, noise, or combat exposure; routes are not cosmetic forks.
+- **Consistent simulation:** powered consumers share one grid, restricted
+  volumes use project access tags, and noise reaches the existing perceptive
+  group.
+- **Readable topology:** the alien-bar gate and AccessRamp are visible end
+  anchors; utility and security functions divide the street into intermediate
+  decisions without curving the main sightline.
+- **Spatial economy:** the redesign removes curved residual wedges and redundant
+  traversal chains. Remaining open space is assigned to circulation, crowd
+  blending, sightlines, patrol exposure, or cover.
+- **Known acceptance gate:** structural checks cannot prove route clarity,
+  crowd-blend feel, checkpoint readability, or combat pressure. All four
+  approaches require an in-game playtest before the street is considered final.
 
 ---
 
@@ -188,3 +245,12 @@ ruling for the social column, or Z7 layout decision.
 `clue_01_market_trace` (Z4) → `clue_02_side_alley_residue` (Z3) →
 `clue_03_upper_walkway_residue` (Z5, `reveals_target = true`).
 Escape route nodes: ordered `Marker3D` children directly under `KorvaxiEscapeRoute`.
+
+FUNNEL ADDITION (in scene, UNTESTED — not in original chain): each clue also
+deals a target trait to BountyIntel (clue_01 appearance=red coat, clue_02
+movement_tell=heavy gait, clue_03 location_habit=courtyard). A FOURTH clue
+`clue_vantage_balcony_limp` on the East Balcony Run at (33.4, 1.08, -9.6),
+`active=true`, deals scanner_signature=cybernetic arm. So four traits are
+sourced in-world and the accusation gate (`intel_required_to_confirm`=3) is
+reachable without the vantage. Per the funnel rule, clue_03's `reveals_target`
+completes the TRAIL only — identification is via CONFRONT, never the clue.

@@ -59,6 +59,8 @@ func try_fire() -> void:
 	_next_fire_time = now + (1.0 / fire_rate)
 	ammo_current -= 1
 	_update_hud()
+	if hud != null and hud.has_method("play_weapon_fire"):
+		hud.call("play_weapon_fire")
 	_show_muzzle_flash()
 	_play_fire_feedback()
 	_fire_hitscan()
@@ -80,6 +82,8 @@ func reload() -> void:
 		_objective_before_reload = hud.call("get_objective") as String
 	if hud != null and hud.has_method("set_objective"):
 		hud.call("set_objective", "Reloading...")
+	if hud != null and hud.has_method("play_weapon_reload"):
+		hud.call("play_weapon_reload", reload_time)
 	_play_reload_feedback()
 	await get_tree().create_timer(reload_time).timeout
 
@@ -128,6 +132,8 @@ func _fire_hitscan() -> void:
 
 
 func _show_muzzle_flash() -> void:
+	if hud != null and hud.has_method("play_weapon_fire"):
+		return
 	muzzle_flash.visible = true
 	muzzle_light.visible = true
 

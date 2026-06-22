@@ -23,11 +23,43 @@ enum TargetState {
 @export var hit_flash_duration: float = 0.09
 @export var death_pop_duration: float = 0.28
 @export var flee_speed: float = 5.0
-@export var node_reach_distance: float = 0.75
+@export_group("Identity")
+## This IS the bounty. on_npc_accused checks is_target; the courtyard model is
+## the only valid confront target in the single-scripted-bounty phase (Option B).
+@export var is_target: bool = true
+@export var is_candidate: bool = true
+@export var npc_name: String = "KORVAXI"
+## Traits read from his sprite. Must match data/crowd_traits_hesperus.json
+## funnel_profile so the gathered intel resolves to PROFILE FITS on a scan.
+@export var build: String = "korvaxi-class heavy"
+@export var appearance: String = "red coat"
+@export var movement_tell: String = "heavy gait"
+@export var location_habit: String = "courtyard"
+@export var scanner_signature: String = "cybernetic arm"
+@export_group("Scan")
+@export var scan_time_required: float = 1.8
+@export_group("Chase")
+## Top speed at full stamina (slightly under player sprint 10.5, above walk 7.0 is too fast to ever catch — keep below walk for graybox tuning).
+@export var sprint_speed: float = 7.8
+## Speed when winded (stamina empty).
+@export var winded_speed: float = 4.2
+## Seconds of being pressed (player within pressure range) to fully drain stamina.
+@export var stamina_seconds: float = 6.0
+@export var stamina_recovery_rate: float = 0.55
+## Player distance that counts as "pressing" the target.
+@export var pressure_range: float = 14.0
+## Speed multiplier floor when near death (wounds slow the target).
+@export var hurt_speed_floor: float = 0.6
+## Serpentine kicks in when the player is closer than this.
+@export var juke_distance: float = 7.0
+@export var juke_amplitude: float = 1.6
+@export var juke_frequency: float = 2.3
+@export_group("")
+@export var node_reach_distance: float = 1.4
 @export var reveal_delay: float = 0.35
 @export var capture_range: float = 2.5
 @export var capture_hold_time: float = 2.0
-@export var route_height_tolerance: float = 0.08
+@export var route_height_tolerance: float = 1.2
 @export var escape_route_parent: NodePath
 @export var player_path: NodePath
 
@@ -58,18 +90,38 @@ var _hud: CanvasLayer
 var _stun_timer: float = 0.0
 var _capture_progress: float = 0.0
 var _state_before_stun: TargetState = TargetState.COMBAT
+var _max_health: int = 150
+var _stamina: float = 1.0
+var _juke_time: float = 0.0
+var _stuck_timer: float = 0.0
+var _last_flee_position: Vector3 = Vector3.ZERO
+var _route_options: Array = []  # Array of Array[Marker3D] — alternate escape routes
+var _is_scanned: bool = false
+var _scan_progress: float = 0.0
+var _scan_focus_complete: bool = false
+var _was_confronted: bool = false
+var _hidden_home_position: Vector3
+var _hidden_meeting_marker: Marker3D
+var _hidden_meeting_dwell: float = 0.0
+var _hidden_meeting_timer: float = 0.0
+var _returning_from_meeting := false
 
 
 func _ready() -> void:
 	add_to_group("bounty_target")
 	add_to_group("damageable")
 	add_to_group("perceptive")
+	# Pre-reveal he's the scan/confront target. Leaves the group once he flees so
+	# the scanner can't re-acquire him mid-chase.
+	add_to_group("scannable_npc")
+	_max_health = maxi(health, 1)
 	_base_scale = visual_root.scale
 	set_identified(false)
 	stunned_marker.visible = false
 	_cache_escape_nodes()
 	_player = get_node_or_null(player_path) as Node3D
 	_hud = _find_hud()
+	_hidden_home_position = global_position
 
 	# Discover the visual representation. A DirectionalSprite3D may be a direct
 	# child of VisualRoot or be VisualRoot itself; otherwise collect meshes.
@@ -94,6 +146,44 @@ func _physics_process(delta: float) -> void:
 		_face_player(delta)
 	elif state == TargetState.STUNNED:
 		_update_stunned(delta)
+	elif state == TargetState.HIDDEN or state == TargetState.IDLE_HIDDEN:
+		_update_hidden_meeting(delta)
+
+
+func request_hidden_move(marker: Marker3D, dwell_time: float = 18.0) -> bool:
+	if marker == null or _is_dead or _is_captured:
+		return false
+	if state != TargetState.HIDDEN and state != TargetState.IDLE_HIDDEN:
+		return false
+	_hidden_meeting_marker = marker
+	_hidden_meeting_dwell = maxf(dwell_time, 1.0)
+	_hidden_meeting_timer = 0.0
+	_returning_from_meeting = false
+	return true
+
+
+func _update_hidden_meeting(delta: float) -> void:
+	if _hidden_meeting_marker == null:
+		return
+	var destination := _hidden_home_position if _returning_from_meeting else _hidden_meeting_marker.global_position
+	var offset := destination - global_position
+	offset.y = 0.0
+	if offset.length() > 0.35:
+		velocity = offset.normalized() * minf(flee_speed * 0.55, 3.2)
+		move_and_slide()
+		return
+	if not _returning_from_meeting:
+		_hidden_meeting_timer += delta
+		if _hidden_meeting_timer >= _hidden_meeting_dwell:
+			_returning_from_meeting = true
+	else:
+		_cancel_hidden_meeting()
+
+
+func _cancel_hidden_meeting() -> void:
+	_hidden_meeting_marker = null
+	_hidden_meeting_timer = 0.0
+	_returning_from_meeting = false
 
 
 func take_damage(amount: int) -> void:
@@ -148,8 +238,11 @@ func reveal_and_flee() -> void:
 	if _is_dead or _is_captured or state == TargetState.FLEEING or state == TargetState.COMBAT:
 		return
 
+	_cancel_hidden_meeting()
 	state = TargetState.REVEALED
 	set_identified(true)
+	if is_in_group("scannable_npc"):
+		remove_from_group("scannable_npc")
 	revealed.emit()
 	print("Korvaxi revealed.")
 	_flash_hit()
@@ -214,6 +307,7 @@ func _pulse_hit() -> void:
 
 
 func _start_flee() -> void:
+	_choose_escape_route()
 	if _escape_nodes.is_empty():
 		state = TargetState.COMBAT
 		reached_final_node.emit()
@@ -222,8 +316,40 @@ func _start_flee() -> void:
 
 	state = TargetState.FLEEING
 	_current_escape_index = 0
+	_stamina = 1.0
+	_juke_time = 0.0
+	_stuck_timer = 0.0
+	_last_flee_position = global_position
 	flee_started.emit()
-	print("Korvaxi started fleeing.")
+	print("Korvaxi started fleeing (%d-node route)." % _escape_nodes.size())
+
+
+## Picks the route whose first node is farthest from the player. With a single
+## route (legacy Marker3D children) behavior is unchanged from before.
+func _choose_escape_route() -> void:
+	if _route_options.is_empty():
+		return
+	if _route_options.size() == 1:
+		_escape_nodes = _route_options[0]
+		return
+
+	if _player == null:
+		_player = get_tree().get_first_node_in_group("player") as Node3D
+
+	var best: Array[Marker3D] = _route_options[0]
+	var best_distance := -1.0
+	for option in _route_options:
+		var route: Array[Marker3D] = option
+		if route.is_empty():
+			continue
+		var d := randf()
+		if _player != null:
+			d = route[0].global_position.distance_to(_player.global_position)
+		if d > best_distance:
+			best_distance = d
+			best = route
+	_escape_nodes = best
+	print("Korvaxi chose escape route starting at %s." % str(_escape_nodes[0].global_position))
 
 
 func _follow_escape_route(delta: float) -> void:
@@ -234,7 +360,9 @@ func _follow_escape_route(delta: float) -> void:
 	var target_position := _escape_nodes[_current_escape_index].global_position
 	var direction := target_position - global_position
 
-	if global_position.distance_to(target_position) <= node_reach_distance:
+	# Reach is judged in the HORIZONTAL plane: route markers were plotted at
+	# old blockout heights and must still count as reached on new GLB floors.
+	if Vector2(direction.x, direction.z).length() <= node_reach_distance:
 		_current_escape_index += 1
 		if _current_escape_index >= _escape_nodes.size():
 			_enter_combat_state()
@@ -243,14 +371,82 @@ func _follow_escape_route(delta: float) -> void:
 	if direction != Vector3.ZERO:
 		var horizontal_direction := Vector3(direction.x, 0.0, direction.z)
 		if horizontal_direction != Vector3.ZERO:
-			velocity = horizontal_direction.normalized() * flee_speed
+			var speed := _current_flee_speed(delta)
+			var move_dir := horizontal_direction.normalized()
+			# Never weave while scraping geometry — slide along the wall instead.
+			if is_on_wall():
+				var slid := move_dir.slide(get_wall_normal())
+				if slid.length_squared() > 0.04:
+					move_dir = slid.normalized()
+			else:
+				move_dir = _apply_juke(move_dir, delta)
+			velocity = move_dir * speed
 			_look_in_direction(horizontal_direction, delta)
 
 		var y_delta := target_position.y - global_position.y
 		if absf(y_delta) > route_height_tolerance:
 			velocity.y = clampf(y_delta / maxf(delta, 0.001), -flee_speed, flee_speed)
+		elif not is_on_floor():
+			velocity.y -= 18.0 * delta
+		else:
+			velocity.y = 0.0
 
 		move_and_slide()
+		_update_stuck_watchdog(delta)
+
+
+## Recovery: if barely moving while fleeing, skip ahead on the route rather
+## than grinding a corner forever. Skipping past the last node = cornered.
+func _update_stuck_watchdog(delta: float) -> void:
+	var moved := global_position.distance_to(_last_flee_position)
+	_last_flee_position = global_position
+	if moved < flee_speed * delta * 0.2:
+		_stuck_timer += delta
+	else:
+		_stuck_timer = 0.0
+
+	if _stuck_timer >= 0.8:
+		_stuck_timer = 0.0
+		_juke_time = 0.0
+		_current_escape_index += 1
+		print("Korvaxi unstuck: skipping to escape node %d." % _current_escape_index)
+		if _current_escape_index >= _escape_nodes.size():
+			_enter_combat_state()
+
+
+## Chase pacing: a stamina sprint that drains while the player presses close
+## and recovers when they fall behind; wounds slow the target proportionally.
+## Net effect: a clean chase rubber-bands toward a catch without scripting it.
+func _current_flee_speed(delta: float) -> float:
+	if _player == null:
+		_player = get_tree().get_first_node_in_group("player") as Node3D
+
+	var pressed := false
+	if _player != null:
+		pressed = global_position.distance_to(_player.global_position) < pressure_range
+
+	if pressed:
+		_stamina = maxf(_stamina - (delta / maxf(stamina_seconds, 0.5)), 0.0)
+	else:
+		_stamina = minf(_stamina + stamina_recovery_rate * delta, 1.0)
+
+	var base := lerpf(winded_speed, sprint_speed, _stamina)
+	var health_factor := lerpf(hurt_speed_floor, 1.0, float(health) / float(_max_health))
+	return base * health_factor
+
+
+## Panic serpentine when the player is right behind: harder to line up shots.
+func _apply_juke(move_dir: Vector3, delta: float) -> Vector3:
+	if _player == null or juke_amplitude <= 0.0:
+		return move_dir
+	if global_position.distance_to(_player.global_position) > juke_distance:
+		_juke_time = 0.0
+		return move_dir
+
+	_juke_time += delta
+	var side := move_dir.cross(Vector3.UP)
+	var weave := sin(_juke_time * TAU * juke_frequency) * juke_amplitude
+	return (move_dir + side * weave * 0.22).normalized()
 
 
 func _enter_combat_state() -> void:
@@ -395,8 +591,65 @@ func _look_in_direction(direction: Vector3, delta: float) -> void:
 	rotation.y = lerp_angle(rotation.y, target_yaw, minf(delta * 10.0, 1.0))
 
 
+# --- Scanner + confront contract (Option B: courtyard model is the target) ----
+# Mirrors CrowdNPC's contract so the existing scanner/interact code treats him
+# uniformly. He's scannable only while hidden in the courtyard; confronting him
+# is the accusation BountyManager.on_npc_accused rules on.
+
+func is_scannable() -> bool:
+	return is_in_group("scannable_npc") and not _was_confronted
+
+
+func begin_focus() -> void:
+	_scan_focus_complete = false
+	_scan_progress = 0.0
+
+
+func end_focus() -> void:
+	_scan_progress = 0.0
+	_scan_focus_complete = false
+
+
+func scan(delta: float) -> float:
+	_scan_progress = minf(_scan_progress + delta, scan_time_required)
+	if _scan_progress >= scan_time_required and not _scan_focus_complete:
+		_scan_focus_complete = true
+		_is_scanned = true
+		print("Korvaxi scanned (courtyard model).")
+	return _scan_progress
+
+
+func get_scan_text() -> String:
+	return "RE-SCANNING SUBJECT..." if _is_scanned else "SCANNING SUBJECT..."
+
+
+func get_scan_time_required() -> float:
+	return scan_time_required
+
+
+func get_interaction_text() -> String:
+	if _was_confronted or not is_in_group("scannable_npc"):
+		return ""
+	if not _is_scanned:
+		return ""
+	return "Press E: Confront %s" % npc_name
+
+
+func interact(_interacting_player: Node) -> void:
+	if _was_confronted or not _is_scanned:
+		return
+	get_tree().call_group("bounty_manager", "on_npc_accused", self)
+
+
+## BountyManager calls this on a resolved accusation. For the courtyard model a
+## correct confront just kicks off the reveal/chase — no actor handoff needed.
+func mark_confronted() -> void:
+	_was_confronted = true
+
+
 func _cache_escape_nodes() -> void:
 	_escape_nodes.clear()
+	_route_options.clear()
 	if escape_route_parent == NodePath():
 		return
 
@@ -404,9 +657,24 @@ func _cache_escape_nodes() -> void:
 	if route_parent == null:
 		return
 
+	# Legacy: Marker3D children form one route (unchanged behavior).
+	# New: any Node3D child containing Marker3Ds is an ALTERNATE route —
+	# Nick adds Route_* groups under KorvaxiEscapeRoute, no code changes needed.
+	var direct: Array[Marker3D] = []
 	for child in route_parent.get_children():
 		if child is Marker3D:
-			_escape_nodes.append(child)
+			direct.append(child)
+		elif child is Node3D:
+			var branch: Array[Marker3D] = []
+			for sub in child.get_children():
+				if sub is Marker3D:
+					branch.append(sub)
+			if not branch.is_empty():
+				_route_options.append(branch)
+	if not direct.is_empty():
+		_route_options.append(direct)
+	if _route_options.size() == 1:
+		_escape_nodes = _route_options[0]
 
 
 func _die() -> void:

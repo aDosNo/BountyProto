@@ -1,0 +1,33 @@
+{
+  "comment": "Crowd identity trait pools for Hesperus Market. Loaded by crowd_director.gd. The contract generator (post-sprint) samples from files like this — add districts by adding files, not code.",
+  "comment_funnel": "PHASE: single scripted bounty (Option B). target_in_crowd=false -> the crowd is PURE DECOYS, no is_target NPC. funnel_profile is the courtyard Korvaxi's known traits (read from his sprite); it drives clue values + witness hints so the funnel narrows toward HIM, but the only valid scan/confront is the scripted courtyard model itself. Candidates share his build and differ in >=1 trait. When the generator takes over: set target_in_crowd=true (or delete these keys) and it rolls a hidden-in-crowd target again.",
+  "target_in_crowd": false,
+  "funnel_profile": {
+    "npc_name": "KORVAXI",
+    "build": "korvaxi-class heavy",
+    "appearance": "red coat",
+    "movement_tell": "heavy gait",
+    "location_habit": "courtyard",
+    "scanner_signature": "cybernetic arm"
+  },
+  "target_build": "korvaxi-class heavy",
+  "builds": ["korvaxi-class heavy", "slight frame", "avian-stock", "stocky terran"],
+  "appearances": ["red coat", "grey coat", "tan wraps", "green vest", "black harness", "blue poncho"],
+  "movement_tells": ["heavy gait", "limp", "fast walker", "shuffler", "steady pace"],
+  "location_habits": ["courtyard", "dock side", "fountain loiterer", "alley edges", "stall browser"],
+  "scanner_signatures": ["cybernetic arm", "clean", "masked bio-sig", "weapon under clothing"],
+  "target_signature_pool": ["cybernetic arm", "weapon under clothing"],
+  "noncandidate_signature": "clean",
+  "witness_hint_chance": 0.4,
+  "witness_categories": ["appearance", "movement_tell", "location_habit"],
+  "spawn_quotas": {
+    "Spawn_Street": 13,
+    "Spawn_Plaza": 11,
+    "Spawn_Alley": 2,
+    "Spawn_DockCorner": 3,
+    "Spawn_DockBay": 1
+  },
+  "names": ["DOCKHAND", "VENDOR", "HAULER", "BROKER", "SPICER", "WELDER", "COURIER",
+    "SCRAPPER", "DRIFTER", "FIXER", "STEVEDORE", "TINKER", "RUNNER", "PILGRIM", "LOOKOUT",
+    "GRAFTER", "PEDDLER", "LUGGER", "WATCHER", "TRADER"]
+}

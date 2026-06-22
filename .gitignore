@@ -1,3 +1,11 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Blender local backup files. Keep source .blend files tracked intentionally.
+*.blend1
+
+# Local scratch/export staging directories. Do not place canonical assets here.
+/scratch/
+/tmp_exports/
+/exports_tmp/

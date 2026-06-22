@@ -1,0 +1,28 @@
+{
+ "objects": [
+  "DistantCity_Far",
+  "DistantCity_Floats",
+  "DistantCity_Mid",
+  "DistantCity_Near",
+  "DistantCity_Rail",
+  "DistantCity_Rail2",
+  "Hesperus_DistantCity",
+  "RailPath2_End",
+  "RailPath2_Start",
+  "RailPath_End",
+  "RailPath_Start"
+ ],
+ "object_count": 11,
+ "materials": [
+  "M_RailFrame",
+  "M_RailGlow",
+  "M_TowerFar",
+  "M_TowerMid",
+  "M_TowerNear",
+  "M_WinCyan",
+  "M_WinGold",
+  "M_WinMag",
+  "M_WinWarm"
+ ],
+ "leftover_beam_warn": []
+}

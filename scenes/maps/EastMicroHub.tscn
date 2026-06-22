@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/east_microhub.gd" id="1_microhub"]
+[ext_resource type="PackedScene" path="res://assets/blender_models/EastMicroHub_Live.glb" id="2_imported"]
+
+[node name="EastMicroHub" type="Node3D"]
+script = ExtResource("1_microhub")
+
+[node name="ImportedVisuals" parent="." instance=ExtResource("2_imported")]

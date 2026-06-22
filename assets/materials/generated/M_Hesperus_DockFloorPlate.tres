@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" uid="uid://d1fqjejk7b53b" path="res://art/textures_generated/hesperus_floor_pack/seamless/256/01_dock_metal_floor_plate_256_seamless.png" id="1_texture"]
+
+[resource]
+resource_name = "M_Hesperus_DockFloorPlate"
+albedo_texture = ExtResource("1_texture")
+metallic = 0.35
+roughness = 0.82
+texture_filter = 2

@@ -17,12 +17,39 @@ enum MissionState {
 @export var pressure_enemies: Array[NodePath] = []
 @export var first_clue_id: String = "clue_01_market_trace"
 @export var auto_accept: bool = true
+@export_group("Accusation")
+## Known intel categories required before a confrontation is allowed.
+@export var intel_required_to_confirm: int = 3
+## Guards within their shout_radius of a wrong accusation go hostile.
+@export var wrong_accusation_alerts_guards: bool = true
+## Credits docked from the final payout per wrong accusation (capped at half).
+@export var wrong_accusation_penalty: int = 500
+@export_group("District Heat")
+@export var heat_lockdown_threshold: int = 2
+## A single wrong public accusation is meant to land hard (mission "transforms"):
+## set equal to heat_lockdown_threshold so ONE wrong mark trips lockdown. Lower
+## it if wrong marks should need to stack before the district reacts.
+@export var heat_wrong_accusation: int = 2
+@export var heat_civilian_wounded: int = 1
+@export var heat_civilian_killed: int = 2
+@export var heat_target_killed: int = 1
+@export_group("Wrong Accusation Crowd")
+## Bystanders within this radius of a wrong public accusation clam up.
+@export var clam_up_radius: float = 15.0
+## Seconds the clammed-up bystanders refuse to talk before recovering.
+@export var clam_up_duration: float = 35.0
 
 @export var target_name: String = "Korvaxi Jurraal"
 @export var location: String = "Hesperus Market / FPS Vertical Arena placeholder"
 @export var threat: String = "High"
 @export var reward_dead: int = 3000
 @export var reward_alive: int = 7000
+@export_group("Nemesis")
+## Record escaped targets to NemesisRegistry. OFF until the generator stamps
+## targets with a scanner_sig + trait_kit — without one, escapes can't be keyed,
+## so recording would no-op anyway (registry rejects empty sig). Flip on with
+## the generator.
+@export var nemesis_recording_enabled: bool = false
 
 var state: MissionState = MissionState.INACTIVE
 
@@ -33,6 +60,8 @@ var _hud: CanvasLayer
 var _clues_by_id: Dictionary = {}
 var _target_status: String = ""
 var _pending_reward: int = 0
+var _district_heat: int = 0
+var _vendors_locked_down := false
 
 
 func _ready() -> void:
@@ -56,16 +85,25 @@ func accept_bounty() -> void:
 	if _mission_is_closed() or state != MissionState.INACTIVE:
 		return
 
+	_reset_bounty_intel()
 	state = MissionState.ACCEPTED
 	_set_objective("Hold RMB to scan Korvaxi's trace in the bazaar")
 	_activate_first_clue()
 	print("Bounty accepted: %s" % target_name)
 
 
+func _reset_bounty_intel() -> void:
+	var intel := get_node_or_null("/root/BountyIntel")
+	if intel != null and intel.has_method("reset"):
+		intel.call("reset")
+
+
 func on_target_neutralized() -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
 
+	_clear_nemesis_if_known()
+	add_heat(heat_target_killed, "bounty target killed")
 	state = MissionState.TARGET_NEUTRALIZED
 	_set_objective("%s neutralized. Reach extraction." % target_name.split(" ")[0])
 	print("Bounty target neutralized: %s" % target_name)
@@ -76,6 +114,7 @@ func on_target_captured() -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
 
+	_clear_nemesis_if_known()
 	state = MissionState.TARGET_NEUTRALIZED
 	_set_objective("Korvaxi captured alive. Reach extraction.")
 	print("Bounty target captured alive: %s" % target_name)
@@ -90,7 +129,9 @@ func on_clue_scanned(clue_id: String, next_clue_id: String, reveals_target: bool
 
 	if reveals_target:
 		_show_toast_for_clue(clue_id)
-		_identify_target()
+		# Funnel rule: clues complete the TRAIL, never the identification.
+		# The player must scan candidates and CONFRONT — no free reveals.
+		_set_objective("Trail complete. Scan the crowd, verify the profile, and confront the target")
 		return
 
 	if next_clue_id.is_empty():
@@ -102,6 +143,102 @@ func on_clue_scanned(clue_id: String, next_clue_id: String, reveals_target: bool
 	_show_toast_for_clue(clue_id)
 	_set_objective(_objective_for_next_clue(next_clue_id))
 	print("Activating next clue: %s" % next_clue_id)
+
+
+## Scan completion on a crowd NPC: intel-comparison only (readout comes from
+## scanner/BountyIntel). Identification now requires a deliberate CONFRONT
+## (interact) ruled on by on_npc_accused below.
+func on_scannable_npc_scanned(npc: Node) -> void:
+	if npc == null:
+		return
+	print("NPC scan logged: %s" % str(npc.get("npc_name")))
+
+
+var _wrong_accusations: int = 0
+
+
+## The accusation. Threshold-gated; wrong mark transforms the mission
+## (guards hostile nearby, target goes to ground) — it does not fail it.
+func on_npc_accused(npc: Node) -> void:
+	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
+		return
+	if state == MissionState.INACTIVE:
+		_show_toast("No active contract.")
+		return
+	if npc == null:
+		return
+
+	var intel := get_node_or_null("/root/BountyIntel")
+	var known := 0
+	if intel != null and intel.has_method("known_count"):
+		known = int(intel.call("known_count"))
+
+	if known < intel_required_to_confirm:
+		_show_toast("Not enough intel to confront (%d/%d traits known). Work the district." % [known, intel_required_to_confirm], 3.0)
+		return
+
+	if npc.has_method("mark_confronted"):
+		npc.call("mark_confronted")
+
+	var is_target_value = npc.get("is_target")
+	if is_target_value is bool and is_target_value:
+		_show_toast("Identity confirmed: Korvaxi.")
+		_identify_target(npc)
+		return
+
+	_on_wrong_accusation(npc)
+
+
+func _on_wrong_accusation(npc: Node) -> void:
+	_wrong_accusations += 1
+	add_heat(heat_wrong_accusation, "wrong public accusation")
+	_show_toast("Wrong mark. The street saw that — Korvaxi goes to ground.", 3.5)
+	_set_objective("Word is spreading. Re-verify your intel and find the real Korvaxi")
+	print("Wrong accusation #%d: %s" % [_wrong_accusations, str(npc.get("npc_name"))])
+
+	# Nearby guards take exception to the hunter hassling civilians.
+	if wrong_accusation_alerts_guards and npc is Node3D:
+		var player := get_tree().get_first_node_in_group("player") as Node3D
+		var threat_pos: Vector3 = player.global_position if player != null else (npc as Node3D).global_position
+		get_tree().call_group("perceptive", "on_ally_alert", (npc as Node3D).global_position, threat_pos)
+
+	# The real target gets wary and keeps moving.
+	var director := get_tree().get_first_node_in_group("crowd_director")
+	if director != null and director.has_method("spook_target"):
+		director.call("spook_target")
+
+	# Bystanders near the bad call stop cooperating for a while (canvassing the
+	# crowd right where you blew it gets harder).
+	if director != null and director.has_method("clam_up_near") and npc is Node3D:
+		director.call("clam_up_near", (npc as Node3D).global_position, clam_up_radius, clam_up_duration)
+
+
+func report_civilian_harmed(was_killed: bool, source_position: Vector3 = Vector3.ZERO) -> void:
+	var amount := heat_civilian_killed if was_killed else heat_civilian_wounded
+	add_heat(amount, "civilian killed" if was_killed else "civilian wounded", source_position)
+
+
+func add_heat(amount: int, reason: String = "public violence", _source_position: Vector3 = Vector3.ZERO) -> void:
+	if amount <= 0 or _mission_is_closed():
+		return
+
+	_district_heat += amount
+	print("District heat +%d: %s (total %d/%d)" % [amount, reason, _district_heat, heat_lockdown_threshold])
+
+	if not _vendors_locked_down and _district_heat >= heat_lockdown_threshold:
+		_trigger_vendor_lockdown(reason)
+
+
+func _trigger_vendor_lockdown(reason: String) -> void:
+	_vendors_locked_down = true
+	# Fire the responder group anyway (harmless; nodes with real stall geometry
+	# will react once placed). Until then visuals are DEFERRED by decision:
+	# current responder nodes carry no stall/counter/awning children, so no
+	# shutters drop. Keep the beat mechanism-only — a toast the scene can honor,
+	# not a promise of shutters it can't show — plus a clear console line.
+	get_tree().call_group("vendor_lockdown", "set_lockdown", reason)
+	_show_toast("The crowd turns wary — word of a bad call is spreading.", 3.0)
+	print("District heat hit lockdown threshold (%d): %s. Vendor-shutter visuals deferred (no stall geometry on responders)." % [heat_lockdown_threshold, reason])
 
 
 func start_extraction_phase(status: String, reward: int) -> void:
@@ -133,22 +270,43 @@ func complete_bounty(status: String = "Dead", reward: int = -1) -> void:
 
 	state = MissionState.COMPLETE
 	var final_reward := reward_dead if reward < 0 else reward
+
+	# Collateral fines: wrong accusations come out of the payout, never more
+	# than half — sloppy work still pays, it just pays badly.
+	var penalty: int = mini(_wrong_accusations * wrong_accusation_penalty, floori(final_reward / 2.0))
+	final_reward -= penalty
+
+	var status_text := status
+	if status == "Alive":
+		status_text = "Alive (+%d CR alive bonus)" % (reward_alive - reward_dead)
+	if penalty > 0:
+		status_text += "  —  fines: -%d CR" % penalty
+
+	var ledger := get_node_or_null("/root/HunterLedger")
+	if ledger != null and ledger.has_method("add"):
+		ledger.call("add", final_reward)
+
 	_set_objective("Contract complete.")
 	if _reward_screen == null:
 		_reward_screen = _resolve_reward_screen()
 
 	if _reward_screen != null and _reward_screen.has_method("show_reward"):
-		_reward_screen.call("show_reward", target_name, status, final_reward)
+		_reward_screen.call("show_reward", target_name, status_text, final_reward)
 	else:
 		print("CONTRACT COMPLETE")
 		print("Target: %s" % target_name)
-		print("Status: %s" % status)
+		print("Status: %s" % status_text)
 		print("Reward: %d CR" % final_reward)
 
 
 func fail_bounty() -> void:
 	if state == MissionState.COMPLETE or state == MissionState.FAILED:
 		return
+
+	# Target survived the contract: if we'd identified them, they escape alive
+	# and become (or harden into) a nemesis. Identity gate = we know who got away.
+	if state == MissionState.TARGET_IDENTIFIED or state == MissionState.TRACKING:
+		_record_nemesis_escape()
 
 	state = MissionState.FAILED
 	_set_objective("Hunter down. Contract failed.")
@@ -223,13 +381,14 @@ func _activate_clue(clue_id: String) -> void:
 		clue.call("set_active", true)
 
 
-func _identify_target() -> void:
+func _identify_target(accused_npc: Node = null) -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
 
 	state = MissionState.TARGET_IDENTIFIED
-	_set_objective("Target identified in the courtyard. Chase Korvaxi!")
+	_set_objective("Target identified. Chase Korvaxi!")
 	print("Target identified: %s" % target_name)
+	_resolve_accused_target_npc(accused_npc)
 
 	if _target == null:
 		_target = _resolve_target()
@@ -238,6 +397,13 @@ func _identify_target() -> void:
 			_target.call("reveal_and_flee")
 		elif _target.has_method("set_identified"):
 			_target.call("set_identified", true)
+
+
+func _resolve_accused_target_npc(accused_npc: Node) -> void:
+	if accused_npc == null:
+		return
+	if accused_npc.has_method("resolve_as_target_handoff"):
+		accused_npc.call("resolve_as_target_handoff")
 
 
 func _on_target_flee_started() -> void:
@@ -270,6 +436,77 @@ func _on_target_stun_expired() -> void:
 
 func _mission_is_closed() -> bool:
 	return state == MissionState.COMPLETE or state == MissionState.FAILED
+
+
+# --- Nemesis hooks ------------------------------------------------------------
+# Plumbed but gated by nemesis_recording_enabled (off until the generator stamps
+# targets with scanner_sig + trait_kit). Profile is assembled from BountyIntel
+# (what the player actually learned) + the target node's own fields.
+
+func _record_nemesis_escape() -> void:
+	if not nemesis_recording_enabled:
+		return
+	var registry := get_node_or_null("/root/NemesisRegistry")
+	if registry == null or not registry.has_method("record_escape"):
+		return
+	var profile := _build_target_profile()
+	if String(profile.get("scanner_sig", "")).is_empty():
+		return  # no identity key yet (pre-generator); nothing to record
+	var encounter := {
+		"wounded": _target_was_wounded(),
+		"district_id": "hesperus_market",
+	}
+	registry.call("record_escape", profile, encounter)
+
+
+func _clear_nemesis_if_known() -> void:
+	if not nemesis_recording_enabled:
+		return
+	var registry := get_node_or_null("/root/NemesisRegistry")
+	if registry == null or not registry.has_method("clear_nemesis"):
+		return
+	var sig := _target_scanner_sig()
+	if not sig.is_empty():
+		registry.call("clear_nemesis", sig)
+
+
+func _build_target_profile() -> Dictionary:
+	var intel := get_node_or_null("/root/BountyIntel")
+	var appearance := {}
+	var movement_tell = null
+	if intel != null:
+		var known_dict = intel.get("known")
+		if known_dict is Dictionary:
+			if known_dict.has("appearance"):
+				appearance = {"palette_id": known_dict["appearance"].get("value", null), "overlay_ids": []}
+			if known_dict.has("movement_tell"):
+				movement_tell = known_dict["movement_tell"].get("value", null)
+	return {
+		"scanner_sig": _target_scanner_sig(),
+		"base_id": _target_field("base_id", ""),
+		"alias": target_name,
+		"appearance": appearance,
+		"movement_tell_id": movement_tell,
+	}
+
+
+func _target_scanner_sig() -> String:
+	return _target_field("scanner_sig", "")
+
+
+func _target_field(field: String, fallback):
+	if _target == null:
+		_target = _resolve_target()
+	if _target != null:
+		var v = _target.get(field)
+		if v != null:
+			return v
+	return fallback
+
+
+func _target_was_wounded() -> bool:
+	var v = _target_field("was_wounded", null)
+	return v is bool and v
 
 
 func _resolve_target() -> Node:
@@ -387,7 +624,16 @@ func _show_toast_for_clue(clue_id: String) -> void:
 
 	var text_value = clue.get("completed_text")
 	if text_value is String and not text_value.is_empty():
-		_hud.call("show_toast", text_value)
+		_show_toast(text_value)
+
+
+func _show_toast(text: String, duration: float = 2.5) -> void:
+	if text.is_empty():
+		return
+	if _hud == null:
+		_hud = _find_hud()
+	if _hud != null and _hud.has_method("show_toast"):
+		_hud.call("show_toast", text, duration)
 
 
 func _objective_for_next_clue(clue_id: String) -> String:

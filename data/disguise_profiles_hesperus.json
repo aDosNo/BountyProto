@@ -1,0 +1,18 @@
+{
+  "courtyard_staff": {
+    "display_name": "courtyard staff coveralls",
+    "access_tags": ["courtyard_staff"]
+  },
+  "utility_worker": {
+    "display_name": "utility worker coveralls",
+    "access_tags": ["utility"]
+  },
+  "vendor_staff": {
+    "display_name": "bar and vendor apron",
+    "access_tags": ["vendor_staff"]
+  },
+  "dock_worker": {
+    "display_name": "dock worker garb",
+    "access_tags": ["dock_worker"]
+  }
+}

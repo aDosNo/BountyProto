@@ -61,7 +61,7 @@ func _scan_forward(delta: float) -> void:
 		_clear_focus()
 		current_scan_progress = maxf(current_scan_progress - (scan_decay_speed * delta), 0.0)
 		_set_hud_text("NO TRACE")
-		_set_hud_progress(current_scan_progress / scan_time_required)
+		_set_hud_progress(current_scan_progress / _get_scan_time_required(null))
 		return
 
 	if target != _focused_target:
@@ -71,17 +71,18 @@ func _scan_forward(delta: float) -> void:
 		if target.has_method("begin_focus"):
 			target.call("begin_focus")
 
+	var required_time := _get_scan_time_required(target)
 	_set_hud_text(_get_scan_text(target))
 	if target.has_method("scan"):
 		var previous_progress := current_scan_progress
 		var progress := target.call("scan", delta) as float
 		current_scan_progress = progress
-		if previous_progress < scan_time_required and progress >= scan_time_required:
+		if previous_progress < required_time and progress >= required_time:
 			_on_scan_completed(target)
 	else:
-		current_scan_progress = minf(current_scan_progress + delta, scan_time_required)
+		current_scan_progress = minf(current_scan_progress + delta, required_time)
 
-	_set_hud_progress(current_scan_progress / scan_time_required)
+	_set_hud_progress(current_scan_progress / required_time)
 
 
 func _extract_scannable(hit: Dictionary) -> Node:
@@ -105,6 +106,7 @@ func _extract_scannable(hit: Dictionary) -> Node:
 func _on_scan_completed(target: Node) -> void:
 	if target.is_in_group("scannable_npc"):
 		_show_npc_readout(target)
+		get_tree().call_group("bounty_manager", "on_scannable_npc_scanned", target)
 		return
 	_show_clue_completed(target)
 
@@ -163,6 +165,19 @@ func _get_scan_text(target: Node) -> String:
 		if not text.is_empty():
 			return text
 	return "SCANNING..."
+
+
+func _get_scan_time_required(target: Node) -> float:
+	if target != null and target.has_method("get_scan_time_required"):
+		var required := target.call("get_scan_time_required") as float
+		return maxf(required, 0.05)
+	if target != null:
+		var required_value = target.get("scan_time_required")
+		if required_value is float:
+			return maxf(required_value, 0.05)
+		if required_value is int:
+			return maxf(float(required_value), 0.05)
+	return maxf(scan_time_required, 0.05)
 
 
 func _show_clue_completed(clue: Node) -> void:

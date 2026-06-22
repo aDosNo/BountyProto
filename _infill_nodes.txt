@@ -1,0 +1,108 @@
+[node name="Hesperus_DistrictInfill" parent="." instance=ExtResource("73_district_floor")]
+script = ExtResource("32_autocol")
+floor_material = ExtResource("69_bazaar_paver")
+accent_floor_material = ExtResource("70_bazaar_paver_dirty")
+floor_mesh_prefixes = PackedStringArray("DST_Paver_")
+accent_floor_mesh_names = PackedStringArray("DST_Paver_FloorDirty")
+
+[node name="Infill_W_Catwalk_A" parent="." instance=ExtResource("24_8uskt")]
+Transform3D(0.0, 0, -1.0, 0, 1.0, 0, 1.0, 0, 0.0, 6.24, -2.85, -28)
+
+[node name="Infill_W_Med_B" parent="." instance=ExtResource("25_dro85")]
+Transform3D(0.0, 0, -1.0, 0, 1.0, 0, 1.0, 0, 0.0, 5.98, -2.85, -39)
+
+[node name="Infill_E_Market_A" parent="." instance=ExtResource("1_m0fmx")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 28.23, -2.85, -29)
+
+[node name="Infill_E_Catwalk_B" parent="." instance=ExtResource("24_8uskt")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 28.16, -2.85, -40)
+
+[node name="Infill_Sq_North" parent="." instance=ExtResource("25_dro85")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 65.0, -2.85, -57)
+
+[node name="Infill_Sq_East" parent="." instance=ExtResource("24_8uskt")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 75.26, -2.85, -50)
+
+[node name="Infill_Sq_South" parent="." instance=ExtResource("1_m0fmx")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 63.0, -2.85, -43)
+
+[node name="Infill_Stall_A" parent="." instance=ExtResource("74_vendor")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 15.0, -2.85, -33)
+
+[node name="Infill_Stall_B" parent="." instance=ExtResource("75_kiosk")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 20.0, -2.85, -37)
+
+[node name="Infill_Stall_C" parent="." instance=ExtResource("74_vendor")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 14.5, -2.85, -45)
+
+[node name="Infill_Stall_D" parent="." instance=ExtResource("75_kiosk")]
+Transform3D(0.0, 0, -1.0, 0, 1.0, 0, 1.0, 0, 0.0, 21.0, -2.85, -46)
+
+[node name="Infill_Fore_A" parent="." instance=ExtResource("74_vendor")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 18.0, -2.85, -27)
+
+[node name="Infill_Fore_B" parent="." instance=ExtResource("75_kiosk")]
+Transform3D(-1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, -1.0, 14.0, -2.85, -40)
+
+[node name="Infill_Sq_Stall" parent="." instance=ExtResource("74_vendor")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 66.0, -2.85, -50)
+
+[node name="Infill_Leg_A" parent="." instance=ExtResource("75_kiosk")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 64.0, -2.85, -30)
+
+[node name="Infill_Leg_B" parent="." instance=ExtResource("75_kiosk")]
+Transform3D(0.0, 0, 1.0, 0, 1.0, 0, -1.0, 0, 0.0, 63.0, -2.85, -22)
+
+[node name="Infill_Crate_1" parent="." instance=ExtResource("13_crate")]
+Transform3D(1.1, 0, 0.0, 0, 1.1, 0, 0.0, 0, 1.1, 17, -2.85, -30)
+
+[node name="Infill_Crate_2" parent="." instance=ExtResource("13_crate")]
+Transform3D(0.84572, 0, 0.30782, 0, 0.9, 0, -0.30782, 0, 0.84572, 19, -2.85, -42)
+
+[node name="Infill_Crate_3" parent="." instance=ExtResource("13_crate")]
+Transform3D(1.2, 0, 0.0, 0, 1.2, 0, 0.0, 0, 1.2, 12, -2.85, -46)
+
+[node name="Infill_Crate_4" parent="." instance=ExtResource("13_crate")]
+Transform3D(0.96593, 0, -0.25882, 0, 1.0, 0, 0.25882, 0, 0.96593, 22, -2.85, -35)
+
+[node name="Infill_Crate_Sq1" parent="." instance=ExtResource("13_crate")]
+Transform3D(1.08329, 0, 0.19101, 0, 1.1, 0, -0.19101, 0, 1.08329, 68, -2.85, -52)
+
+[node name="Infill_Crate_Sq2" parent="." instance=ExtResource("13_crate")]
+Transform3D(0.9, 0, 0.0, 0, 0.9, 0, 0.0, 0, 0.9, 61, -2.85, -46)
+
+[node name="Infill_Crate_Leg1" parent="." instance=ExtResource("13_crate")]
+Transform3D(1.0, 0, 0.0, 0, 1.0, 0, 0.0, 0, 1.0, 61, -2.85, -38)
+
+[node name="Infill_Crate_Leg2" parent="." instance=ExtResource("13_crate")]
+Transform3D(0.79696, 0, 0.06972, 0, 0.8, 0, -0.06972, 0, 0.79696, 64, -2.85, -26)
+
+[node name="Infill_Cable_1" parent="." instance=ExtResource("15_cable")]
+Transform3D(1.4, 0, 0.0, 0, 1.4, 0, 0.0, 0, 1.4, 17, -2.85, -34)
+
+[node name="Infill_Cable_2" parent="." instance=ExtResource("15_cable")]
+Transform3D(1.4, 0, 0.0, 0, 1.4, 0, 0.0, 0, 1.4, 17, -2.85, -43)
+
+[node name="Infill_Cable_Leg" parent="." instance=ExtResource("15_cable")]
+Transform3D(1.4, 0, 0.0, 0, 1.4, 0, 0.0, 0, 1.4, 62, -2.85, -33)
+
+[node name="Infill_Sign_W" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(0.0, 0, -1.6, 0, 1.6, 0, 1.6, 0, 0.0, 9.7, 0.5, -33)
+
+[node name="Infill_Sign_E" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(0.0, 0, 1.6, 0, 1.6, 0, -1.6, 0, 0.0, 24.7, 0.5, -45)
+
+[node name="Infill_Sign_Bld24" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(0.0, 0, -1.6, 0, 1.6, 0, 1.6, 0, 0.0, 58.6, 0.5, -35)
+
+[node name="Infill_Sign_RampTop" parent="." instance=ExtResource("10_neon_sign")]
+Transform3D(0.0, 0, 1.6, 0, 1.6, 0, -1.6, 0, 0.0, 83, -0.5, -10)
+
+[node name="Infill_BB_1" parent="." instance=ExtResource("16_billboard")]
+Transform3D(0.0, 0, -1.15, 0, 1.15, 0, 1.15, 0, 0.0, 10.5, 1.0, -27)
+
+[node name="Infill_BB_2" parent="." instance=ExtResource("16_billboard")]
+Transform3D(0.0, 0, 1.15, 0, 1.15, 0, -1.15, 0, 0.0, 26, 1.0, -42)
+
+[node name="Infill_BB_Ramp" parent="." instance=ExtResource("16_billboard")]
+Transform3D(0.0, 0, 1.15, 0, 1.15, 0, -1.15, 0, 0.0, 80, -0.7, -6)
