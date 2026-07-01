@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/bounties/BountyManager.tscn" id="2_bounty"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/KorvaxiTarget.tscn" id="3_korvaxi"]
-[ext_resource type="PackedScene" path="res://scenes/props/ClueObject.tscn" id="4_clue"]
 [ext_resource type="PackedScene" path="res://scenes/props/ExtractionZone.tscn" id="5_extraction"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/GangGuard.tscn" id="6_guard"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/TargetDummy.tscn" id="7_dummy"]
@@ -22,7 +21,6 @@
 [ext_resource type="PackedScene" uid="uid://cr0kknstq0xit" path="res://assets/blender_models/Hesperus_SideAlley2.glb" id="26_o2a6p"]
 [ext_resource type="PackedScene" uid="uid://cejwxueukhy8e" path="res://Hesperus_DockBayCorner_SideAlleyJunction_ModuleSet.glb" id="27_o2a6p"]
 [ext_resource type="PackedScene" uid="uid://nw7og4hlkrc7" path="res://scenes/npcs/CrowdNPC.tscn" id="28_crowdnpc"]
-[ext_resource type="Material" path="res://assets/materials/generated/M_Gen_ConcreteGrime.tres" id="29_gen_concrete"]
 [ext_resource type="Script" uid="uid://cof66hungr4ht" path="res://scripts/crowd_director.gd" id="31_crowddir"]
 [ext_resource type="Script" uid="uid://dir3hesnutscn" path="res://scripts/auto_collider.gd" id="32_autocol"]
 [ext_resource type="Material" path="res://assets/materials/generated/M_Gen_BazaarPavers.tres" id="33_gen_pavers"]
@@ -42,8 +40,9 @@
 [ext_resource type="Script" uid="uid://cx2s81g66duxb" path="res://scripts/vendor_lockdown.gd" id="46_vendor_lockdown"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/Civilian_RatSand.tscn" id="47_civsand"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/Civilian_RatTeal.tscn" id="48_civteal"]
+[ext_resource type="Material" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="48_mjv1o"]
 [ext_resource type="PackedScene" path="res://scenes/props/AirTrafficController.tscn" id="49_airtraffic"]
-[ext_resource type="PackedScene" uid="uid://66fqknglilvh" path="res://assets/blender_models/Hesperus_AlienBar_InteriorHero.glb" id="50_eogfk"]
+[ext_resource type="PackedScene" uid="uid://6jdwecforg3q" path="res://assets/blender_models/holo_cantina_arch_shell_v2.glb" id="50_eogfk"]
 [ext_resource type="PackedScene" uid="uid://doy5s7gjdbyou" path="res://assets/blender_models/Hesperus_Market2_Street_gallery.glb" id="50_k0x0c"]
 [ext_resource type="PackedScene" uid="uid://baen0wkq6os0r" path="res://scenes/props/LadderZone.tscn" id="51_ladderzone"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/Civilian_SaurianBazaar.tscn" id="52_civsaurian"]
@@ -56,12 +55,31 @@
 [ext_resource type="PackedScene" path="res://scenes/npcs/Civilian_AndroidBazaar.tscn" id="66_civandroid"]
 [ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_DockFloorPlate.tres" id="67_dock_floor"]
 [ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_DockFloorPlate_Damaged.tres" id="68_dock_floor_damaged"]
-[ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_BazaarStonePaver.tres" id="69_bazaar_paver"]
+[ext_resource type="Material" uid="uid://cxmds8ty0qnck" path="res://assets/materials/generated/M_Hesperus_BazaarStonePaver.tres" id="69_bazaar_paver"]
 [ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_BazaarStonePaver_Dirty.tres" id="70_bazaar_paver_dirty"]
 [ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_ServiceConcrete.tres" id="71_service_concrete"]
 [ext_resource type="PackedScene" uid="uid://brs0ly1gjqbi3" path="res://assets/blender_models/Hesperus_DockBridge.glb" id="72_dock_bridge"]
+[ext_resource type="PackedScene" uid="uid://cgu2mxtrdoswi" path="res://assets/blender_models/Hesperus_FreightYard_ExtractionPrep.glb" id="73_a7xv7"]
 [ext_resource type="PackedScene" uid="uid://bluk8qyl4noqo" path="res://assets/blender_models/Hesperus_AlienBar_CourtyardAlley.glb" id="73_alley_shell"]
 [ext_resource type="PackedScene" path="res://scenes/maps/EastMicroHub.tscn" id="74_east_microhub"]
+[ext_resource type="PackedScene" uid="uid://caq61f7s3esis" path="res://scenes/props/SpriteDoor3D.tscn" id="74_fj34t"]
+[ext_resource type="PackedScene" uid="uid://15dtsogcrjlu" path="res://assets/blender_models/Hesperus_CourtyardForemarket.glb" id="75_foremarket"]
+[ext_resource type="PackedScene" path="res://scenes/activities/ForemarketColdChain.tscn" id="76_cold_chain"]
+[ext_resource type="PackedScene" uid="uid://dpjydw5raclsb" path="res://assets/blender_models/Hesperus_BountyEvidenceAnnex.glb" id="77_evidence_annex"]
+[ext_resource type="PackedScene" path="res://scenes/activities/BountyEvidenceAnnex.tscn" id="78_evidence_activity"]
+[ext_resource type="PackedScene" uid="uid://bdwbkho54lr3i" path="res://assets/blender_models/Hesperus_BazaarSafehouse.glb" id="79_bazaar_safehouse"]
+[ext_resource type="PackedScene" path="res://scenes/activities/BazaarSafehouse.tscn" id="80_safehouse_activity"]
+[ext_resource type="PackedScene" path="res://scenes/activities/FreightInspectionYard.tscn" id="82_freight_activity"]
+[ext_resource type="PackedScene" uid="uid://b3150qvcd2lu7" path="res://assets/blender_models/Hesperus_CourtyardPerimeter_Phase1.glb" id="83_courtyard_perimeter"]
+[ext_resource type="PackedScene" uid="uid://kw67xculf0cr" path="res://assets/blender_models/Hesperus_AlienBar_CommercialArcade.glb" id="84_alienbar_arcade"]
+[ext_resource type="PackedScene" uid="uid://bjh6bh2gqw0x2" path="res://assets/blender_models/Hesperus_BazaarAlienBar_Transition.glb" id="85_bazaar_bar_transition"]
+[ext_resource type="Script" uid="uid://dpuaqn2o15ku0" path="res://scripts/hesperus_district_systems.gd" id="86_district_systems"]
+[ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_WindowGlass_Warm.tres" id="90_win_warm"]
+[ext_resource type="Material" path="res://assets/materials/generated/M_Hesperus_WindowGlass_Cool.tres" id="91_win_cool"]
+[ext_resource type="PackedScene" uid="uid://bbdjwkclt12s8" path="res://assets/blender_models/Hesperus_CourtyardPerimeter_Phase2.glb" id="92_courtyard_phase2"]
+[ext_resource type="PackedScene" uid="uid://x8lksmqeaiax" path="res://assets/blender_models/Hesperus_AlienBar_EastBacklot.glb" id="93_alienbar_backlot"]
+[ext_resource type="Script" uid="uid://u1yn0wh78qny" path="res://scripts/investigation_director.gd" id="94_investigation"]
+[ext_resource type="Script" uid="uid://bvn7376ojyy5o" path="res://scripts/evidence_anchor.gd" id="95_evidence_anchor"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_hesperus_cosmic"]
 panorama = ExtResource("42_cosmic_sky")
@@ -88,22 +106,10 @@ fog_sky_affect = 0.26
 
 [sub_resource type="BoxMesh" id="Mesh_box"]
 
-[sub_resource type="StandardMaterial3D" id="Material_path_blue"]
-albedo_color = Color(0.08, 0.36, 1, 1)
-emission_enabled = true
-emission = Color(0.02, 0.12, 0.7, 1)
-emission_energy_multiplier = 1.15
-
 [sub_resource type="StandardMaterial3D" id="Material_interactable"]
 albedo_color = Color(0.06, 0.72, 0.9, 1)
 emission_enabled = true
 emission = Color(0.02, 0.36, 0.58, 1)
-emission_energy_multiplier = 1.1
-
-[sub_resource type="StandardMaterial3D" id="Material_path_purple"]
-albedo_color = Color(0.6, 0.4, 1, 1)
-emission_enabled = true
-emission = Color(0.3, 0.12, 0.7, 1)
 emission_energy_multiplier = 1.1
 
 [sub_resource type="StandardMaterial3D" id="Material_marker"]
@@ -131,12 +137,6 @@ emission = Color(0.04, 0.58, 0.16, 1)
 emission_energy_multiplier = 1.35
 
 [sub_resource type="BoxShape3D" id="Shape_box"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_CourtyardPad"]
-size = Vector3(52, 0.25, 42)
-
-[sub_resource type="BoxShape3D" id="BoxShape_CourtyardPad"]
-size = Vector3(52, 0.25, 42)
 
 [sub_resource type="BoxMesh" id="BoxMesh_EastGround"]
 size = Vector3(100, 5, 100)
@@ -185,6 +185,12 @@ albedo_color = Color(1, 0.74, 0.22, 1)
 emission_enabled = true
 emission = Color(1, 0.45, 0.05, 1)
 emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Material_path_purple"]
+albedo_color = Color(0.6, 0.4, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.12, 0.7, 1)
+emission_energy_multiplier = 1.1
 
 [sub_resource type="StandardMaterial3D" id="Material_terminal_dark"]
 albedo_color = Color(0.025, 0.032, 0.045, 1)
@@ -437,36 +443,6 @@ modulate = Color(1, 0.86, 0.22, 1)
 text = "BOUNTY BOARD"
 font_size = 20
 
-[node name="Clue_01" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=2100546262]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7848, -2.8305, 13.922302)
-
-[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Clue_01" unique_id=1656632362]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
-mesh = SubResource("Mesh_box")
-surface_material_override/0 = SubResource("Material_path_blue")
-
-[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Clue_01" unique_id=2090855807]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-visible = false
-modulate = Color(0.35, 0.65, 1, 1)
-text = "CLUE 01 (MAIN STREET)"
-font_size = 18
-
-[node name="Clue_02" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=709088669]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.01932, -0.147, 28.710007)
-
-[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Clue_02" unique_id=2048286836]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
-mesh = SubResource("Mesh_box")
-surface_material_override/0 = SubResource("Material_path_blue")
-
-[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Clue_02" unique_id=1552461164]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-visible = false
-modulate = Color(0.35, 0.65, 1, 1)
-text = "CLUE 02 (SIDE ALLEY)"
-font_size = 18
-
 [node name="Witness_Spot" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=1545318483]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, -0.147, 26)
 
@@ -480,21 +456,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 visible = false
 modulate = Color(0.35, 0.75, 1, 1)
 text = "WITNESS SPOT (TALK)"
-font_size = 18
-
-[node name="Clue_03_Sighting" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=109368077]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.357585, 11.262, -44.576958)
-
-[node name="Marker" type="MeshInstance3D" parent="GameplayRoutePlaceholders/Clue_03_Sighting" unique_id=1358656013]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.08, 0)
-mesh = SubResource("Mesh_box")
-surface_material_override/0 = SubResource("Material_path_purple")
-
-[node name="Label" type="Label3D" parent="GameplayRoutePlaceholders/Clue_03_Sighting" unique_id=1290632843]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-visible = false
-modulate = Color(0.7, 0.5, 1, 1)
-text = "CLUE 03 SIGHTING"
 font_size = 18
 
 [node name="TargetSpawn" type="Marker3D" parent="GameplayRoutePlaceholders" unique_id=575033142]
@@ -624,12 +585,15 @@ shape = SubResource("Shape_box")
 
 [node name="WalkwayNorth" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=510395247]
 transform = Transform3D(60, 0, 0, 0, 1, 0, 0, 0, 5, 21.379519, 10.761726, -44.467903)
+visible = false
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/WalkwayNorth" unique_id=345406526]
+visible = false
 mesh = SubResource("Mesh_box")
 surface_material_override/0 = ExtResource("34_gen_grate")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/WalkwayNorth" unique_id=2064449444]
+visible = false
 shape = SubResource("Shape_box")
 
 [node name="WalkwayWest" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=27995925]
@@ -645,7 +609,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.68330383, 0, 0.1773709)
 shape = SubResource("Shape_box")
 
 [node name="WalkwayEast" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=92392164]
-transform = Transform3D(3, 0, 0, 0, 0.3, 0, 0, 0, 8, 113.65575, 4.41251, -31.868324)
+transform = Transform3D(3, 0, 0, 0, 0.3, 0, 0, 0, 8, 115.78096, 4.6200852, -29.613121)
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/Floors/WalkwayEast" unique_id=1591728562]
 mesh = SubResource("Mesh_box")
@@ -727,21 +691,11 @@ surface_material_override/0 = ExtResource("33_gen_pavers")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/BazaarFloor_Holed/C5_East" unique_id=1463208198]
 shape = SubResource("Shape_box")
 
-[node name="CaptureFloor2" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=20118422]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, -0.075, -4)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldGeometry/Floors/CaptureFloor2" unique_id=1190144864]
-mesh = SubResource("BoxMesh_CourtyardPad")
-surface_material_override/0 = ExtResource("29_gen_concrete")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/Floors/CaptureFloor2" unique_id=2095442407]
-shape = SubResource("BoxShape_CourtyardPad")
-
 [node name="AlleyFloor2" type="StaticBody3D" parent="WorldGeometry/Floors" unique_id=343939403]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.75, 91.038055, -2.7, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WorldGeometry/Floors/AlleyFloor2" unique_id=1431561229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.016586304, -0.018445969, 0.02031163)
 mesh = SubResource("BoxMesh_EastGround")
 surface_material_override/0 = ExtResource("35_gen_oilfloor")
 
@@ -971,6 +925,9 @@ shape = SubResource("Shape_box")
 
 [node name="Building14" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1224283632]
 transform = Transform3D(22, 0, 0, 0, 44, 0, 0, 0, 24, 158, 17, 33)
+visible = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building14" unique_id=143825117]
 mesh = SubResource("Mesh_box")
@@ -980,7 +937,10 @@ surface_material_override/0 = SubResource("Material_wall_panel")
 shape = SubResource("Shape_box")
 
 [node name="Building15" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=375661817]
-transform = Transform3D(22, 0, 0, 0, 44, 0, 0, 0, 24, 45.447, 17, 23.413998)
+transform = Transform3D(22, 0, 0, 0, 44, 0, 0, 0, 24, 46.88217, 17, 14.53137)
+visible = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building15" unique_id=1991990111]
 mesh = SubResource("Mesh_box")
@@ -990,9 +950,10 @@ surface_material_override/0 = SubResource("Material_wall_panel")
 shape = SubResource("Shape_box")
 
 [node name="Building16" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=263413735]
-transform = Transform3D(-2.0981465e-06, 0, -18, 0, 38, 0, 48, 0, -7.86805e-07, 93.53149, 16.523514, 75.27969)
+transform = Transform3D(-2.0981465e-06, 0, -18, 0, 38, 0, 48, 0, -7.86805e-07, 135.25787, 16.523514, 75.27969)
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building16" unique_id=459177332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11022282)
 mesh = SubResource("Mesh_box")
 surface_material_override/0 = SubResource("Material_wall_panel")
 
@@ -1001,6 +962,9 @@ shape = SubResource("Shape_box")
 
 [node name="Building17" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1679813990]
 transform = Transform3D(18, 0, 0, 0, 58, 0, 0, 0, 42, 162, 22, -2)
+visible = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building17" unique_id=979456552]
 mesh = SubResource("Mesh_box")
@@ -1011,6 +975,9 @@ shape = SubResource("Shape_box")
 
 [node name="Building18" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=2140374827]
 transform = Transform3D(22, 0, 0, 0, 38, 0, 0, 0, 24, 158, 14, -20)
+visible = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building18" unique_id=1815287102]
 mesh = SubResource("Mesh_box")
@@ -1029,19 +996,11 @@ surface_material_override/0 = SubResource("Material_wall_dark")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/BazaarWestFacade2" unique_id=747105020]
 shape = SubResource("Shape_box")
 
-[node name="Building19" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1571413056]
-transform = Transform3D(18, 0, 0, 0, 36, 0, 0, 0, 38, 62, 13, -3)
-visible = false
-
-[node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building19" unique_id=1717155299]
-mesh = SubResource("Mesh_box")
-surface_material_override/0 = SubResource("Material_wall_panel")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldGeometry/WallsAndFacades/Building19" unique_id=2030657319]
-shape = SubResource("Shape_box")
-
 [node name="Building21" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=685238311]
 transform = Transform3D(48, 0, 0, 0, 38, 0, 0, 0, 18, 51.59815, 9.109005, 60.962524)
+visible = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building21" unique_id=1311103167]
 mesh = SubResource("Mesh_box")
@@ -1051,7 +1010,7 @@ surface_material_override/0 = SubResource("Material_wall_panel")
 shape = SubResource("Shape_box")
 
 [node name="Building22" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=1809713260]
-transform = Transform3D(-48, 0, -3.4969112e-06, 0, 38, 0, 4.196293e-06, 0, -40, 127.42041, 12.108482, 69.65599)
+transform = Transform3D(-48, 0, -3.4969112e-06, 0, 38, 0, 4.196293e-06, 0, -40, 99.38137, 12.108482, 74.88385)
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building22" unique_id=217560938]
 mesh = SubResource("Mesh_box")
@@ -1072,6 +1031,9 @@ shape = SubResource("Shape_box")
 
 [node name="Building24" type="StaticBody3D" parent="WorldGeometry/WallsAndFacades" unique_id=839061847]
 transform = Transform3D(22, 0, 0, 0, 44, 0, 0, 0, 24, 47.339424, 17, -16.99531)
+visible = false
+collision_layer = 0
+collision_mask = 0
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/WallsAndFacades/Building24" unique_id=237811377]
 mesh = SubResource("Mesh_box")
@@ -1124,6 +1086,7 @@ shape = SubResource("Shape_box")
 
 [node name="WalkwayRailNorth" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=1924110791]
 transform = Transform3D(65, 0, 0, 0, 0.7, 0, 0, 0, 0.2, 25.443632, 11.71, -42.06)
+visible = false
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/WalkwayRailNorth" unique_id=1499361619]
 mesh = SubResource("Mesh_box")
@@ -1163,7 +1126,7 @@ surface_material_override/0 = ExtResource("34_gen_grate")
 shape = SubResource("Shape_box")
 
 [node name="BarEastRamp" type="StaticBody3D" parent="WorldGeometry/RampsAndCatwalk" unique_id=1486931240]
-transform = Transform3D(15, -0.0694, 0, 2.644, 0.394, 0, 0, 0, 7, 34.43893, -1.725, -48)
+transform = Transform3D(15, -0.0694, 0, 2.644, 0.394, 0, 0, 0, 7, 34.43893, -1.725, -32.523235)
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/RampsAndCatwalk/BarEastRamp" unique_id=1110247400]
 mesh = SubResource("Mesh_box")
@@ -1283,7 +1246,7 @@ transform = Transform3D(7.4, 0, 0, 0, 0.28, 0, 0, 0, 0.38, -35.7, 4.9, 26.6)
 mesh = SubResource("Mesh_box")
 surface_material_override/0 = SubResource("Material_metal")
 
-[node name="SM_MarketBuilding" parent="WorldGeometry/BlockoutComposition/WallDepth" unique_id=43537573 instance=ExtResource("1_m0fmx")]
+[node name="SM_MarketBuilding" parent="WorldGeometry/BlockoutComposition/WallDepth" unique_id=1708885174 instance=ExtResource("1_m0fmx")]
 transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, 6.012741, -3.1601372, 21.923817)
 visible = false
 
@@ -1296,11 +1259,13 @@ surface_material_override/0 = SubResource("Material_metal")
 
 [node name="WalkwayUndersideBeam_North_B" type="MeshInstance3D" parent="WorldGeometry/BlockoutComposition/WalkwaySupport" unique_id=1228728708]
 transform = Transform3D(0.42, 0, 0, 0, 0.45, 0, 0, 0, 5.2, 20, 10.05, -44.45)
+visible = false
 mesh = SubResource("Mesh_box")
 surface_material_override/0 = SubResource("Material_metal")
 
 [node name="WalkwayUndersideBeam_North_C" type="MeshInstance3D" parent="WorldGeometry/BlockoutComposition/WalkwaySupport" unique_id=1332956142]
 transform = Transform3D(0.42, 0, 0, 0, 0.45, 0, 0, 0, 5.2, 38, 10.05, -44.45)
+visible = false
 mesh = SubResource("Mesh_box")
 surface_material_override/0 = SubResource("Material_metal")
 
@@ -1350,6 +1315,7 @@ shape = SubResource("Shape_box")
 [node name="BackDoor_Locked" parent="WorldGeometry/CourtyardArena/Exits" unique_id=45729986 instance=ExtResource("42_lockeddoor")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 86.3, 1.3924326, 11.5)
 locked_text = "Locked tight. There's a breaker panel along this wall somewhere."
+state_id = "hesperus.courtyard.backdoor"
 
 [node name="BackDoor_Breaker" parent="WorldGeometry/CourtyardArena/Exits" unique_id=1090531946 instance=ExtResource("43_bypassswitch")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 85.93233, 1.1, 16.69475)
@@ -1535,7 +1501,7 @@ transform = Transform3D(1.15, 0, 0, 0, 1.15, 0, 0, 0, 1.15, -37.8, 3.9572144, -1
 [node name="ReturnRouteZ7" type="Node3D" parent="WorldGeometry" unique_id=318439274]
 
 [node name="SouthBandFloor" type="StaticBody3D" parent="WorldGeometry/ReturnRouteZ7" unique_id=853859024]
-transform = Transform3D(130, 0, 0, 0, 5, 0, 0, 0, 28, 15, -2.7, 64)
+transform = Transform3D(130, 0, 0, 0, 5, 0, 0, 0, 40, 15, -2.7, 68.55401)
 
 [node name="Mesh" type="MeshInstance3D" parent="WorldGeometry/ReturnRouteZ7/SouthBandFloor" unique_id=1136475286]
 mesh = SubResource("Mesh_box")
@@ -1780,6 +1746,7 @@ open_prompt = "Press E: Slide the grate open"
 slide_axis = Vector3(1, 0, 0)
 slide_distance = 2.8
 slide_time = 0.8
+state_id = "hesperus.underground.entry_manhole"
 
 [node name="EntryBreaker" parent="WorldGeometry/UndergroundRoute" unique_id=542820785 instance=ExtResource("43_bypassswitch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.282234, -1.8908008, 21.44611)
@@ -1900,42 +1867,134 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.20221, 4.177347, -2.25242
 
 [node name="Clues" type="Node3D" parent="Gameplay" unique_id=1846994389]
 
-[node name="Clue_01_MainStreet" parent="Gameplay/Clues" unique_id=1530398668 instance=ExtResource("4_clue")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.825066, -2.4215152, 13.930086)
-clue_id = "clue_01_market_trace"
-next_clue_id = "clue_02_side_alley_residue"
-scan_text = "Dock arrival manifest — cross-referencing the bounty."
-completed_text = "Lead: the mark wears a deep red coat. Watch for it in the crowd."
-active = true
-intel_category = "appearance"
-intel_value = "red coat"
+[node name="Investigation" type="Node3D" parent="Gameplay" unique_id=795536504]
+script = ExtResource("94_investigation")
 
-[node name="Clue_02_SideAlley" parent="Gameplay/Clues" unique_id=971198198 instance=ExtResource("4_clue")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.016087, 0.15289545, 28.676414)
-clue_id = "clue_02_side_alley_residue"
-next_clue_id = "clue_03_upper_walkway_residue"
-scan_text = "Drag marks and uneven prints — reading the gait."
-completed_text = "Lead: the mark moves with a heavy, dragging step. You'll see it in how they walk."
-intel_category = "movement_tell"
-intel_value = "heavy gait"
+[node name="EvidenceAnchors" type="Node3D" parent="Gameplay/Investigation" unique_id=2005398457]
 
-[node name="Clue_03_UpperWalkway" parent="Gameplay/Clues" unique_id=438724264 instance=ExtResource("4_clue")]
+[node name="BazaarTrail_A" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=850004423]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8, -2.78, 13.9)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "bazaar_trail_a"
+zone_label = "Main Bazaar"
+placement_mode = "floor"
+followup_anchor_id = "courtyard_threshold_trace"
+followup_zone_label = "Capture Courtyard Threshold"
+
+[node name="SideAlleyTrail" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=485002447]
+transform = Transform3D(-3.6199901e-06, 0, 1, 0, 1, 0, -1, 0, -3.6199901e-06, -36, 0.16, 28.6)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "side_alley_trail"
+zone_label = "Side Alley"
+placement_mode = "floor"
+followup_anchor_id = "courtyard_threshold_trace"
+followup_zone_label = "Capture Courtyard Threshold"
+
+[node name="EastApproachTrail" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=1318365729]
+transform = Transform3D(-3.6199901e-06, 0, -1, 0, 1, 0, 1, 0, -3.6199901e-06, 70, -0.12, -9)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "east_approach_trail"
+zone_label = "East Approach"
+placement_mode = "floor"
+followup_anchor_id = "courtyard_threshold_trace"
+followup_zone_label = "Capture Courtyard Threshold"
+
+[node name="NorthServiceTrail" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=494145663]
+transform = Transform3D(-3.6199901e-06, 0, 1, 0, 1, 0, -1, 0, -3.6199901e-06, 82, -0.12, -39.97572)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "north_service_trail"
+zone_label = "North Service Street"
+placement_mode = "floor"
+followup_anchor_id = "courtyard_threshold_trace"
+followup_zone_label = "Capture Courtyard Threshold"
+
+[node name="BazaarStallFiber" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=1415346675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -2.55, 8)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "bazaar_stall_fiber"
+zone_label = "Main Bazaar Stall"
+placement_mode = "floor_near_landmark"
+landmark_name = "Stall_PostR_005"
+landmark_offset = Vector3(-0.8, -0.8, 0)
+
+[node name="SideAlleyFiber" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=1670050169]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0.18, 24)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "side_alley_fiber"
+zone_label = "Side Alley"
+placement_mode = "floor_near_landmark"
+landmark_root_name = "Hesperus_SideAlley2"
+landmark_name = "SA_Crate_01_A"
+landmark_offset = Vector3(-1.2, -0.5, 0)
+
+[node name="ServiceAwningFiber" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=21907718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.18, -33.5)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "service_awning_fiber"
+zone_label = "North Service Street"
+placement_mode = "floor_near_landmark"
+landmark_root_name = "Hesperus_AlienBar_CourtyardAlley"
+landmark_name = "ALY_Awning_04"
+landmark_offset = Vector3(0, -3.7, 1.2)
+
+[node name="EastMarketStallFiber" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=590765946]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.357585, 11.390602, -44.576958)
-clue_id = "clue_03_upper_walkway_residue"
-scan_text = "Vantage over the district — tracing where the mark keeps turning up."
-completed_text = "Lead: the mark haunts the courtyard. That's where to corner them."
-reveals_target = true
-intel_category = "location_habit"
-intel_value = "courtyard"
+script = ExtResource("95_evidence_anchor")
+anchor_id = "east_market_stall_fiber"
+zone_label = "East Market Stall"
+placement_mode = "floor_near_landmark"
+landmark_name = "Stall_PostL_004"
+landmark_offset = Vector3(0.8, -0.8, 0)
 
-[node name="Clue_Vantage_BalconyRun" parent="Gameplay/Clues" unique_id=1142712839 instance=ExtResource("4_clue")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.4, 1.08, -9.6)
-clue_id = "clue_vantage_balcony_limp"
-scan_text = "From up here the crowd reads like a ledger. Scanner pings hardware on one arm — cybernetics under the sleeve."
-completed_text = "Scanner signature confirmed from the balcony vantage."
-active = true
-intel_category = "scanner_signature"
-intel_value = "cybernetic arm"
+[node name="BazaarDeliveryCounter" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=41884986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, -2.58, 14)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "bazaar_delivery_counter"
+zone_label = "East Bazaar Counter"
+placement_mode = "mesh_top"
+landmark_name = "Stall_CounterTop_004"
+
+[node name="NorthArcadeBarCounter" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=1953062300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.69, -2.7, -76.63)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "north_arcade_bar_counter"
+zone_label = "Holo-Cantina Main Floor"
+placement_mode = "floor"
+
+[node name="CourtyardThresholdTrace" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=488755901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.12, -2)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "courtyard_threshold_trace"
+zone_label = "Courtyard Threshold"
+placement_mode = "floor"
+
+[node name="NorthArcadeClinicTech" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=1961292361]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78, 0.16, -34)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "north_arcade_clinic_tech"
+zone_label = "North Arcade Implant Clinic"
+placement_mode = "floor_near_landmark"
+landmark_root_name = "Hesperus_AlienBar_CommercialArcade"
+landmark_name = "ABA_ClinicDesk"
+landmark_offset = Vector3(0, -1, -1.2)
+
+[node name="ForemarketClinicTech" type="Marker3D" parent="Gameplay/Investigation/EvidenceAnchors" unique_id=1573382028]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 126, 0.16, 18)
+script = ExtResource("95_evidence_anchor")
+anchor_id = "foremarket_clinic_tech"
+zone_label = "Foremarket Clinic"
+placement_mode = "floor_near_landmark"
+landmark_root_name = "Hesperus_CourtyardForemarket"
+landmark_name = "FM_ClinicDoorFrame"
+landmark_offset = Vector3(-3, -2, -0.75)
+
+[node name="ForemarketColdChain" parent="Gameplay" unique_id=993375210 instance=ExtResource("76_cold_chain")]
+
+[node name="BountyEvidenceAnnexActivity" parent="Gameplay" unique_id=1689588395 instance=ExtResource("78_evidence_activity")]
+
+[node name="BazaarSafehouseActivity" parent="Gameplay" unique_id=1687506987 instance=ExtResource("80_safehouse_activity")]
+
+[node name="FreightInspectionYardActivity" parent="Gameplay" unique_id=1352771503 instance=ExtResource("82_freight_activity")]
 
 [node name="PressureEnemies" type="Node3D" parent="Gameplay" unique_id=1077670270]
 
@@ -2245,86 +2304,209 @@ layer = 20
 
 [node name="RewardScreen" parent="UI/RewardLayer" unique_id=639610874 instance=ExtResource("8_reward")]
 
-[node name="SM_BazaarBuilding_CatwalkKiosk2" parent="." unique_id=1371473893 instance=ExtResource("24_8uskt")]
+[node name="SM_BazaarBuilding_CatwalkKiosk2" parent="." unique_id=1382021804 instance=ExtResource("24_8uskt")]
 transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, 27.857119, -3.3069334, 19.279243)
 visible = false
 
-[node name="SM_BazaarBuilding_MedSupplyAlleyCorner2" parent="." unique_id=899150058 instance=ExtResource("25_dro85")]
+[node name="SM_BazaarBuilding_MedSupplyAlleyCorner2" parent="." unique_id=1429943853 instance=ExtResource("25_dro85")]
 transform = Transform3D(-1.25, 0, -1.09278474e-07, 0, 1.25, 0, 1.09278474e-07, 0, -1.25, 14.596247, -2.5404325, 45.696342)
 visible = false
 
-[node name="Hesperus_DockBay" parent="." unique_id=1951397398 instance=ExtResource("26_n8tfh")]
+[node name="Hesperus_DockBay" parent="." unique_id=827632226 instance=ExtResource("26_n8tfh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.28475, 3.9, -13.113689)
 script = ExtResource("32_autocol")
 floor_material = ExtResource("67_dock_floor")
 accent_floor_material = ExtResource("68_dock_floor_damaged")
 floor_mesh_prefixes = PackedStringArray("DK_Plate_")
 accent_floor_mesh_names = PackedStringArray()
+wall_material = ExtResource("48_mjv1o")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_SideAlley2" parent="." unique_id=765172254 instance=ExtResource("26_o2a6p")]
+[node name="Hesperus_SideAlley2" parent="." unique_id=1502873431 instance=ExtResource("26_o2a6p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.386375, -0.0059467554, 16.816212)
 script = ExtResource("32_autocol")
 floor_material = ExtResource("71_service_concrete")
 floor_mesh_prefixes = PackedStringArray()
 accent_floor_mesh_names = PackedStringArray()
+wall_material = ExtResource("36_gen_paintedwall")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_DockCornerHub" parent="." unique_id=96187554 instance=ExtResource("38_dockhub")]
+[node name="Hesperus_DockCornerHub" parent="." unique_id=316222541 instance=ExtResource("38_dockhub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.5, 4, -5.75)
 script = ExtResource("32_autocol")
 floor_material = ExtResource("67_dock_floor")
 accent_floor_material = ExtResource("68_dock_floor_damaged")
 floor_mesh_prefixes = PackedStringArray("HUB_Plate_")
 accent_floor_mesh_names = PackedStringArray()
+wall_material = ExtResource("35_gen_oilfloor")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_DockBridge" parent="." unique_id=69732963 instance=ExtResource("72_dock_bridge")]
+[node name="Hesperus_DockBridge" parent="." unique_id=169480449 instance=ExtResource("72_dock_bridge")]
 script = ExtResource("32_autocol")
 floor_material = ExtResource("67_dock_floor")
 floor_mesh_prefixes = PackedStringArray("DK_Plate_")
 accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_SouthPlaza" parent="." unique_id=1113040703 instance=ExtResource("39_southplaza")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, -2.7976222, 36)
+[node name="Hesperus_SouthPlaza" parent="." unique_id=693329160 instance=ExtResource("39_southplaza")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.682083, -2.7976222, 36)
 script = ExtResource("32_autocol")
 floor_material = ExtResource("69_bazaar_paver")
 accent_floor_material = ExtResource("70_bazaar_paver_dirty")
 floor_mesh_prefixes = PackedStringArray("PLZ_Plate_")
 accent_floor_mesh_names = PackedStringArray("PLZ_Plate_FloorDirty")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_AlleyCorner_PlazaJunction" parent="." unique_id=407644903 instance=ExtResource("41_alleycorner")]
+[node name="Hesperus_AlleyCorner_PlazaJunction" parent="." unique_id=2147214578 instance=ExtResource("41_alleycorner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12066841, 0)
 script = ExtResource("32_autocol")
-floor_material = ExtResource("71_service_concrete")
+floor_material = ExtResource("69_bazaar_paver")
+accent_floor_material = ExtResource("70_bazaar_paver_dirty")
 floor_mesh_prefixes = PackedStringArray()
 accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_Courtyard" parent="." unique_id=590807866 instance=ExtResource("40_courtyard")]
+[node name="Hesperus_Courtyard" parent="." unique_id=1717495016 instance=ExtResource("40_courtyard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, -0.2446868, -4)
 script = ExtResource("32_autocol")
 floor_mesh_prefixes = PackedStringArray()
 accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
 [node name="Hesperus_DockBayCorner_SideAlleyJunction_ModuleSet" parent="." unique_id=964677092 instance=ExtResource("27_o2a6p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.615593, -0.14942169, -17.159718)
 visible = false
 
-[node name="Hesperus_Apartment_Small" parent="." unique_id=468558968 instance=ExtResource("46_gusc7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.2435, -0.049999803, 29.671446)
+[node name="Hesperus_Apartment_Small" parent="." unique_id=970695435 instance=ExtResource("46_gusc7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 124.994484, -0.049999803, 46.105026)
 script = ExtResource("32_autocol")
 floor_mesh_prefixes = PackedStringArray()
 accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_Market2_Street_gallery" parent="." unique_id=747691637 instance=ExtResource("50_k0x0c")]
+[node name="Hesperus_CourtyardForemarket" parent="." unique_id=818113351 instance=ExtResource("75_foremarket")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 41.234146, -0.2, 40)
+script = ExtResource("32_autocol")
+floor_material = ExtResource("71_service_concrete")
+accent_floor_material = ExtResource("70_bazaar_paver_dirty")
+floor_mesh_prefixes = PackedStringArray("FM_Walk_", "FM_ServicePassage_", "FM_CourtyardThreshold")
+accent_floor_mesh_names = PackedStringArray("FM_Road_Main", "FM_Road_CourtyardTurn", "FM_Forecourt_Pad")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("FM_ApartmentAnnex_Window_", "FM_ApartmentAnnex_Lintel_", "FM_Tenement_Window_", "FM_Tenement_Lintel_", "FM_CornerHab_Window_", "FM_CornerHab_Lintel_", "FM_ClinicBlock_Window_", "FM_ClinicBlock_Lintel_", "FM_WorkerHab_Window_", "FM_WorkerHab_Lintel_", "FM_UtilityCorner_Window_", "FM_UtilityCorner_Lintel_", "FM_RearTowerWindow_", "FM_ColdLockerGlow", "FM_StreetRelayGlow", "FM_RoofOverrideGlow", "FM_FireEscapeStep_", "FM_FireEscape_Ladder", "FM_Sign_", "FM_Lamp_", "FM_OverheadCable_", "FM_CableCurve_")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_BountyEvidenceAnnex" parent="." unique_id=1163023389 instance=ExtResource("77_evidence_annex")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 50.013115, -0.2, 5.6397266)
+script = ExtResource("32_autocol")
+floor_mesh_prefixes = PackedStringArray()
+accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("EA_RecordsWing_Window_", "EA_RecordsWing_Lintel_", "EA_ImpoundHall_Window_", "EA_ImpoundHall_Lintel_", "EA_EvidenceVaultGlow", "EA_RoofLadder", "EA_PublicSign", "EA_SecurityBand", "EA_RecordsBand")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_BazaarSafehouse" parent="." unique_id=946477001 instance=ExtResource("79_bazaar_safehouse")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 50, -0.2, -17)
+script = ExtResource("32_autocol")
+floor_material = ExtResource("71_service_concrete")
+accent_floor_material = ExtResource("70_bazaar_paver_dirty")
+floor_mesh_prefixes = PackedStringArray("BS_StreetApron", "BS_RearServiceApron")
+accent_floor_mesh_names = PackedStringArray()
+wall_material = ExtResource("36_gen_paintedwall")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("BS_Window_", "BS_BrokerGlow", "BS_CacheGlow", "BS_PublicSign", "BS_SecurityBand", "BS_RoofLadder", "BS_StreetShutter_", "BS_RoofAntenna")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_CourtyardPerimeter_Phase1" parent="." unique_id=1144601875 instance=ExtResource("83_courtyard_perimeter")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 226.92072, 0, -0.3902626)
+script = ExtResource("32_autocol")
+floor_mesh_prefixes = PackedStringArray()
+accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("CP_EastMega_0_", "CP_EastMega_1_", "CP_EastMega_2_", "CP_EastMega_3_", "CP_EastMega_4_", "CP_EastMega_CorpBand", "CP_EastMega_UtilityGlow", "CP_SouthWest_1_", "CP_SouthWest_2_", "CP_SouthWest_3_", "CP_SouthMiddle_1_", "CP_SouthMiddle_2_", "CP_SouthMiddle_3_", "CP_SouthMiddle_4_", "CP_SouthEast_1_", "CP_SouthEast_2_", "CP_SouthEast_3_", "CP_SouthLaundryLine_", "CP_ReturnPassage_Glow", "CP_Southeast_Sign")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_CourtyardPerimeter_Phase2" parent="." unique_id=117528081 instance=ExtResource("92_courtyard_phase2")]
+script = ExtResource("32_autocol")
+floor_mesh_prefixes = PackedStringArray()
+accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("CP2_CredentialApproachCue_", "CP2_EastNorth_0_", "CP2_EastNorth_1_", "CP2_EastNorth_2_", "CP2_EastNorth_3_", "CP2_EastSouth_DoorGlow_", "CP2_ServicePortal_Glow", "CP2_ServicePortal_Sign", "CP2_East_Balcony_", "CP2_East_BalconyRail_")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_AlienBar_EastBacklot" parent="." unique_id=1437084221 instance=ExtResource("93_alienbar_backlot")]
+script = ExtResource("32_autocol")
+floor_mesh_prefixes = PackedStringArray()
+accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("ABL_NorthWorker_0_", "ABL_NorthWorker_1_", "ABL_NorthWorker_2_", "ABL_NorthWorker_CorpGlow", "ABL_NorthWorker_Antenna", "ABL_EastRepair_0_", "ABL_EastRepair_1_", "ABL_EastRepair_DoorGlow", "ABL_EastRepair_Sign", "ABL_BarAnnex_Glow", "ABL_FoodStall_Awning", "ABL_FoodStall_Sign", "ABL_PartsStall_Awning", "ABL_PartsStall_Sign", "ABL_GroundCue_", "ABL_BacklotRouteSign", "ABL_UpperStairRail", "ABL_UpperRouteGlow", "ABL_UpperRouteSign", "ABL_OverheadPipe", "ABL_OverheadCable")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_Market2_Street_gallery" parent="." unique_id=1941979478 instance=ExtResource("50_k0x0c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.178272, -2.8312, 1.2859802)
 script = ExtResource("32_autocol")
-enabled = false
 floor_material = ExtResource("69_bazaar_paver")
 accent_floor_material = ExtResource("70_bazaar_paver_dirty")
 floor_mesh_prefixes = PackedStringArray("GAL_Paver_Floor")
 accent_floor_mesh_names = PackedStringArray("GAL_Paver_FloorDirty")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray("GAL_collision_")
+collision_proxy_only = true
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_AlienBar_InteriorHero" parent="." unique_id=437359884 instance=ExtResource("50_eogfk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.170952, -2.8455238, -67.20709)
+[node name="HoloCantina" parent="." unique_id=498544312 instance=ExtResource("50_eogfk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.937487, -2.8455238, -72.87841)
+script = ExtResource("32_autocol")
+floor_mesh_prefixes = PackedStringArray()
+accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("HC_shell_", "HC_floor_", "HC_entry_", "HC_route_", "HC_pipe_", "HC_sign_")
+collision_proxy_prefixes = PackedStringArray("HC_collision_")
+hidden_mesh_prefixes = PackedStringArray()
 
-[node name="Hesperus_DistantCity" parent="." unique_id=2002371444 instance=ExtResource("60_distcity")]
+[node name="Hesperus_DistantCity" parent="." unique_id=1917851620 instance=ExtResource("60_distcity")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15878105, 0, -0.00554657)
 
 [node name="AirTrafficController_City" parent="." unique_id=934170479 instance=ExtResource("49_airtraffic")]
@@ -2354,12 +2536,62 @@ script = ExtResource("63_skylev")
 [node name="CapitalShipTraffic" type="Node3D" parent="." unique_id=551196877]
 script = ExtResource("64_capital")
 
-[node name="Hesperus_AlienBar_CourtyardAlley" parent="." unique_id=646245820 instance=ExtResource("73_alley_shell")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.554501)
+[node name="HesperusDistrictSystems" type="Node3D" parent="." unique_id=1019287308]
+script = ExtResource("86_district_systems")
+
+[node name="Hesperus_AlienBar_CourtyardAlley" parent="." unique_id=1599817371 instance=ExtResource("73_alley_shell")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0747833, 0, -9.00177)
 script = ExtResource("32_autocol")
-floor_material = ExtResource("71_service_concrete")
+floor_material = ExtResource("69_bazaar_paver")
 floor_mesh_prefixes = PackedStringArray("ALY_StraightRoad", "ALY_StraightWalk", "ALY_SouthConnector", "ALY_RampForecourt")
 accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray()
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray("ALY_Building_01", "ALY_Building_02", "ALY_TowerRear_W", "ALY_Shell05_", "ALY_RoofLip_01", "ALY_RoofLip_02", "ALY_RoofLip_05", "ALY_Pilaster_01", "ALY_Pilaster_02", "ALY_Pilaster_05", "ALY_DoorHeader_01", "ALY_DoorHeader_02", "ALY_DoorHeader_05", "ALY_DoorDark_01", "ALY_DoorDark_02", "ALY_DoorDark_05", "ALY_ServicePipe_01", "ALY_ServicePipe_02", "ALY_ServicePipe_05", "ALY_Window_01", "ALY_Window_02", "ALY_Window_05", "ALY_Awning_01", "ALY_Awning_02", "ALY_Awning_05", "ALY_RoofMass_01", "ALY_RoofMass_02", "ALY_RoofMass_05", "ALY_RoofVent_01", "ALY_RoofVent_02", "ALY_RoofVent_05", "ALY_BladeSign_01", "ALY_BladeSign_02", "ALY_BladeSign_05", "ALY_Utility", "ALY_RoofTank_0", "ALY_RoofTank_1", "ALY_RoofTankCap_0", "ALY_RoofTankCap_1", "ALY_Antenna_0", "ALY_Antenna_1")
 
-[node name="EastMicroHub" parent="." unique_id=1410919043 instance=ExtResource("74_east_microhub")]
+[node name="Hesperus_AlienBar_CommercialArcade" parent="." unique_id=1456379636 instance=ExtResource("84_alienbar_arcade")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.0390167, -2.7937026, -41.25384)
+script = ExtResource("32_autocol")
+floor_material = ExtResource("71_service_concrete")
+accent_floor_material = ExtResource("34_gen_grate")
+floor_mesh_prefixes = PackedStringArray("ABA_BlockFloor")
+accent_floor_mesh_names = PackedStringArray("ABA_RearServiceWalk", "ABA_Bar_RecessFloor", "ABA_UpperFloor", "ABA_UpperRearCorridor", "ABA_UpperBalcony", "ABA_StairLanding", "ABA_InternalStair")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("ABA_BarSign", "ABA_PawnSign", "ABA_ClinicSign", "ABA_UpperRoom_0_Window", "ABA_UpperRoom_1_Window", "ABA_UpperRoom_2_Window", "ABA_UpperRoom_3_Window", "ABA_RoofSignGlow")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray("ABA_Bar_BackCounter", "ABA_BarSign", "ABA_BarAwning")
+window_glass_warm = ExtResource("90_win_warm")
+window_glass_cool = ExtResource("91_win_cool")
+
+[node name="Hesperus_BazaarAlienBar_Transition" parent="." unique_id=964428626 instance=ExtResource("85_bazaar_bar_transition")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7875204, 0, 0)
+visible = false
+script = ExtResource("32_autocol")
+enabled = false
+floor_material = ExtResource("71_service_concrete")
+accent_floor_material = ExtResource("34_gen_grate")
+floor_mesh_prefixes = PackedStringArray("BAT_MainPassage", "BAT_ForecourtFloor", "BAT_NoodleShop_Floor", "BAT_WeaponRepair_Floor", "BAT_CyberReseller_Floor")
+accent_floor_mesh_names = PackedStringArray("BAT_WalkwayUnderlay", "BAT_ConnectorUpperLanding", "BAT_ConnectorBridge", "BAT_EastWedgeBridge", "BAT_EastWedgeFireEscape")
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("BAT_ElevatorGlow", "BAT_NoodleShop_Sign", "BAT_WeaponRepair_Sign", "BAT_CyberReseller_Sign", "BAT_UpperTeaHouse_Window", "BAT_UpperTeaHouse_Sign", "BAT_UpperTailor_Window", "BAT_UpperTailor_Sign", "BAT_UpperBroker_Window", "BAT_UpperBroker_Sign", "BAT_SecurityWindow", "BAT_ForecourtSign", "BAT_EastWedgeWindow", "BAT_EastWedge_LaundrySign", "BAT_OverheadSign")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+
+[node name="EastMicroHub" parent="." unique_id=1515275344 instance=ExtResource("74_east_microhub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.072815, 0, -4.193283)
+
+[node name="Hesperus_FreightInspectionYard" parent="." unique_id=1868467660 instance=ExtResource("73_a7xv7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.11975, -0.20000076, 70.905975)
+script = ExtResource("32_autocol")
+floor_material = ExtResource("71_service_concrete")
+accent_floor_material = ExtResource("70_bazaar_paver_dirty")
+floor_mesh_prefixes = PackedStringArray("FY2_YardSlab", "FY2_WetConcretePlate")
+accent_floor_mesh_names = PackedStringArray()
+wall_mesh_prefixes = PackedStringArray()
+collision_excluded_prefixes = PackedStringArray("FY2_GatehouseSign", "FY2_ManifestSign", "FY2_ScannerSign", "FY2_DispatchSign", "FY2_TowerSign", "FY2_CraneSign", "FY2_ExitSign", "FY2_SocialRoute_", "FY2_UtilityRoute_", "FY2_VerticalRoute_", "FY2_ExtractionRoute", "FY2_LaneStripe_", "FY2_Lamp", "FY2_Distant", "FY2_PerimeterRail_", "FY_ManifestWindow", "FY_GatehouseWindow", "FY_ScannerHeaderGlow", "FY_DispatchGlow", "FY_RouteStatusGlow", "FY_TowerWindow", "FY_TowerAntenna", "FY_TowerLadder", "FY_CraneCable", "FY_InspectorPost", "FY_ExtractionGuardPost")
+collision_proxy_prefixes = PackedStringArray()
+hidden_mesh_prefixes = PackedStringArray()
+
+[node name="SpriteDoor3D" parent="." unique_id=1297318281 instance=ExtResource("74_fj34t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.5455, 5.219997, 0)

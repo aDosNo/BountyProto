@@ -62,6 +62,7 @@ var _target_status: String = ""
 var _pending_reward: int = 0
 var _district_heat: int = 0
 var _vendors_locked_down := false
+var _active_chase_route_id := ""
 
 
 func _ready() -> void:
@@ -75,6 +76,8 @@ func _ready() -> void:
 	_connect_extraction_zone()
 	_deactivate_pressure_enemies()
 	_register_clues()
+	_connect_investigation_director()
+	_restore_district_consequences()
 	if auto_accept:
 		accept_bounty()
 	else:
@@ -85,10 +88,26 @@ func accept_bounty() -> void:
 	if _mission_is_closed() or state != MissionState.INACTIVE:
 		return
 
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state != null and district_state.has_method("reset_contract_state"):
+		district_state.call("reset_contract_state")
 	_reset_bounty_intel()
+	_restore_persistent_intel_rewards()
+	_set_district_flag("hesperus.contract.active", true)
+	_set_district_flag("hesperus.contract.target_escaped", false)
+	_set_district_state("hesperus.contract.outcome", "active")
+	_set_district_state("hesperus.contract.target_status", "")
+	_set_district_state("hesperus.contract.escape_route", "")
+	_set_district_flag("hesperus.contract.extraction_prepared", false)
 	state = MissionState.ACCEPTED
-	_set_objective("Hold RMB to scan Korvaxi's trace in the bazaar")
-	_activate_first_clue()
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	if investigation != null and investigation.has_method("start_contract"):
+		investigation.call("start_contract")
+		state = MissionState.TRACKING
+		_set_objective(String(investigation.call("get_active_lead_summary")))
+	else:
+		_set_objective("Hold RMB to scan Korvaxi's trace in the bazaar")
+		_activate_first_clue()
 	print("Bounty accepted: %s" % target_name)
 
 
@@ -98,6 +117,26 @@ func _reset_bounty_intel() -> void:
 		intel.call("reset")
 
 
+func _restore_persistent_intel_rewards() -> void:
+	var district_state := get_node_or_null("/root/DistrictState")
+	var intel := get_node_or_null("/root/BountyIntel")
+	if district_state == null or intel == null or not intel.has_method("learn"):
+		return
+
+	if bool(district_state.call("has_flag", "hesperus.arcade.pawn_complete")):
+		intel.call("learn", "appearance", "red coat", "saved pawned armor receipt")
+	if bool(district_state.call("has_flag", "hesperus.arcade.bar_complete")):
+		intel.call("learn", "location_habit", "courtyard", "saved North Arcade schedule")
+	if bool(district_state.call("has_flag", "hesperus.arcade.clinic_complete")):
+		intel.call("learn", "scanner_signature", "cybernetic arm", "saved implant registry")
+	if int(district_state.call("get_state", "hesperus.safehouse.state", 0)) >= 2:
+		intel.call("learn", "movement_tell", "heavy gait", "saved pursuit ledger")
+	if int(district_state.call("get_state", "hesperus.foremarket.cold_chain.state", 0)) >= 3:
+		intel.call("learn", "scanner_signature", "cybernetic arm", "saved clinic implant log")
+	if int(district_state.call("get_state", "hesperus.evidence_annex.state", 0)) >= 2:
+		intel.call("learn", "build", "korvaxi-class heavy", "saved impound biometric record")
+
+
 func on_target_neutralized() -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
@@ -105,6 +144,8 @@ func on_target_neutralized() -> void:
 	_clear_nemesis_if_known()
 	add_heat(heat_target_killed, "bounty target killed")
 	state = MissionState.TARGET_NEUTRALIZED
+	_set_district_state("hesperus.contract.target_status", "dead")
+	_set_district_state("hesperus.contract.outcome", "secured")
 	_set_objective("%s neutralized. Reach extraction." % target_name.split(" ")[0])
 	print("Bounty target neutralized: %s" % target_name)
 	start_extraction_phase("Dead", reward_dead)
@@ -116,6 +157,8 @@ func on_target_captured() -> void:
 
 	_clear_nemesis_if_known()
 	state = MissionState.TARGET_NEUTRALIZED
+	_set_district_state("hesperus.contract.target_status", "alive")
+	_set_district_state("hesperus.contract.outcome", "secured")
 	_set_objective("Korvaxi captured alive. Reach extraction.")
 	print("Bounty target captured alive: %s" % target_name)
 	start_extraction_phase("Alive", reward_alive)
@@ -154,6 +197,23 @@ func on_scannable_npc_scanned(npc: Node) -> void:
 	print("NPC scan logged: %s" % str(npc.get("npc_name")))
 
 
+func _connect_investigation_director() -> void:
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	if investigation == null:
+		return
+	if investigation.has_signal("evidence_verified") \
+			and not investigation.evidence_verified.is_connected(_on_evidence_verified):
+		investigation.evidence_verified.connect(_on_evidence_verified)
+
+
+func _on_evidence_verified(_category: String, _value: String, _evidence_id: String) -> void:
+	if _mission_is_closed():
+		return
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	if investigation != null and investigation.has_method("get_active_lead_summary"):
+		_set_objective(String(investigation.call("get_active_lead_summary")))
+
+
 var _wrong_accusations: int = 0
 
 
@@ -170,11 +230,17 @@ func on_npc_accused(npc: Node) -> void:
 
 	var intel := get_node_or_null("/root/BountyIntel")
 	var known := 0
-	if intel != null and intel.has_method("known_count"):
-		known = int(intel.call("known_count"))
+	if intel != null and intel.has_method("known_visible_count"):
+		known = int(intel.call("known_visible_count"))
 
 	if known < intel_required_to_confirm:
-		_show_toast("Not enough intel to confront (%d/%d traits known). Work the district." % [known, intel_required_to_confirm], 3.0)
+		_show_toast("Not enough narrowing intel to confront (%d/%d visible traits). Work the district." % [known, intel_required_to_confirm], 3.0)
+		return
+	if intel == null or not intel.has_method("knows") or not bool(intel.call("knows", "scanner_signature")):
+		_show_toast("Identity unresolved: obtain scanner-signature intel before confronting.", 3.2)
+		return
+	if not _npc_was_analyzed(npc):
+		_show_toast("Analyze this subject before confronting.", 2.8)
 		return
 
 	if npc.has_method("mark_confronted"):
@@ -223,6 +289,7 @@ func add_heat(amount: int, reason: String = "public violence", _source_position:
 		return
 
 	_district_heat += amount
+	_set_district_state("hesperus.heat.level", _district_heat)
 	print("District heat +%d: %s (total %d/%d)" % [amount, reason, _district_heat, heat_lockdown_threshold])
 
 	if not _vendors_locked_down and _district_heat >= heat_lockdown_threshold:
@@ -231,14 +298,14 @@ func add_heat(amount: int, reason: String = "public violence", _source_position:
 
 func _trigger_vendor_lockdown(reason: String) -> void:
 	_vendors_locked_down = true
-	# Fire the responder group anyway (harmless; nodes with real stall geometry
-	# will react once placed). Until then visuals are DEFERRED by decision:
-	# current responder nodes carry no stall/counter/awning children, so no
-	# shutters drop. Keep the beat mechanism-only — a toast the scene can honor,
-	# not a promise of shutters it can't show — plus a clear console line.
+	_set_district_flag("hesperus.lockdown.active", true)
+	_set_district_state("hesperus.heat.level", _district_heat)
+	# Responders own their local visual/state consequences. The Bazaar Safehouse
+	# drops authored street shutters; legacy responders without stall geometry
+	# remain harmless.
 	get_tree().call_group("vendor_lockdown", "set_lockdown", reason)
-	_show_toast("The crowd turns wary — word of a bad call is spreading.", 3.0)
-	print("District heat hit lockdown threshold (%d): %s. Vendor-shutter visuals deferred (no stall geometry on responders)." % [heat_lockdown_threshold, reason])
+	_show_toast("The bazaar locks down — street access is changing.", 3.0)
+	print("District heat hit lockdown threshold (%d): %s. Vendor responders activated." % [heat_lockdown_threshold, reason])
 
 
 func start_extraction_phase(status: String, reward: int) -> void:
@@ -248,9 +315,15 @@ func start_extraction_phase(status: String, reward: int) -> void:
 	_target_status = status
 	_pending_reward = reward
 	state = MissionState.EXTRACTING
+	var district_state := get_node_or_null("/root/DistrictState")
+	var freight_prepared := district_state != null and bool(
+		district_state.call("has_flag", "hesperus.extraction.freight_prepared")
+	)
+	_set_district_flag("hesperus.contract.extraction_prepared", freight_prepared)
 	_set_objective("Bounty secured. South gate open — return to dock extraction")
 	_activate_extraction_zone()
 	_activate_pressure_enemies()
+	get_tree().call_group("extraction_modifier", "apply_extraction_modifier")
 	_open_return_routes()
 	print("Extraction phase started. Status: %s. Pending reward: %d" % [_target_status, _pending_reward])
 
@@ -269,6 +342,8 @@ func complete_bounty(status: String = "Dead", reward: int = -1) -> void:
 		return
 
 	state = MissionState.COMPLETE
+	_set_district_flag("hesperus.contract.active", false)
+	_set_district_state("hesperus.contract.outcome", "complete")
 	var final_reward := reward_dead if reward < 0 else reward
 
 	# Collateral fines: wrong accusations come out of the payout, never more
@@ -309,6 +384,8 @@ func fail_bounty() -> void:
 		_record_nemesis_escape()
 
 	state = MissionState.FAILED
+	_set_district_flag("hesperus.contract.active", false)
+	_set_district_state("hesperus.contract.outcome", "hunter_down")
 	_set_objective("Hunter down. Contract failed.")
 	print("CONTRACT FAILED: %s" % target_name)
 
@@ -333,8 +410,12 @@ func _connect_target() -> void:
 
 	if _target.has_signal("flee_started"):
 		_target.flee_started.connect(_on_target_flee_started)
+	if _target.has_signal("escape_route_selected"):
+		_target.escape_route_selected.connect(_on_escape_route_selected)
 	if _target.has_signal("reached_final_node"):
 		_target.reached_final_node.connect(_on_target_reached_final_node)
+	if _target.has_signal("escaped"):
+		_target.escaped.connect(_on_target_escaped)
 	if _target.has_signal("stunned"):
 		_target.stunned.connect(_on_target_stunned)
 	if _target.has_signal("stun_expired"):
@@ -410,7 +491,17 @@ func _on_target_flee_started() -> void:
 	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
 		return
 
-	_set_objective("Chase Korvaxi through the courtyard")
+	if _active_chase_route_id.is_empty():
+		_set_objective("Chase Korvaxi through the courtyard")
+
+
+func _on_escape_route_selected(route_id: String, cue_text: String) -> void:
+	if _mission_is_closed():
+		return
+	_active_chase_route_id = route_id
+	_set_district_state("hesperus.contract.escape_route", route_id)
+	_set_objective(cue_text)
+	_show_toast(cue_text, 3.2)
 
 
 func _on_target_reached_final_node() -> void:
@@ -418,6 +509,24 @@ func _on_target_reached_final_node() -> void:
 		return
 
 	_set_objective("Korvaxi cornered. Shoot or stun and capture")
+
+
+func _on_target_escaped(route_id: String) -> void:
+	if _mission_is_closed() or state == MissionState.TARGET_NEUTRALIZED or state == MissionState.EXTRACTING:
+		return
+	_record_nemesis_escape()
+	state = MissionState.FAILED
+	_set_district_flag("hesperus.contract.active", false)
+	_set_district_flag("hesperus.contract.target_escaped", true)
+	_set_district_state("hesperus.contract.escape_route", route_id)
+	_set_district_state("hesperus.contract.outcome", "target_escaped")
+	_set_objective("Target escaped the district. Contract failed.")
+	_show_toast("Korvaxi escaped via %s." % route_id.replace("_", " "), 3.5)
+	print("CONTRACT FAILED: target escaped via %s." % route_id)
+	if _reward_screen == null:
+		_reward_screen = _resolve_reward_screen()
+	if _reward_screen != null and _reward_screen.has_method("show_failure"):
+		_reward_screen.call("show_failure", target_name)
 
 
 func _on_target_stunned() -> void:
@@ -436,6 +545,36 @@ func _on_target_stun_expired() -> void:
 
 func _mission_is_closed() -> bool:
 	return state == MissionState.COMPLETE or state == MissionState.FAILED
+
+
+func _set_district_flag(state_id: String, active: bool) -> void:
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state != null and district_state.has_method("set_flag"):
+		district_state.call("set_flag", state_id, active)
+
+
+func _set_district_state(state_id: String, value: Variant) -> void:
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state != null and district_state.has_method("set_state"):
+		district_state.call("set_state", state_id, value)
+
+
+func _restore_district_consequences() -> void:
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state == null:
+		return
+	_district_heat = int(district_state.call("get_state", "hesperus.heat.level", 0))
+	_vendors_locked_down = bool(district_state.call("has_flag", "hesperus.lockdown.active"))
+	if _vendors_locked_down:
+		get_tree().call_group("vendor_lockdown", "set_lockdown", "persisted district heat", true)
+
+
+func _npc_was_analyzed(npc: Node) -> bool:
+	var public_scanned = npc.get("is_scanned")
+	if public_scanned is bool:
+		return public_scanned
+	var target_scanned = npc.get("_is_scanned")
+	return target_scanned is bool and target_scanned
 
 
 # --- Nemesis hooks ------------------------------------------------------------

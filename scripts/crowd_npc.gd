@@ -47,11 +47,20 @@ enum WanderState { IDLE, WALK, PANIC }
 @onready var mesh: MeshInstance3D = %NpcMesh
 @onready var name_label: Label3D = %NameLabel
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
+## Sprite NPCs (Civilian_*.tscn) carry the visual on a child Sprite3D and leave
+## %NpcMesh empty (0 surfaces). When that's the case the marker tint drives the
+## sprite's modulate instead of a mesh override. Resolved in _ready().
+var _sprite_visual: DirectionalSprite3D = null
 
 var is_scanned: bool = false
 var was_confronted: bool = false
 var is_spooked: bool = false
 var _is_dead: bool = false
+## SWEEP marker: lit by the scanner's sweep pulse when this NPC still matches
+## every visible trait the player knows. Amber, time-decayed, purely a shortlist
+## cue — confirms nothing (05 C.1). Focused(cyan) > swept(amber) > scanned(green).
+var _swept_timer: float = 0.0
+var _is_focused: bool = false
 var witness_hint_category: String = ""
 var witness_hint_value: String = ""
 var _witness_used: bool = false
@@ -102,6 +111,7 @@ func set_route(points: Array, half_width: float, start_index: int = 0) -> void:
 func _ready() -> void:
 	add_to_group("scannable_npc")
 	add_to_group("damageable")
+	_sprite_visual = get_node_or_null("Sprite") as DirectionalSprite3D
 	_base_material = mesh.get_active_material(0)
 	_home = global_position
 	name_label.text = npc_name
@@ -160,6 +170,11 @@ func _physics_process(delta: float) -> void:
 
 	if _clam_timer > 0.0:
 		_clam_timer = maxf(_clam_timer - delta, 0.0)
+
+	if _swept_timer > 0.0:
+		_swept_timer = maxf(_swept_timer - delta, 0.0)
+		if _swept_timer == 0.0:
+			_refresh_tint()
 
 	# Safety net: recover NPCs that fall out of the world.
 	if global_position.y < _home.y - 8.0:
@@ -508,14 +523,30 @@ func begin_focus() -> void:
 	name_label.visible = true
 	_completed_this_focus = false
 	_scan_progress = 0.0
-	_set_highlight(true)
+	_is_focused = true
+	_refresh_tint()
 
 
 func end_focus() -> void:
 	name_label.visible = false
-	_set_highlight(false)
+	_is_focused = false
+	_refresh_tint()
 	_scan_progress = 0.0
 	_completed_this_focus = false
+
+
+## SWEEP hit: the scanner has decided (via BountyIntel.visible_match) that this
+## NPC still fits the known visible profile. Light the amber marker for `duration`.
+## No intel logic here — the scanner owns the comparison; the NPC just shows it.
+func mark_swept(duration: float) -> void:
+	if _is_dead:
+		return
+	_swept_timer = maxf(_swept_timer, duration)
+	_refresh_tint()
+
+
+func is_swept() -> bool:
+	return _swept_timer > 0.0
 
 
 func scan(delta: float) -> float:
@@ -538,7 +569,7 @@ func get_scan_time_required() -> float:
 func _complete_scan() -> void:
 	_completed_this_focus = true
 	is_scanned = true
-	_set_scanned_tint()
+	_refresh_tint()
 	npc_scanned.emit(self)
 	print("NPC scanned: %s (candidate=%s target=%s)" % [npc_name, is_candidate, is_target])
 
@@ -581,14 +612,26 @@ func _give_witness_hint() -> void:
 		return
 	_witness_used = true
 
-	var intel := get_node_or_null("/root/BountyIntel")
-	if intel != null and intel.has_method("learn"):
-		intel.call("learn", witness_hint_category, witness_hint_value, "witness: %s" % npc_name)
+	var lead: Dictionary = {}
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	if investigation != null and investigation.has_method("report_witness_hint"):
+		var lead_value = investigation.call(
+			"report_witness_hint",
+			witness_hint_category,
+			witness_hint_value,
+			npc_name
+		)
+		if lead_value is Dictionary:
+			lead = lead_value
 
 	var hud := get_tree().get_first_node_in_group("hud")
 	if hud != null and hud.has_method("show_toast"):
-		hud.call("show_toast", _witness_line(), 3.5)
-	print("Witness %s: %s = %s" % [npc_name, witness_hint_category, witness_hint_value])
+		var zone := String(lead.get("zone_label", "the district"))
+		if String(lead.get("status", "")) == "VERIFIED":
+			hud.call("show_toast", "%s\nThat corroborates verified evidence." % _witness_line(), 4.0)
+		else:
+			hud.call("show_toast", "%s\nCheck %s for physical evidence." % [_witness_line(), zone], 4.2)
+	print("Witness %s created lead: %s = %s" % [npc_name, witness_hint_category, witness_hint_value])
 
 
 func _witness_line() -> String:
@@ -631,24 +674,60 @@ func resolve_as_target_handoff() -> void:
 
 
 func _set_highlight(active: bool) -> void:
-	if active:
-		var highlight := StandardMaterial3D.new()
-		highlight.albedo_color = Color(0.55, 0.85, 1.0)
-		highlight.emission_enabled = true
-		highlight.emission = Color(0.1, 0.35, 0.6)
-		highlight.emission_energy_multiplier = 0.9
-		mesh.set_surface_override_material(0, highlight)
-	else:
-		if is_scanned:
-			_set_scanned_tint()
-		else:
-			mesh.set_surface_override_material(0, null)
+	_is_focused = active
+	_refresh_tint()
+
+
+## Single source of truth for the marker visual. Precedence (05 C.1):
+## focused (cyan) > swept (amber) > scanned (green) > base. Called whenever any
+## of those states changes so they never clobber each other.
+## Mesh NPCs get a surface override; sprite NPCs (empty %NpcMesh) get a modulate
+## wash on the child Sprite3D instead — one resolver, both visual types.
+func _refresh_tint() -> void:
+	if _is_dead:
+		return
+	var state := "base"
+	if _is_focused:
+		state = "focused"
+	elif _swept_timer > 0.0:
+		state = "swept"
+	elif is_scanned:
+		state = "scanned"
+
+	if mesh != null and mesh.get_surface_override_material_count() > 0:
+		match state:
+			"focused":
+				mesh.set_surface_override_material(0, _make_tint(
+					Color(0.55, 0.85, 1.0), Color(0.1, 0.35, 0.6), 0.9))
+			"swept":
+				mesh.set_surface_override_material(0, _make_tint(
+					Color(1.0, 0.72, 0.2), Color(0.6, 0.32, 0.02), 0.8))
+			"scanned":
+				mesh.set_surface_override_material(0, _make_tint(
+					Color(0.4, 0.75, 0.5), Color(0.06, 0.3, 0.12), 0.6))
+			_:
+				mesh.set_surface_override_material(0, null)
+	elif _sprite_visual != null:
+		# Modulate is a light multiplier, so use bright washes, not dark emission.
+		match state:
+			"focused":
+				_sprite_visual.set_state_tint(Color(0.6, 0.85, 1.0))
+			"swept":
+				_sprite_visual.set_state_tint(Color(1.0, 0.78, 0.4))
+			"scanned":
+				_sprite_visual.set_state_tint(Color(0.6, 1.0, 0.72))
+			_:
+				_sprite_visual.clear_state_tint()
+
+
+func _make_tint(albedo: Color, emission: Color, energy: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = albedo
+	m.emission_enabled = true
+	m.emission = emission
+	m.emission_energy_multiplier = energy
+	return m
 
 
 func _set_scanned_tint() -> void:
-	var scanned := StandardMaterial3D.new()
-	scanned.albedo_color = Color(0.4, 0.75, 0.5)
-	scanned.emission_enabled = true
-	scanned.emission = Color(0.06, 0.3, 0.12)
-	scanned.emission_energy_multiplier = 0.6
-	mesh.set_surface_override_material(0, scanned)
+	_refresh_tint()

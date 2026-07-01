@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 BountyIntel="*res://scripts/bounty_intel.gd"
 HunterLedger="*res://scripts/hunter_ledger.gd"
 NemesisRegistry="*res://scripts/nemesis_registry.gd"
+DistrictState="*res://scripts/district_state.gd"
 
 [display]
 

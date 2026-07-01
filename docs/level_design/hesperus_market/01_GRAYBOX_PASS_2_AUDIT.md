@@ -1,5 +1,9 @@
 # Hesperus Market Graybox Pass 2 Audit
 
+**Historical/reference audit.** This covers the generated
+`levels/hesperus_market/` branch, not the canonical live map. Its “next pass”
+recommendations are not current project priorities.
+
 Date: 2026-06-09
 
 ## Source of Truth

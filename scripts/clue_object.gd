@@ -21,12 +21,23 @@ signal clue_scanned(clue_id: String, next_clue_id: String, reveals_target: bool)
 var is_completed: bool = false
 var _scan_progress: float = 0.0
 var _base_material: Material
+## SWEEP marker parity with CrowdNPC: a sweep pulse lights the clue amber to
+## say "trace here — hold to analyze." Extraction still goes through scan()
+## (held analysis), which writes intel. (05 C.4.)
+var _swept_timer: float = 0.0
 
 
 func _ready() -> void:
 	add_to_group("scanner_clue")
 	_base_material = mesh.get_active_material(0)
 	set_active(active)
+
+
+func _process(delta: float) -> void:
+	if _swept_timer > 0.0:
+		_swept_timer = maxf(_swept_timer - delta, 0.0)
+		if _swept_timer == 0.0 and not is_completed:
+			end_focus()
 
 
 func set_active(new_active: bool) -> void:
@@ -55,8 +66,27 @@ func begin_focus() -> void:
 
 func end_focus() -> void:
 	if not is_completed:
-		clue_light.light_energy = 1.2
-		label.text = "SCAN TRACE"
+		if _swept_timer > 0.0:
+			clue_light.light_energy = 2.0
+			label.text = "TRACE — HOLD RMB TO ANALYZE"
+		else:
+			clue_light.light_energy = 1.2
+			label.text = "SCAN TRACE"
+
+
+## SWEEP hit: surface this clue as a lit lead. Amber-bright light + analyze
+## prompt for `duration`. Confirms nothing; holding analysis extracts the trait.
+func mark_swept(duration: float) -> void:
+	if is_completed or not active:
+		return
+	_swept_timer = maxf(_swept_timer, duration)
+	clue_light.light_color = Color(1.0, 0.72, 0.2)
+	clue_light.light_energy = 2.0
+	label.text = "TRACE — HOLD RMB TO ANALYZE"
+
+
+func is_swept() -> bool:
+	return _swept_timer > 0.0
 
 
 func scan(delta: float) -> float:

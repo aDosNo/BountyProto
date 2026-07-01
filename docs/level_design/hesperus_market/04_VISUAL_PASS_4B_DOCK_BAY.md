@@ -1,5 +1,9 @@
 # Hesperus Market Visual Blockout Pass 4B - Section 1 Dock Bay
 
+**Historical/reference audit.** This pass affects the generated
+`levels/hesperus_market/` scene only, not the canonical live Dock Bay. Its “next
+recommended pass” is not a current project priority.
+
 ## Scope
 
 Visual blockout dressing was added only for `S1_DOCK_BAY` in the generated Hesperus Market graybox scene.

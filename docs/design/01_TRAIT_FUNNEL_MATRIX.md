@@ -1,8 +1,10 @@
 # 01 — TRAIT FUNNEL MATRIX
 Feeds the contract generator. Records the trait model, the source coverage rule,
-the decoy-field construction algorithm, and the data shapes. Design only — no
-scene/code yet. Mobile-reviewable; numbers marked **[NICK]** are layout/balance
-calls reserved for you.
+the decoy-field construction algorithm, and the data shapes. Reconciled
+2026-07-01: trait data, visible movement tells, the authored Hesperus candidate
+field, hybrid scanner, signature gate, and dynamic evidence are implemented.
+The general seeded decoy-field construction algorithm remains design-only.
+Numbers marked **[NICK]** are layout/balance calls reserved for you.
 
 ## Locked architecture decision (appearance)
 **C now, B later.** Appearance is palette-only at first: shared base sheet +
@@ -50,8 +52,8 @@ is a chokepoint. Scanner sig is excluded — it's the gate, see below.
 
 | Narrowing trait | Dossier | Witness | Overheard | Vantage/observe | Binocular tag | Found clue | Intel broker |
 |---|---|---|---|---|---|---|---|
-| Appearance (palette) | partial/stale | ✓ | ✓ | ✓ (direct sight) | ✓ | — | ✓ (paid) |
-| Movement tell | — | ✓ | — | ✓ (built: balcony limp clue) | ✓ | — | ✓ (paid) |
+| Appearance (palette) | partial/stale | ✓ | ✓ | ✓ (direct sight) | ✓ | ✓ (fiber transfer) | ✓ (paid) |
+| Movement tell | — | ✓ | — | ✓ | ✓ | ✓ (dynamic footprint trail) | ✓ (paid) |
 | Location habit | — | ✓ | ✓ | — | — | ✓ (residue/receipts) | ✓ (paid) |
 
 Notes: appearance is over-sourced because it's visible — fine, since visible ≠
@@ -59,6 +61,11 @@ identifying when shared across decoys. Movement leans on witness + vantage +
 binocular; because it reads weakly, treat it as *corroborating*, rarely
 sole-narrowing. Intel broker can pre-reveal **one** trait (economy sink) — it's a
 paid shortcut into any row, not a unique source.
+
+IMPLEMENTED 2026-06-29: witnesses now create unverified leads rather than
+writing directly to the verified profile. `InvestigationDirector` resolves a
+matching database definition against the live target profile, chooses a tagged
+world anchor, and scanning the resulting physical evidence performs verification.
 
 ## Scanner signature = terminal gate (not trait #4)
 Every target carries a **unique** scanner key; decoys carry their own non-matching

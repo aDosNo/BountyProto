@@ -1,6 +1,7 @@
 {
   "comment": "Crowd identity trait pools for Hesperus Market. Loaded by crowd_director.gd. The contract generator (post-sprint) samples from files like this — add districts by adding files, not code.",
   "comment_funnel": "PHASE: single scripted bounty (Option B). target_in_crowd=false -> the crowd is PURE DECOYS, no is_target NPC. funnel_profile is the courtyard Korvaxi's known traits (read from his sprite); it drives clue values + witness hints so the funnel narrows toward HIM, but the only valid scan/confront is the scripted courtyard model itself. Candidates share his build and differ in >=1 trait. When the generator takes over: set target_in_crowd=true (or delete these keys) and it rolls a hidden-in-crowd target again.",
+  "comment_authored": "PHASE E (05 doc): authored_candidates is the HAND-BUILT decoy field for this single contract — the generator's Venn-overlap step done by hand. Target visible profile = red coat / heavy gait / courtyard. Field is sized so: (a) full conjunction red+heavy+courtyard isolates ONLY the triple-twin decoy (#1), forcing the scanner signature to separate it from the real courtyard target; (b) no single visible trait isolates 1 (red on 5, heavy on 6, courtyard on 5); (c) #1 shares ALL visible traits and differs only in signature; (d) no decoy looks more wanted than the answer. Counts are the manual test fixture the overlap algorithm must reproduce later. Each entry overrides only what differs; omitted visible traits default to the target's value, signature defaults to 'clean'.",
   "target_in_crowd": false,
   "funnel_profile": {
     "npc_name": "KORVAXI",
@@ -18,6 +19,18 @@
   "scanner_signatures": ["cybernetic arm", "clean", "masked bio-sig", "weapon under clothing"],
   "target_signature_pool": ["cybernetic arm", "weapon under clothing"],
   "noncandidate_signature": "clean",
+  "authored_candidates": [
+    {"npc_name": "HAULER",    "appearance": "red coat",  "movement_tell": "heavy gait",  "location_habit": "courtyard",         "scanner_signature": "weapon under clothing", "_note": "#1 TRIPLE TWIN: shares all visible traits; ONLY the signature separates him from the real target. Proves the analysis gate."},
+    {"npc_name": "STEVEDORE", "appearance": "red coat",  "movement_tell": "heavy gait",  "location_habit": "dock side",         "scanner_signature": "clean",                 "_note": "#2 red+heavy, wrong location"},
+    {"npc_name": "PEDDLER",   "appearance": "red coat",  "movement_tell": "shuffler",    "location_habit": "courtyard",         "scanner_signature": "clean",                 "_note": "#3 red+courtyard, wrong gait"},
+    {"npc_name": "GRAFTER",   "appearance": "grey coat", "movement_tell": "heavy gait",  "location_habit": "courtyard",         "scanner_signature": "masked bio-sig",        "_note": "#4 heavy+courtyard, wrong appearance"},
+    {"npc_name": "SPICER",    "appearance": "red coat",  "movement_tell": "fast walker", "location_habit": "stall browser",     "scanner_signature": "clean",                 "_note": "#5 red only"},
+    {"npc_name": "WELDER",    "appearance": "tan wraps", "movement_tell": "heavy gait",  "location_habit": "alley edges",       "scanner_signature": "clean",                 "_note": "#6 heavy only"},
+    {"npc_name": "PILGRIM",   "appearance": "blue poncho","movement_tell": "limp",       "location_habit": "courtyard",         "scanner_signature": "clean",                 "_note": "#7 courtyard only"},
+    {"npc_name": "LUGGER",    "appearance": "red coat",  "movement_tell": "heavy gait",  "location_habit": "fountain loiterer", "scanner_signature": "clean",                 "_note": "#8 second red+heavy so that pair isn't unique"},
+    {"npc_name": "DRIFTER",   "appearance": "green vest","movement_tell": "steady pace", "location_habit": "alley edges",       "scanner_signature": "clean",                 "_note": "#9 pure noise candidate: shares only build"},
+    {"npc_name": "TINKER",    "appearance": "black harness","movement_tell": "heavy gait","location_habit": "courtyard",        "scanner_signature": "clean",                 "_note": "#10 second heavy+courtyard so that pair isn't unique"}
+  ],
   "witness_hint_chance": 0.4,
   "witness_categories": ["appearance", "movement_tell", "location_habit"],
   "spawn_quotas": {

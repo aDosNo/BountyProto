@@ -85,6 +85,7 @@ var _indicator: MeshInstance3D
 var _indicator_material: StandardMaterial3D
 var _vision_cone: MeshInstance3D
 var _vision_cone_material: StandardMaterial3D
+var _sprite_visual: DirectionalSprite3D
 
 
 func _ready() -> void:
@@ -93,6 +94,7 @@ func _ready() -> void:
 	else:
 		add_to_group("pressure_enemy")
 	add_to_group("perceptive")
+	_sprite_visual = get_node_or_null("GuardSprite") as DirectionalSprite3D
 	_base_material = mesh.get_active_material(0)
 	_post_position = global_position
 	_post_yaw = rotation.y
@@ -338,6 +340,7 @@ func _enter_alerted(threat: Vector3, shout: bool = true) -> void:
 		print("GangGuard alerted!")
 		if shout:
 			get_tree().call_group("perceptive", "on_ally_alert", global_position, threat)
+			get_tree().call_group("target_panic_listener", "on_guard_alert", global_position, threat)
 	_update_indicator()
 
 
@@ -540,6 +543,13 @@ func _attack_player() -> void:
 
 
 func _flash_attack() -> void:
+	if _sprite_visual != null:
+		_sprite_visual.set_state_tint(Color(1.0, 0.62, 0.2, 1.0))
+		await get_tree().create_timer(0.06).timeout
+		if is_instance_valid(_sprite_visual) and not _is_dead:
+			_sprite_visual.clear_state_tint()
+		return
+
 	var muzzle_material := StandardMaterial3D.new()
 	muzzle_material.albedo_color = Color(1.0, 0.55, 0.1)
 	muzzle_material.emission_enabled = true
@@ -559,19 +569,28 @@ func take_damage(amount: int) -> void:
 	health = max(health - amount, 0)
 	print("GangGuard hit for %d damage. Health: %d" % [amount, health])
 
+	# A lethal hit cannot produce a post-mortem warning shout. The weapon's
+	# gunshot noise still alerts anything close enough to hear the shot.
+	if health <= 0:
+		_die()
+		return
+
 	if _player == null:
 		_player = get_tree().get_first_node_in_group("player") as Node3D
 	if _player != null:
 		_enter_alerted(_player.global_position)
 
-	if health <= 0:
-		_die()
-		return
-
 	_flash_hit()
 
 
 func _flash_hit() -> void:
+	if _sprite_visual != null:
+		_sprite_visual.set_state_tint(Color(1.0, 0.12, 0.05, 1.0))
+		await get_tree().create_timer(0.08).timeout
+		if is_instance_valid(_sprite_visual) and not _is_dead:
+			_sprite_visual.clear_state_tint()
+		return
+
 	var hit_material := StandardMaterial3D.new()
 	hit_material.albedo_color = Color(1.0, 0.08, 0.02)
 	mesh.set_surface_override_material(0, hit_material)
@@ -644,14 +663,15 @@ func _neutralize(silent: bool) -> void:
 	set_physics_process(false)
 	set_process(false)
 	collision_shape.disabled = true
-	# Drop indicator + slump the mesh so it reads as down.
+	# Drop indicator + slump the active visual so it reads as down.
 	if _indicator != null:
 		_indicator.visible = false
 	if _vision_cone != null:
 		_vision_cone.visible = false
 	var tween := create_tween()
-	tween.tween_property(mesh, "rotation_degrees",
-		mesh.rotation_degrees + Vector3(88.0, 0.0, 0.0), 0.22)
+	var active_visual: Node3D = _sprite_visual if _sprite_visual != null else mesh
+	tween.tween_property(active_visual, "rotation_degrees",
+		active_visual.rotation_degrees + Vector3(88.0, 0.0, 0.0), 0.22)
 	if silent:
 		print("GangGuard taken down silently.")
 	else:

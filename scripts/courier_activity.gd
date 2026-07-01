@@ -20,7 +20,7 @@ func complete_delivery(player: Node) -> bool:
 	if credentials_granted:
 		return true
 	if not has_package:
-		_toast("\"My delivery is still in the Alien Bar storage room.\"", 3.0)
+		_toast("\"My delivery is still in the North Arcade bar storage room.\"", 3.0)
 		return false
 	has_package = false
 	credentials_granted = true

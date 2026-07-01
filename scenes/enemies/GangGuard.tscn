@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/gang_guard.gd" id="1_guard"]
+[ext_resource type="Script" path="res://scripts/directional_sprite_3d.gd" id="2_dirsprite"]
+[ext_resource type="Texture2D" path="res://art/sprites/enemies/insectoid_guard_sheet.png" id="3_guard_sheet"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_guard"]
 size = Vector3(0.8, 1.8, 0.7)
@@ -22,6 +24,14 @@ shape = SubResource("BoxShape3D_guard")
 
 [node name="GuardMesh" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
+visible = false
 position = Vector3(0, 0.9, 0)
 mesh = SubResource("BoxMesh_guard")
 surface_material_override/0 = SubResource("Material_guard")
+
+[node name="GuardSprite" type="Sprite3D" parent="."]
+unique_name_in_owner = true
+position = Vector3(0, 1.04, 0)
+pixel_size = 0.0054
+script = ExtResource("2_dirsprite")
+sheet = ExtResource("3_guard_sheet")

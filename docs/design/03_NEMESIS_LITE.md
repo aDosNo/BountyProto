@@ -4,6 +4,13 @@ at generator S1′ (see 02) and a BountyManager escape hook. "Lite" = one small
 persisted roster, simple mutation, no Nemesis-system hierarchy. **[NICK]** = your
 balance/design call.
 
+Status (2026-07-01): `NemesisRegistry` is an autoload and the roster/mutation
+code exists. Explicit target escape and BountyManager record/clear hooks also
+exist. Recording is intentionally disabled in the live scene because the
+hand-authored target exposes `scanner_signature`, while the registry contract
+requires canonical `scanner_sig` plus a generator-owned trait kit. Re-entry
+still depends on the unbuilt contract generator.
+
 ## Identity model (the one idea everything hangs on)
 A nemesis is the **same individual** returning, so their identity anchor must
 persist while their *tells* change:
@@ -68,31 +75,25 @@ mutation so re-entry only picks values the *current* district supports.
 - **Payout premium** — a known recurring mark pays more (feeds 04 economy).
 
 ## Integration points (and what's gated)
-- **Record hook — BountyManager.** Recommended trigger: in `fail_bounty()`, if
-  `state` reached `TARGET_IDENTIFIED` (or beyond, but **not** neutralized/captured),
-  the target escaped alive → call `record_escape(profile, encounter)`.
-  **GATED:** needs the target to carry a `scanner_sig` + trait_kit, which only the
-  generator provides. Pre-generator the hand-authored target has neither, so wiring
-  this now records empty data. Lands *with* the generator.
+- **Record hook — BountyManager.** BUILT but gated by
+  `nemesis_recording_enabled = false`. `_on_target_escaped()` calls the hook;
+  enabling it still requires a canonical `scanner_sig`/trait-kit profile.
 - **Inject hook — generator S1′.** `roll_nemesis_entry(rng, palette_pool,
   location_pool, movement_pool)`. Exists in the registry now; no caller until the
   generator does.
-- **Clear hook — BountyManager.** On `on_target_captured` / `on_target_neutralized`
-  for a nemesis, call `clear_nemesis(scanner_sig)`. Same gating.
+- **Clear hook — BountyManager.** BUILT on capture/neutralization and controlled
+  by the same export gate.
 
-## Trigger decision reserved for Nick
-"Escaped" needs a precise event. Current loop only ends target-alive via
-`fail_bounty()` (hunter down); wrong-accusation "goes to ground" keeps the mission
-live (not yet an escape). Options:
-- **A (recommended):** record on `fail_bounty()` *only if target was identified*
-  (we know who got away). Clean, uses existing state.
-- **B:** add an explicit "target escaped" outcome (e.g. target reaches an exit
-  during the chase) distinct from hunter-death. More work; richer.
-- **C:** also record on abandon/timeout (no such state today).
-Pick the trigger; the registry doesn't care which fires `record_escape`.
+## Escape trigger decision
+
+Option B was implemented: prepared chase routes can emit
+`KorvaxiTarget.escaped(route_id)`, and BountyManager records a distinct
+`target_escaped` failed outcome. Wrong accusation still transforms the live
+mission and does not itself create a nemesis. Hunter death/abandon behavior
+remains a separate future ruling.
 
 ## Open calls reserved for Nick
 - `MAX_ROSTER` (default 3) and whether grudge **decays** over time/contracts.
 - `GRUDGE_MAX` and the grudge→difficulty curve (shared with 01/02).
 - Does a wound *always* become a permanent tell, or only a serious one?
-- Trigger A / B / C above.
+- Whether hunter death or contract abandonment should also record an escape.

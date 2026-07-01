@@ -108,6 +108,7 @@ func _ready() -> void:
 		_standing_shape_height = capsule.height
 	_standing_shape_position_y = collision_shape.position.y
 	_load_disguise_profiles()
+	_restore_district_credentials()
 	_pitch = camera.rotation.x
 	_rng.randomize()
 	_capture_mouse()
@@ -422,6 +423,9 @@ func grant_credential(access_tag: String) -> void:
 	if access_tag.is_empty():
 		return
 	_credentials[access_tag] = true
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state != null and district_state.has_method("set_flag"):
+		district_state.call("set_flag", "hesperus.access.%s" % access_tag, true)
 
 
 func has_credential(access_tag: String) -> bool:
@@ -430,6 +434,18 @@ func has_credential(access_tag: String) -> bool:
 
 func has_access_tag(access_tag: String) -> bool:
 	return has_credential(access_tag) or _disguise_access_tags.has(access_tag)
+
+
+func _restore_district_credentials() -> void:
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state == null or not district_state.has_method("snapshot"):
+		return
+	var saved = district_state.call("snapshot", "hesperus.access.")
+	if not saved is Dictionary:
+		return
+	for state_id in saved:
+		if bool(saved[state_id]):
+			_credentials[String(state_id).trim_prefix("hesperus.access.")] = true
 
 
 func is_crouched() -> bool:

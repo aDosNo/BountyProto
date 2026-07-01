@@ -4,8 +4,14 @@ extends Node
 
 signal intel_updated(category: String, value: String, source: String)
 signal intel_reset
+signal evidence_verified(category: String, value: String, evidence_id: String)
 
 const CATEGORIES := ["build", "appearance", "movement_tell", "location_habit", "scanner_signature"]
+
+## Eye-visible narrowing axes the SWEEP filters on. Excludes `scanner_signature`
+## (scanner-only, read by ANALYSIS) and `build` (shared by all candidates,
+## non-narrowing). Keep in sync with 05_INVESTIGATION_LAYER_BRIDGE C.1.
+const VISIBLE_AXES := ["appearance", "movement_tell", "location_habit"]
 
 const CATEGORY_LABELS := {
 	"build": "BUILD",
@@ -17,12 +23,14 @@ const CATEGORY_LABELS := {
 
 ## category -> { "value": String, "source": String }
 var known: Dictionary = {}
+var evidence_log: Array[Dictionary] = []
 
 
 func reset() -> void:
-	if known.is_empty():
+	if known.is_empty() and evidence_log.is_empty():
 		return
 	known.clear()
+	evidence_log.clear()
 	intel_reset.emit()
 
 
@@ -36,8 +44,60 @@ func learn(category: String, value: String, source: String = "") -> void:
 	print("Intel learned [%s]: %s (via %s)" % [category, value, source])
 
 
+func verify_from_evidence(
+	category: String,
+	value: String,
+	evidence_id: String,
+	source_id: String = ""
+) -> void:
+	if not CATEGORIES.has(category) or value.is_empty() or evidence_id.is_empty():
+		return
+	for entry in evidence_log:
+		if String(entry.get("evidence_id", "")) == evidence_id:
+			return
+	evidence_log.append({
+		"category": category,
+		"value": value,
+		"evidence_id": evidence_id,
+		"source": source_id,
+	})
+	learn(category, value, "evidence: %s" % evidence_id)
+	evidence_verified.emit(category, value, evidence_id)
+
+
+func get_evidence_log() -> Array[Dictionary]:
+	return evidence_log.duplicate(true)
+
+
 func knows(category: String) -> bool:
 	return known.has(category)
+
+
+## How many VISIBLE narrowing traits the player has learned (sweep gate).
+func known_visible_count() -> int:
+	var n := 0
+	for category in VISIBLE_AXES:
+		if known.has(category):
+			n += 1
+	return n
+
+
+## SWEEP comparison: does this NPC still match EVERY visible trait the player
+## currently knows? (i.e. not yet eliminated on a known visible axis.)
+## Gate: returns false when zero visible traits are known — the sweep is inert
+## until the player has done some investigation. Signature is never consulted.
+func visible_match(npc: Node) -> bool:
+	if known_visible_count() == 0:
+		return false
+	for category in VISIBLE_AXES:
+		if not known.has(category):
+			continue
+		var npc_value: String = _npc_trait(npc, category)
+		if npc_value.is_empty():
+			continue
+		if known[category]["value"] != npc_value:
+			return false
+	return true
 
 
 func known_count() -> int:

@@ -1,5 +1,7 @@
 # bounty-hunt — Style Bible (GZDoom / Build-engine retro sci-fi)
 
+Status: current visual contract, reconciled 2026-07-01.
+
 Aesthetic target: cancelled-Prey-2-inspired bounty district rendered like a
 late-90s Build/GZDoom game in true 3D: simple geometry, strong vertical facades,
 billboarded sprite NPCs, neon emissive signage, modular reusable blocks.
@@ -11,6 +13,9 @@ billboarded sprite NPCs, neon emissive signage, modular reusable blocks.
   set this language). Street canyons, overhead beams, cables.
 - Modular blocks: prefer instancing `PS1_*` subscenes and `VK_*`/GLB modules
   over bespoke one-off meshes. New repeated props become subscenes.
+- Blender-linked modular assemblies are acceptable for architectural sets that
+  must export as one shell. The June 30 Bazaar stalls are the current example;
+  keep gameplay, mutable props, and stateful interactions in Godot.
 
 ## Canonical materials
 - Authoritative retro set (ext_resource .tres, reuse these):

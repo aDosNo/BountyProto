@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/bazaar_safehouse_activity.gd" id="1_activity"]
+[ext_resource type="Script" path="res://scripts/bazaar_safehouse_interactable.gd" id="2_interactable"]
+[ext_resource type="PackedScene" path="res://scenes/props/LadderZone.tscn" id="3_ladder"]
+
+[sub_resource type="StandardMaterial3D" id="Material_cyan"]
+albedo_color = Color(0.02, 0.26, 0.32, 1)
+emission_enabled = true
+emission = Color(0.02, 0.8, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Material_green"]
+albedo_color = Color(0.02, 0.3, 0.08, 1)
+emission_enabled = true
+emission = Color(0.04, 0.9, 0.2, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Material_magenta"]
+albedo_color = Color(0.3, 0.02, 0.18, 1)
+emission_enabled = true
+emission = Color(0.9, 0.04, 0.5, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="Mesh_panel"]
+size = Vector3(0.8, 1.0, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_panel"]
+size = Vector3(1.0, 1.2, 0.6)
+
+[node name="BazaarSafehouse" type="Node3D"]
+script = ExtResource("1_activity")
+
+[node name="BrokerTerminal" type="StaticBody3D" parent="."]
+script = ExtResource("2_interactable")
+role = "broker"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BrokerTerminal"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_cyan")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BrokerTerminal"]
+shape = SubResource("Shape_panel")
+
+[node name="ServiceBypass" type="StaticBody3D" parent="."]
+script = ExtResource("2_interactable")
+role = "service_bypass"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ServiceBypass"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_green")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ServiceBypass"]
+shape = SubResource("Shape_panel")
+
+[node name="RoofOverride" type="StaticBody3D" parent="."]
+script = ExtResource("2_interactable")
+role = "roof_override"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoofOverride"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_green")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoofOverride"]
+shape = SubResource("Shape_panel")
+
+[node name="HunterCache" type="StaticBody3D" parent="."]
+script = ExtResource("2_interactable")
+role = "cache"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HunterCache"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_magenta")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HunterCache"]
+shape = SubResource("Shape_panel")
+
+[node name="RoofLadderZone" parent="." instance=ExtResource("3_ladder")]
+scale = Vector3(1.8, 8.5, 1.8)

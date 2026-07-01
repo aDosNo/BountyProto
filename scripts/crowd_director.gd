@@ -52,6 +52,12 @@ var _funnel_profile: Dictionary = {}
 ## is the only valid target. true (generator phase): a hidden crowd NPC is the
 ## target and confronting it hands off to the chase actor.
 var _target_in_crowd: bool = false
+## Hand-authored candidate trait-kits (Phase E, 05 doc). When non-empty, the
+## candidate slots use THESE exact kits instead of independent rolls, so the
+## decoy field is a constructed funnel (the generator's Venn step, done by hand).
+## Each entry: {appearance, movement_tell, location_habit, scanner_signature,
+## (optional) npc_name}. build defaults to target_build. Civilian filler still rolls.
+var _authored_candidates: Array = []
 var _names: Array = FALLBACK_NAMES
 var _witness_hint_chance: float = 0.4
 var _witness_categories: Array = ["appearance", "movement_tell", "location_habit"]
@@ -115,6 +121,12 @@ func _load_trait_data() -> void:
 	var quotas = parsed.get("spawn_quotas")
 	if quotas is Dictionary:
 		_spawn_quotas = quotas
+	var authored = parsed.get("authored_candidates")
+	if authored is Array:
+		_authored_candidates = []
+		for entry in authored:
+			if entry is Dictionary:
+				_authored_candidates.append(entry)
 	print("CrowdDirector: trait data loaded from %s" % trait_data_path)
 
 
@@ -356,24 +368,30 @@ func _deal_identities() -> Array:
 		reserved_candidates -= 1
 
 	var n_candidates: int = clampi(reserved_candidates, 0, total_npcs)
+	if not _authored_candidates.is_empty():
+		n_candidates = mini(n_candidates, _authored_candidates.size())
 	for i in n_candidates:
-		var ident := {
-			"npc_name": _next_name(used_names),
-			"build": _target_build,
-			"appearance": _pick(_appearances),
-			"movement_tell": _pick(_movement_tells),
-			"location_habit": _pick(_habits),
-			"scanner_signature": _pick(_signatures),
-			"is_candidate": true,
-			"is_target": false,
-		}
-		# Guarantee every candidate differs from the target in >=1 trait so none
-		# is an accidental perfect match (in Option B that would be a false target).
-		if _matches_target(ident):
-			var alt := _appearances.duplicate()
-			alt.erase(target_profile["appearance"])
-			if not alt.is_empty():
-				ident["appearance"] = alt[rng.randi() % alt.size()]
+		var ident: Dictionary
+		if not _authored_candidates.is_empty():
+			ident = _authored_candidate_kit(i, used_names)
+		else:
+			ident = {
+				"npc_name": _next_name(used_names),
+				"build": _target_build,
+				"appearance": _pick(_appearances),
+				"movement_tell": _pick(_movement_tells),
+				"location_habit": _pick(_habits),
+				"scanner_signature": _pick(_signatures),
+				"is_candidate": true,
+				"is_target": false,
+			}
+			# Guarantee every candidate differs from the target in >=1 trait so none
+			# is an accidental perfect match (in Option B that would be a false target).
+			if _matches_target(ident):
+				var alt := _appearances.duplicate()
+				alt.erase(target_profile["appearance"])
+				if not alt.is_empty():
+					ident["appearance"] = alt[rng.randi() % alt.size()]
 		identities.append(ident)
 
 	var other_builds := _builds.duplicate()
@@ -407,6 +425,29 @@ func _matches_target(ident: Dictionary) -> bool:
 		if ident[key] != target_profile[key]:
 			return false
 	return true
+
+
+## Builds one candidate identity from the hand-authored field (Phase E). Missing
+## trait keys fall back to the target's value (so an entry can specify only what
+## differs); build defaults to target_build; name auto-assigns unless authored.
+func _authored_candidate_kit(index: int, used_names: Dictionary) -> Dictionary:
+	var src: Dictionary = _authored_candidates[index]
+	var ident := {
+		"build": String(src.get("build", _target_build)),
+		"appearance": String(src.get("appearance", target_profile["appearance"])),
+		"movement_tell": String(src.get("movement_tell", target_profile["movement_tell"])),
+		"location_habit": String(src.get("location_habit", target_profile["location_habit"])),
+		"scanner_signature": String(src.get("scanner_signature", _noncandidate_signature)),
+		"is_candidate": true,
+		"is_target": false,
+	}
+	var authored_name := String(src.get("npc_name", ""))
+	if authored_name.is_empty():
+		ident["npc_name"] = _next_name(used_names)
+	else:
+		ident["npc_name"] = authored_name
+		used_names[authored_name] = true
+	return ident
 
 
 func _sync_clues_to_target() -> void:

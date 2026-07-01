@@ -2,7 +2,9 @@ extends CharacterBody3D
 
 signal revealed
 signal flee_started
+signal escape_route_selected(route_id: String, cue_text: String)
 signal reached_final_node
+signal escaped(route_id: String)
 signal stunned
 signal stun_expired
 signal captured
@@ -62,6 +64,19 @@ enum TargetState {
 @export var route_height_tolerance: float = 1.2
 @export var escape_route_parent: NodePath
 @export var player_path: NodePath
+@export_group("Chase Tracking")
+@export var marker_los_grace: float = 2.0
+@export var sweep_reacquire_duration: float = 6.0
+@export_flags_3d_physics var chase_los_mask: int = 1
+@export_group("Panic Response")
+## Loud combat noise must meet this threshold before the hidden target reacts.
+@export var gunshot_panic_loudness_threshold: float = 25.0
+## Converts the noise event's guard-audibility radius into Korvaxi's panic radius.
+@export_range(0.0, 1.0, 0.05) var gunshot_panic_radius_scale: float = 0.6
+@export var guard_alert_panic_radius: float = 20.0
+## Prevent alerts through solid level geometry. Dynamic actors do not occlude.
+@export var require_clear_panic_path: bool = true
+@export_flags_3d_physics var panic_occlusion_mask: int = 1
 
 @onready var visual_root: Node3D = %VisualRoot
 @onready var collision_shape: CollisionShape3D = %CollisionShape3D
@@ -95,7 +110,15 @@ var _stamina: float = 1.0
 var _juke_time: float = 0.0
 var _stuck_timer: float = 0.0
 var _last_flee_position: Vector3 = Vector3.ZERO
-var _route_options: Array = []  # Array of Array[Marker3D] — alternate escape routes
+var _route_options: Array[Dictionary] = []
+var _active_route_id := "legacy"
+var _active_terminal_outcome := "cornered"
+var _active_route_display_name := "public bazaar"
+var _active_route_cue := "Korvaxi is breaking for the public bazaar!"
+var _chase_los_lost_time := 0.0
+var _sweep_reacquire_time := 0.0
+var _last_known_position := Vector3.ZERO
+var _last_known_marker: Node3D
 var _is_scanned: bool = false
 var _scan_progress: float = 0.0
 var _scan_focus_complete: bool = false
@@ -110,7 +133,7 @@ var _returning_from_meeting := false
 func _ready() -> void:
 	add_to_group("bounty_target")
 	add_to_group("damageable")
-	add_to_group("perceptive")
+	add_to_group("target_panic_listener")
 	# Pre-reveal he's the scan/confront target. Leaves the group once he flees so
 	# the scanner can't re-acquire him mid-chase.
 	add_to_group("scannable_npc")
@@ -122,6 +145,9 @@ func _ready() -> void:
 	_player = get_node_or_null(player_path) as Node3D
 	_hud = _find_hud()
 	_hidden_home_position = global_position
+	var district_state := get_node_or_null("/root/DistrictState")
+	if district_state != null and bool(district_state.call("has_flag", "hesperus.target.implant_disrupted")):
+		apply_preparation_modifier("implant_disrupted")
 
 	# Discover the visual representation. A DirectionalSprite3D may be a direct
 	# child of VisualRoot or be VisualRoot itself; otherwise collect meshes.
@@ -142,6 +168,8 @@ func _physics_process(delta: float) -> void:
 
 	if state == TargetState.FLEEING:
 		_follow_escape_route(delta)
+		if state == TargetState.FLEEING:
+			_update_chase_tracking(delta)
 	elif state == TargetState.COMBAT:
 		_face_player(delta)
 	elif state == TargetState.STUNNED:
@@ -160,6 +188,12 @@ func request_hidden_move(marker: Marker3D, dwell_time: float = 18.0) -> bool:
 	_hidden_meeting_timer = 0.0
 	_returning_from_meeting = false
 	return true
+
+
+func apply_preparation_modifier(modifier_id: String) -> void:
+	if modifier_id == "implant_disrupted":
+		stamina_seconds = maxf(stamina_seconds * 0.62, 2.5)
+		stamina_recovery_rate *= 0.55
 
 
 func _update_hidden_meeting(delta: float) -> void:
@@ -201,33 +235,67 @@ func take_damage(amount: int) -> void:
 	_pulse_hit()
 
 
-## Noise event: gunfire near the unidentified target spooks it into bolting.
-## Systems ruling: a loud approach forfeits the calm confrontation.
-func hear_noise(noise_position: Vector3, loudness: float) -> void:
+## Explicit combat-noise channel. Lures, scanners, footsteps, and utility
+## noises stay on the generic `perceptive` channel and cannot panic the target.
+func on_combat_noise(noise_position: Vector3, loudness: float) -> void:
 	if _is_dead or _is_captured:
 		return
-	if loudness < 25.0:
+	if loudness < gunshot_panic_loudness_threshold:
 		return
 	if state != TargetState.HIDDEN and state != TargetState.IDLE_HIDDEN:
 		return
-	if global_position.distance_to(noise_position) > loudness * 0.6:
+	if global_position.distance_to(noise_position) > loudness * gunshot_panic_radius_scale:
+		return
+	if not _has_clear_panic_path(noise_position):
 		return
 
 	print("Korvaxi spooked by nearby gunfire.")
 	reveal_and_flee()
 
 
-## A guard shouted an alert nearby: the target bolts as well.
-func on_ally_alert(shouter_position: Vector3, _threat_position: Vector3) -> void:
+## Explicit guard-alert channel, separate from guard-to-guard perception.
+func on_guard_alert(shouter_position: Vector3, _threat_position: Vector3) -> void:
 	if _is_dead or _is_captured:
 		return
 	if state != TargetState.HIDDEN and state != TargetState.IDLE_HIDDEN:
 		return
-	if global_position.distance_to(shouter_position) > 20.0:
+	if global_position.distance_to(shouter_position) > guard_alert_panic_radius:
+		return
+	if not _has_clear_panic_path(shouter_position):
 		return
 
 	print("Korvaxi spooked by guard alert.")
 	reveal_and_flee()
+
+
+func _has_clear_panic_path(source_position: Vector3) -> bool:
+	if not require_clear_panic_path:
+		return true
+	if not is_inside_tree() or get_world_3d() == null:
+		return false
+
+	var origin := global_position + Vector3.UP * 1.35
+	var destination := source_position + Vector3.UP * 1.2
+	var direction := destination - origin
+	if direction.length_squared() < 1.0:
+		return true
+	# Stop short of the source so its own collision body is not treated as a wall.
+	destination -= direction.normalized() * 0.6
+
+	var excluded: Array[RID] = [get_rid()]
+	for _attempt in range(8):
+		var query := PhysicsRayQueryParameters3D.create(origin, destination, panic_occlusion_mask, excluded)
+		query.collide_with_areas = false
+		query.collide_with_bodies = true
+		var hit := get_world_3d().direct_space_state.intersect_ray(query)
+		if hit.is_empty():
+			return true
+		var collider := hit.get("collider") as CollisionObject3D
+		if collider is CharacterBody3D or collider is RigidBody3D:
+			excluded.append(collider.get_rid())
+			continue
+		return false
+	return true
 
 
 func set_identified(active: bool) -> void:
@@ -320,6 +388,9 @@ func _start_flee() -> void:
 	_juke_time = 0.0
 	_stuck_timer = 0.0
 	_last_flee_position = global_position
+	_last_known_position = global_position
+	add_to_group("chase_target")
+	escape_route_selected.emit(_active_route_id, _active_route_cue)
 	flee_started.emit()
 	print("Korvaxi started fleeing (%d-node route)." % _escape_nodes.size())
 
@@ -327,19 +398,27 @@ func _start_flee() -> void:
 ## Picks the route whose first node is farthest from the player. With a single
 ## route (legacy Marker3D children) behavior is unchanged from before.
 func _choose_escape_route() -> void:
+	_cache_escape_nodes()
 	if _route_options.is_empty():
 		return
 	if _route_options.size() == 1:
-		_escape_nodes = _route_options[0]
+		_apply_route(_route_options[0])
 		return
 
 	if _player == null:
 		_player = get_tree().get_first_node_in_group("player") as Node3D
 
-	var best: Array[Marker3D] = _route_options[0]
+	var valid_routes: Array[Dictionary] = []
+	for route_data in _route_options:
+		if _route_is_available(route_data):
+			valid_routes.append(route_data)
+	if valid_routes.is_empty():
+		valid_routes.append(_route_options[0])
+
+	var best: Dictionary = valid_routes[0]
 	var best_distance := -1.0
-	for option in _route_options:
-		var route: Array[Marker3D] = option
+	for route_data in valid_routes:
+		var route: Array[Marker3D] = route_data["nodes"]
 		if route.is_empty():
 			continue
 		var d := randf()
@@ -347,14 +426,33 @@ func _choose_escape_route() -> void:
 			d = route[0].global_position.distance_to(_player.global_position)
 		if d > best_distance:
 			best_distance = d
-			best = route
-	_escape_nodes = best
-	print("Korvaxi chose escape route starting at %s." % str(_escape_nodes[0].global_position))
+			best = route_data
+	_apply_route(best)
+	print("Korvaxi chose escape route '%s' starting at %s." % [_active_route_id, str(_escape_nodes[0].global_position)])
+
+
+func _route_is_available(route_data: Dictionary) -> bool:
+	var required_flag := String(route_data.get("required_flag", ""))
+	if required_flag.is_empty():
+		return true
+	var district_state := get_node_or_null("/root/DistrictState")
+	return district_state != null and bool(district_state.call("has_flag", required_flag))
+
+
+func _apply_route(route_data: Dictionary) -> void:
+	_escape_nodes = route_data.get("nodes", [])
+	_active_route_id = String(route_data.get("route_id", "legacy"))
+	_active_terminal_outcome = String(route_data.get("terminal_outcome", "cornered"))
+	_active_route_display_name = String(route_data.get("display_name", _active_route_id.replace("_", " ")))
+	_active_route_cue = String(route_data.get(
+		"cue_text",
+		"Korvaxi is breaking for the %s!" % _active_route_display_name
+	))
 
 
 func _follow_escape_route(delta: float) -> void:
 	if _current_escape_index >= _escape_nodes.size():
-		_enter_combat_state()
+		_finish_escape_route()
 		return
 
 	var target_position := _escape_nodes[_current_escape_index].global_position
@@ -365,8 +463,8 @@ func _follow_escape_route(delta: float) -> void:
 	if Vector2(direction.x, direction.z).length() <= node_reach_distance:
 		_current_escape_index += 1
 		if _current_escape_index >= _escape_nodes.size():
-			_enter_combat_state()
-		return
+			_finish_escape_route()
+			return
 
 	if direction != Vector3.ZERO:
 		var horizontal_direction := Vector3(direction.x, 0.0, direction.z)
@@ -411,7 +509,26 @@ func _update_stuck_watchdog(delta: float) -> void:
 		_current_escape_index += 1
 		print("Korvaxi unstuck: skipping to escape node %d." % _current_escape_index)
 		if _current_escape_index >= _escape_nodes.size():
-			_enter_combat_state()
+			_finish_escape_route()
+
+
+func _finish_escape_route() -> void:
+	if _active_terminal_outcome == "escaped":
+		_escape_district()
+	else:
+		_enter_combat_state()
+
+
+func _escape_district() -> void:
+	if _is_dead or _is_captured:
+		return
+	velocity = Vector3.ZERO
+	visible = false
+	remove_from_group("chase_target")
+	_clear_last_known_marker()
+	collision_shape.set_deferred("disabled", true)
+	escaped.emit(_active_route_id)
+	print("Korvaxi escaped Hesperus via route '%s'." % _active_route_id)
 
 
 ## Chase pacing: a stamina sprint that drains while the player presses close
@@ -449,12 +566,84 @@ func _apply_juke(move_dir: Vector3, delta: float) -> Vector3:
 	return (move_dir + side * weave * 0.22).normalized()
 
 
+func _update_chase_tracking(delta: float) -> void:
+	if _player == null:
+		_player = get_tree().get_first_node_in_group("player") as Node3D
+	if _player == null:
+		return
+
+	_sweep_reacquire_time = maxf(_sweep_reacquire_time - delta, 0.0)
+	if _has_clear_chase_los():
+		_chase_los_lost_time = 0.0
+		_last_known_position = global_position
+		target_marker.visible = true
+		if _last_known_marker != null:
+			_last_known_marker.visible = false
+		return
+
+	_chase_los_lost_time += delta
+	if _chase_los_lost_time < marker_los_grace or _sweep_reacquire_time > 0.0:
+		target_marker.visible = true
+		if _sweep_reacquire_time > 0.0:
+			_last_known_position = global_position
+		return
+
+	target_marker.visible = false
+	_show_last_known_marker()
+
+
+func _has_clear_chase_los() -> bool:
+	if _player == null or not is_inside_tree() or get_world_3d() == null:
+		return false
+	var origin := global_position + Vector3.UP * 1.25
+	var destination := _player.global_position + Vector3.UP * 1.25
+	var query := PhysicsRayQueryParameters3D.create(origin, destination, chase_los_mask, [get_rid()])
+	query.collide_with_areas = false
+	query.collide_with_bodies = true
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():
+		return true
+	var collider := hit.get("collider") as Node
+	while collider != null:
+		if collider == _player or collider.is_in_group("player"):
+			return true
+		collider = collider.get_parent()
+	return false
+
+
+func _show_last_known_marker() -> void:
+	if _last_known_marker == null:
+		_last_known_marker = Node3D.new()
+		_last_known_marker.name = "KorvaxiLastKnownMarker"
+		var label := Label3D.new()
+		label.text = "LAST KNOWN"
+		label.font_size = 24
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		label.modulate = Color(1.0, 0.66, 0.15, 1.0)
+		_last_known_marker.add_child(label)
+		var scene_root := get_tree().current_scene
+		if scene_root == null:
+			scene_root = get_parent()
+		scene_root.add_child(_last_known_marker)
+	_last_known_marker.global_position = _last_known_position + Vector3.UP * 2.8
+	_last_known_marker.visible = true
+
+
+func _clear_last_known_marker() -> void:
+	if _last_known_marker != null and is_instance_valid(_last_known_marker):
+		_last_known_marker.queue_free()
+	_last_known_marker = null
+
+
 func _enter_combat_state() -> void:
 	if _is_dead or _is_captured or state == TargetState.COMBAT:
 		return
 
 	velocity = Vector3.ZERO
 	state = TargetState.COMBAT
+	remove_from_group("chase_target")
+	_clear_last_known_marker()
+	set_identified(true)
 	reached_final_node.emit()
 	print("Korvaxi reached final node.")
 
@@ -533,6 +722,8 @@ func _capture() -> void:
 	velocity = Vector3.ZERO
 	collision_shape.disabled = true
 	stunned_marker.visible = false
+	remove_from_group("chase_target")
+	_clear_last_known_marker()
 	set_identified(true)
 	_hide_capture_prompt()
 	_apply_captured_material()
@@ -627,6 +818,23 @@ func get_scan_time_required() -> float:
 	return scan_time_required
 
 
+func is_chase_reacquirable() -> bool:
+	return state == TargetState.FLEEING and not _is_dead and not _is_captured
+
+
+func mark_swept(duration: float = -1.0) -> void:
+	if not is_chase_reacquirable():
+		return
+	_sweep_reacquire_time = maxf(
+		sweep_reacquire_duration if duration < 0.0 else duration,
+		_sweep_reacquire_time
+	)
+	_last_known_position = global_position
+	target_marker.visible = true
+	if _last_known_marker != null:
+		_last_known_marker.visible = false
+
+
 func get_interaction_text() -> String:
 	if _was_confronted or not is_in_group("scannable_npc"):
 		return ""
@@ -657,9 +865,6 @@ func _cache_escape_nodes() -> void:
 	if route_parent == null:
 		return
 
-	# Legacy: Marker3D children form one route (unchanged behavior).
-	# New: any Node3D child containing Marker3Ds is an ALTERNATE route —
-	# Nick adds Route_* groups under KorvaxiEscapeRoute, no code changes needed.
 	var direct: Array[Marker3D] = []
 	for child in route_parent.get_children():
 		if child is Marker3D:
@@ -670,11 +875,25 @@ func _cache_escape_nodes() -> void:
 				if sub is Marker3D:
 					branch.append(sub)
 			if not branch.is_empty():
-				_route_options.append(branch)
+				_route_options.append({
+					"nodes": branch,
+					"route_id": String(child.get_meta("route_id", child.name)),
+					"required_flag": String(child.get_meta("required_flag", "")),
+					"terminal_outcome": String(child.get_meta("terminal_outcome", "cornered")),
+					"display_name": String(child.get_meta("display_name", child.name)),
+					"cue_text": String(child.get_meta("cue_text", "")),
+				})
 	if not direct.is_empty():
-		_route_options.append(direct)
+		_route_options.append({
+			"nodes": direct,
+			"route_id": "public_bazaar",
+			"required_flag": "",
+			"terminal_outcome": "cornered",
+			"display_name": "public bazaar",
+			"cue_text": "Korvaxi is breaking west for the public bazaar!",
+		})
 	if _route_options.size() == 1:
-		_escape_nodes = _route_options[0]
+		_apply_route(_route_options[0])
 
 
 func _die() -> void:
@@ -684,6 +903,8 @@ func _die() -> void:
 	_is_dead = true
 	state = TargetState.DEAD
 	velocity = Vector3.ZERO
+	remove_from_group("chase_target")
+	_clear_last_known_marker()
 	collision_shape.disabled = true
 	stunned_marker.visible = false
 	_hide_capture_prompt()

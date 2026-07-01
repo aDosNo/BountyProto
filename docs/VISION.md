@@ -1,6 +1,11 @@
 # BOUNTY-HUNT — DESIGN VISION (locked 2026-06-10)
 This is WHAT we're building. SYSTEMS_IMSIM.md = verbs, STYLE.md = look, PROJECT_MANIFEST.md = current state.
 
+Implementation boundary (2026-07-01): only the authored Hesperus/Korvaxi
+vertical slice is current runtime scope. Additional districts, procedural
+contract generation, full shops/upgrades, and nemesis re-entry remain roadmap
+work unless `PROJECT_MANIFEST.md` says otherwise.
+
 ## Pitch
 Retro sci-fi bounty hunter im-sim: 2–3 dense districts, a revolver, a stun rig, a net, and a scanner.
 Contracts arrive at your office. Targets hide in crowds, behind locked doors, up on catwalks. Every mark

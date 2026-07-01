@@ -1,0 +1,111 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/foremarket_cold_chain.gd" id="1_activity"]
+[ext_resource type="Script" path="res://scripts/foremarket_quest_interactable.gd" id="2_interactable"]
+[ext_resource type="PackedScene" path="res://scenes/props/LadderZone.tscn" id="3_ladder"]
+
+[sub_resource type="StandardMaterial3D" id="Material_cyan"]
+albedo_color = Color(0.04, 0.32, 0.38, 1)
+emission_enabled = true
+emission = Color(0.02, 0.55, 0.68, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Material_magenta"]
+albedo_color = Color(0.38, 0.04, 0.25, 1)
+emission_enabled = true
+emission = Color(0.75, 0.03, 0.42, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Material_green"]
+albedo_color = Color(0.03, 0.36, 0.12, 1)
+emission_enabled = true
+emission = Color(0.04, 0.8, 0.2, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="BoxMesh" id="Mesh_panel"]
+size = Vector3(0.72, 0.9, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_locker"]
+size = Vector3(1.4, 1.8, 0.4)
+
+[sub_resource type="BoxShape3D" id="Shape_panel"]
+size = Vector3(0.9, 1.1, 0.5)
+
+[node name="ForemarketColdChain" type="Node3D"]
+script = ExtResource("1_activity")
+
+[node name="IntakeTerminal" type="StaticBody3D" parent="."]
+position = Vector3(38.5, 1.1, 40.2)
+script = ExtResource("2_interactable")
+role = "intake"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="IntakeTerminal"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_cyan")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IntakeTerminal"]
+shape = SubResource("Shape_panel")
+
+[node name="MaintenanceFuse" type="StaticBody3D" parent="."]
+position = Vector3(65, 1.0, 24.9)
+script = ExtResource("2_interactable")
+role = "fuse"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MaintenanceFuse"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_green")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MaintenanceFuse"]
+shape = SubResource("Shape_panel")
+
+[node name="StreetRelay" type="StaticBody3D" parent="."]
+position = Vector3(50, 1.45, 42.9)
+script = ExtResource("2_interactable")
+role = "relay"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StreetRelay"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_magenta")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StreetRelay"]
+shape = SubResource("Shape_panel")
+
+[node name="CredentialReader" type="StaticBody3D" parent="."]
+position = Vector3(41.7, 1.45, 44.1)
+script = ExtResource("2_interactable")
+role = "credential"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CredentialReader"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_cyan")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CredentialReader"]
+shape = SubResource("Shape_panel")
+
+[node name="RoofOverride" type="StaticBody3D" parent="."]
+position = Vector3(69, 8.9, 26.4)
+script = ExtResource("2_interactable")
+role = "roof_override"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoofOverride"]
+mesh = SubResource("Mesh_panel")
+surface_material_override/0 = SubResource("Material_green")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoofOverride"]
+shape = SubResource("Shape_panel")
+
+[node name="FireEscapeLadderZone" parent="." instance=ExtResource("3_ladder")]
+position = Vector3(62, 4.3, 27.4)
+scale = Vector3(1.8, 8.2, 1.8)
+
+[node name="MedicineLocker" type="StaticBody3D" parent="."]
+position = Vector3(44.7, 1.35, 44.15)
+script = ExtResource("2_interactable")
+role = "locker"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MedicineLocker"]
+mesh = SubResource("Mesh_locker")
+surface_material_override/0 = SubResource("Material_cyan")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MedicineLocker"]
+shape = SubResource("Shape_panel")

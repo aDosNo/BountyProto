@@ -41,8 +41,12 @@ var _weapon_animation_id: int = 0
 var _intel_rows: Dictionary = {}
 var _intel_counter: Label = null
 var _intel_required: int = 3
+var _lead_rows: Array[Label] = []
 var _binocular_overlay: Control = null
 var _binocular_zoom_label: Label = null
+var _navigation_label: Label = null
+var _navigation_update_accum := 0.0
+var _last_zone_name := ""
 
 const WEAPON_RUNTIME_ATLAS: Texture2D = preload("res://art/sprites/weapons/fps_revolver_runtime_atlas.png")
 const WEAPON_FRAME_SIZE := Vector2(512.0, 320.0)
@@ -55,9 +59,14 @@ func _ready() -> void:
 	set_retro_visuals_enabled(retro_visuals_enabled)
 	_build_binocular_overlay()
 	_build_intel_panel()
+	_build_navigation_panel()
 
 
 func _process(delta: float) -> void:
+	_navigation_update_accum += delta
+	if _navigation_update_accum >= 0.2:
+		_navigation_update_accum = 0.0
+		_update_navigation_panel()
 	if weapon_sprite_overlay == null or not weapon_sprite_overlay.visible:
 		return
 
@@ -66,6 +75,53 @@ func _process(delta: float) -> void:
 		sin(_weapon_overlay_bob_time * 0.5) * weapon_overlay_bob_amount * 0.35,
 		sin(_weapon_overlay_bob_time) * weapon_overlay_bob_amount
 	)
+
+
+func _build_navigation_panel() -> void:
+	if _navigation_label != null:
+		return
+	var root: Control = get_node("Root")
+	_navigation_label = Label.new()
+	_navigation_label.name = "DistrictNavigation"
+	_navigation_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_navigation_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_navigation_label.offset_left = 300.0
+	_navigation_label.offset_top = 48.0
+	_navigation_label.offset_right = -300.0
+	_navigation_label.offset_bottom = 94.0
+	_navigation_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_navigation_label.add_theme_color_override("font_color", Color(0.55, 0.95, 1.0, 0.95))
+	_navigation_label.add_theme_color_override("font_shadow_color", Color(0.0, 0.02, 0.03, 0.95))
+	_navigation_label.add_theme_constant_override("shadow_offset_x", 2)
+	_navigation_label.add_theme_constant_override("shadow_offset_y", 2)
+	_navigation_label.add_theme_font_size_override("font_size", 15)
+	_navigation_label.text = "DISTRICT NAV INITIALIZING"
+	root.add_child(_navigation_label)
+
+
+func _update_navigation_panel() -> void:
+	if _navigation_label == null:
+		return
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	if investigation == null or player == null or not investigation.has_method("get_navigation_snapshot"):
+		_navigation_label.text = "HESPERUS MARKET"
+		return
+	var snapshot: Dictionary = investigation.call("get_navigation_snapshot", player.global_position)
+	var current_zone := String(snapshot.get("current_zone", "Hesperus Market"))
+	if not _last_zone_name.is_empty() and current_zone != _last_zone_name:
+		show_toast("ENTERING: %s" % current_zone.to_upper(), 2.0)
+	_last_zone_name = current_zone
+	if not snapshot.has("lead_title"):
+		_navigation_label.text = "CURRENT: %s\nNO LOCATED EVIDENCE" % current_zone.to_upper()
+		return
+	_navigation_label.text = "CURRENT: %s\nLEAD: %s • %s %dm • %s" % [
+		current_zone.to_upper(),
+		String(snapshot.get("lead_title", "Evidence")).to_upper(),
+		String(snapshot.get("bearing", "?")),
+		roundi(float(snapshot.get("distance", 0.0))),
+		String(snapshot.get("lead_zone", "Unknown")).to_upper(),
+	]
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -387,11 +443,25 @@ func _build_intel_panel() -> void:
 	_intel_counter.add_theme_font_size_override("font_size", 13)
 	vbox.add_child(_intel_counter)
 
+	var lead_title := Label.new()
+	lead_title.text = "EVIDENCE LEADS"
+	lead_title.add_theme_color_override("font_color", Color(0.95, 0.72, 0.28, 1.0))
+	lead_title.add_theme_font_size_override("font_size", 13)
+	vbox.add_child(lead_title)
+	for _index in range(3):
+		var lead_row := Label.new()
+		lead_row.add_theme_font_size_override("font_size", 12)
+		lead_row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		lead_row.custom_minimum_size.x = 220.0
+		vbox.add_child(lead_row)
+		_lead_rows.append(lead_row)
+
 	intel.intel_updated.connect(_on_intel_updated)
 	intel.intel_reset.connect(_refresh_intel_panel)
 	_refresh_intel_panel()
 	# Threshold comes from BountyManager once the tree settles.
 	_resolve_intel_threshold.call_deferred()
+	_bind_investigation_director.call_deferred()
 
 
 func _resolve_intel_threshold() -> void:
@@ -413,6 +483,53 @@ func _on_intel_updated(category: String, _value: String, _source: String) -> voi
 		tween.tween_callback(_refresh_intel_panel)
 
 
+func _bind_investigation_director() -> void:
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	if investigation == null:
+		await get_tree().process_frame
+		investigation = get_tree().get_first_node_in_group("investigation_director")
+	if investigation == null:
+		return
+	if investigation.has_signal("lead_added"):
+		investigation.lead_added.connect(_on_lead_changed)
+	if investigation.has_signal("lead_updated"):
+		investigation.lead_updated.connect(_on_lead_changed)
+	_refresh_lead_panel()
+
+
+func _on_lead_changed(_lead: Dictionary) -> void:
+	_refresh_lead_panel()
+
+
+func _refresh_lead_panel() -> void:
+	if _lead_rows.is_empty():
+		return
+	var investigation := get_tree().get_first_node_in_group("investigation_director")
+	var leads: Array = investigation.call("get_leads") if investigation != null else []
+	var ordered_leads: Array = []
+	for desired_status in ["ACTIVE", "RUMORED", "VERIFIED"]:
+		for lead_value in leads:
+			if String((lead_value as Dictionary).get("status", "")) == desired_status:
+				ordered_leads.append(lead_value)
+	for index in range(_lead_rows.size()):
+		var row := _lead_rows[index]
+		if index >= ordered_leads.size():
+			row.text = "—"
+			row.add_theme_color_override("font_color", Color(0.42, 0.5, 0.52, 0.65))
+			continue
+		var lead: Dictionary = ordered_leads[index]
+		var status := String(lead.get("status", "RUMORED"))
+		var zone := String(lead.get("zone_label", "unlocated"))
+		row.text = "%s: %s [%s]" % [status, lead.get("title", "Evidence"), zone]
+		match status:
+			"VERIFIED":
+				row.add_theme_color_override("font_color", Color(0.45, 1.0, 0.6, 1.0))
+			"ACTIVE":
+				row.add_theme_color_override("font_color", Color(0.35, 0.9, 1.0, 1.0))
+			_:
+				row.add_theme_color_override("font_color", Color(1.0, 0.72, 0.28, 1.0))
+
+
 func _refresh_intel_panel() -> void:
 	var intel := get_node_or_null("/root/BountyIntel")
 	if intel == null or _intel_rows.is_empty():
@@ -429,10 +546,13 @@ func _refresh_intel_panel() -> void:
 			row.add_theme_color_override("font_color", Color(0.45, 0.55, 0.58, 0.7))
 
 	if _intel_counter != null:
-		var count: int = intel.call("known_count")
-		if count >= _intel_required:
-			_intel_counter.text = "CONFRONT AUTHORIZED (%d/%d)" % [count, _intel_required]
+		var count: int = intel.call("known_visible_count")
+		var signature_known := bool(intel.call("knows", "scanner_signature"))
+		if count >= _intel_required and signature_known:
+			_intel_counter.text = "CONFRONT AUTHORIZED (%d/%d + SIG)" % [count, _intel_required]
 			_intel_counter.add_theme_color_override("font_color", Color(0.5, 1.0, 0.6, 1.0))
 		else:
-			_intel_counter.text = "INTEL: %d/%d to confront" % [count, _intel_required]
+			_intel_counter.text = "VISIBLE: %d/%d • SIG: %s" % [
+				count, _intel_required, "READY" if signature_known else "---"
+			]
 			_intel_counter.add_theme_color_override("font_color", Color(0.95, 0.75, 0.4, 0.9))

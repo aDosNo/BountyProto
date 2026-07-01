@@ -1,10 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b1qwue3qb07h2"]
 
-[ext_resource type="Script" path="res://levels/hesperus_market/scripts/hesperus_market_graybox_builder.gd" id="1_builder"]
+[ext_resource type="Script" uid="uid://isqr3hwp2sli" path="res://levels/hesperus_market/scripts/hesperus_market_graybox_builder.gd" id="1_builder"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_wdgph"]
 [ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_DockWallPanel.tscn" id="2_ynh8q"]
 [ext_resource type="Material" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dock_Metal.tres" id="3_nt3tk"]
-[ext_resource type="Script" path="res://scripts/player_controller.gd" id="3_xe27n"]
 [ext_resource type="Material" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="4_bm3me"]
 [ext_resource type="Material" path="res://levels/hesperus_market/visual_kit/materials/DBG_Route_Return_Green.tres" id="5_7ggja"]
 [ext_resource type="PackedScene" path="res://levels/hesperus_market/visual_kit/modules/VK_PortDoorFrame.tscn" id="6_i8ilt"]
@@ -3061,8 +3060,6 @@ size = Vector3(1.2, 0.22, 1.2)
 [sub_resource type="BoxShape3D" id="Shape_box"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_t6rqs"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_4f1t2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ccdbw"]
 
@@ -6218,571 +6215,481 @@ mesh = SubResource("BoxMesh_un2fm")
 
 [node name="VisualDressing" type="Node3D" parent="." unique_id=1789965404]
 
-[node name="S1_DockWallPanel_West_029" type="StaticBody3D" parent="VisualDressing" unique_id=452759677 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_West_029" parent="VisualDressing" unique_id=452759677 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.28, 0, 29.5)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=937325937]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=937325937]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=1647775558]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=1647775558]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=744500192]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=744500192]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=1321357609]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_029" unique_id=1321357609]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_West_036" type="StaticBody3D" parent="VisualDressing" unique_id=614129856 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_West_036" parent="VisualDressing" unique_id=614129856 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.28, 0, 36.5)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=159699102]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=159699102]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=390300173]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=390300173]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=709460950]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=709460950]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=747100209]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_036" unique_id=747100209]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_West_049" type="StaticBody3D" parent="VisualDressing" unique_id=977439893 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_West_049" parent="VisualDressing" unique_id=977439893 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.28, 0, 49.5)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=693305435]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=693305435]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=626441389]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=626441389]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=1673496585]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=1673496585]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=1453293624]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_049" unique_id=1453293624]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_West_054" type="StaticBody3D" parent="VisualDressing" unique_id=1792712316 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_West_054" parent="VisualDressing" unique_id=1792712316 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.28, 0, 54)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=575990950]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=575990950]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=592983042]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=592983042]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=1364264333]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=1364264333]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=1927095573]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_West_054" unique_id=1927095573]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_North_003" type="StaticBody3D" parent="VisualDressing" unique_id=1158536920 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_North_003" parent="VisualDressing" unique_id=1158536920 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 58.28)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=1047161403]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=1047161403]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=1888165725]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=1888165725]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=35918030]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=35918030]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=1292569780]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_003" unique_id=1292569780]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_North_017" type="StaticBody3D" parent="VisualDressing" unique_id=1972609265 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_North_017" parent="VisualDressing" unique_id=1972609265 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 0, 58.28)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=78661630]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=78661630]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=1760423446]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=1760423446]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=1341422504]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=1341422504]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=740413563]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_North_017" unique_id=740413563]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_South_002" type="StaticBody3D" parent="VisualDressing" unique_id=1833564722 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_South_002" parent="VisualDressing" unique_id=1833564722 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, 23.72)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=41823564]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=41823564]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=1364145222]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=1364145222]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=1471841779]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=1471841779]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=1010122335]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_002" unique_id=1010122335]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_South_015" type="StaticBody3D" parent="VisualDressing" unique_id=1704317173 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_South_015" parent="VisualDressing" unique_id=1704317173 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8, 0, 23.72)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=1973821713]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=1973821713]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=854227061]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=854227061]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=1123086013]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=1123086013]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=1928900827]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_015" unique_id=1928900827]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_South_019" type="StaticBody3D" parent="VisualDressing" unique_id=455546423 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_South_019" parent="VisualDressing" unique_id=455546423 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 23.72)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=1454044456]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=1454044456]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=433341558]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=433341558]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=1016356862]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=1016356862]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=1501973890]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_South_019" unique_id=1501973890]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_East_NorthOfPort" type="StaticBody3D" parent="VisualDressing" unique_id=1376219391 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_East_NorthOfPort" parent="VisualDressing" unique_id=1376219391 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 22.28, 0, 51.5)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=117276258]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=117276258]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=582387613]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=582387613]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=1537164092]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=1537164092]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=931491304]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_NorthOfPort" unique_id=931491304]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_DockWallPanel_East_SouthOfPort" type="StaticBody3D" parent="VisualDressing" unique_id=1781017181 instance=ExtResource("2_ynh8q")]
+[node name="S1_DockWallPanel_East_SouthOfPort" parent="VisualDressing" unique_id=1781017181 instance=ExtResource("2_ynh8q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 22.28, 0, 33.5)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Panel" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=1501064353]
+[node name="Panel2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=1501064353]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("Mesh_box")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=596629019]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=596629019]
 transform = Transform3D(4.2, 0, 0, 0, 2.9, 0, 0, 0, 0.34, 0, 1.45, 0)
 shape = SubResource("Shape_box")
 disabled = true
 
-[node name="DockBumper" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=189330278]
+[node name="DockBumper2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=189330278]
 transform = Transform3D(4.4, 0, 0, 0, 0.42, 0, 0, 0, 0.2, 0, 0.42, -0.28)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("Mesh_box")
 
-[node name="ReturnStripe" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=1485578096]
+[node name="ReturnStripe2" type="MeshInstance3D" parent="VisualDressing/S1_DockWallPanel_East_SouthOfPort" unique_id=1485578096]
 transform = Transform3D(3.1, 0, 0, 0, 0.16, 0, 0, 0, 0.05, 0, 2.35, -0.27)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("Mesh_box")
 
-[node name="S1_PortFrame_ToBountyHub" type="Node3D" parent="VisualDressing" unique_id=691032169 instance=ExtResource("6_i8ilt")]
+[node name="S1_PortFrame_ToBountyHub" parent="VisualDressing" unique_id=691032169 instance=ExtResource("6_i8ilt")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 22, 0, 43)
 
-[node name="LeftPost" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=1141361226]
+[node name="LeftPost2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=1141361226]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 1.5, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToBountyHub/LeftPost" unique_id=1319351734]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ToBountyHub/LeftPost" unique_id=1239884290]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="RightPost" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=223611867]
+[node name="RightPost2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=223611867]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 1.5, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToBountyHub/RightPost" unique_id=1204714354]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ToBountyHub/RightPost" unique_id=694931496]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="Header" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=786433072]
+[node name="Header2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=786433072]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.05, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToBountyHub/Header" unique_id=1315903799]
-transform = Transform3D(3.1, 0, 0, 0, 0.28, 0, 0, 0, 0.32, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ToBountyHub/Header" unique_id=570918221]
-transform = Transform3D(3.1, 0, 0, 0, 0.28, 0, 0, 0, 0.32, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="RouteStrip" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=1550935026]
+[node name="RouteStrip2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToBountyHub" unique_id=1550935026]
 transform = Transform3D(2.4, 0, 0, 0, 0.12, 0, 0, 0, 0.05, 0, 2.6, -0.22)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_t6rqs")
 
-[node name="S1_PortFrame_ToUpperWalkway" type="Node3D" parent="VisualDressing" unique_id=1054830024 instance=ExtResource("6_i8ilt")]
+[node name="S1_PortFrame_ToUpperWalkway" parent="VisualDressing" unique_id=1054830024 instance=ExtResource("6_i8ilt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 6, 58)
 
-[node name="LeftPost" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=1537028346]
+[node name="LeftPost2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=1537028346]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 1.5, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway/LeftPost" unique_id=1543001485]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway/LeftPost" unique_id=2135916089]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="RightPost" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=1744360730]
+[node name="RightPost2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=1744360730]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 1.5, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway/RightPost" unique_id=564127250]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway/RightPost" unique_id=1522920335]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="Header" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=780285792]
+[node name="Header2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=780285792]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.05, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway/Header" unique_id=1146528985]
-transform = Transform3D(3.1, 0, 0, 0, 0.28, 0, 0, 0, 0.32, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway/Header" unique_id=1568334176]
-transform = Transform3D(3.1, 0, 0, 0, 0.28, 0, 0, 0, 0.32, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="RouteStrip" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=883304666]
+[node name="RouteStrip2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ToUpperWalkway" unique_id=883304666]
 transform = Transform3D(2.4, 0, 0, 0, 0.12, 0, 0, 0, 0.05, 0, 2.6, -0.22)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_t6rqs")
 
-[node name="S1_PortFrame_ReturnGate" type="Node3D" parent="VisualDressing" unique_id=7685132 instance=ExtResource("6_i8ilt")]
+[node name="S1_PortFrame_ReturnGate" parent="VisualDressing" unique_id=7685132 instance=ExtResource("6_i8ilt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 24)
 
-[node name="LeftPost" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=268872504]
+[node name="LeftPost2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=268872504]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 1.5, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ReturnGate/LeftPost" unique_id=1439409837]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ReturnGate/LeftPost" unique_id=369285514]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="RightPost" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=911248793]
+[node name="RightPost2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=911248793]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 1.5, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ReturnGate/RightPost" unique_id=1873008645]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ReturnGate/RightPost" unique_id=1217590636]
-transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.3, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="Header" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=992060514]
+[node name="Header2" type="StaticBody3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=992060514]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.05, 0)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ReturnGate/Header" unique_id=937264542]
-transform = Transform3D(3.1, 0, 0, 0, 0.28, 0, 0, 0, 0.32, 0, 0, 0)
-material_override = ExtResource("4_bm3me")
-mesh = SubResource("BoxMesh_t6rqs")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_ReturnGate/Header" unique_id=274118302]
-transform = Transform3D(3.1, 0, 0, 0, 0.28, 0, 0, 0, 0.32, 0, 0, 0)
-shape = SubResource("BoxShape3D_4f1t2")
-disabled = true
-
-[node name="RouteStrip" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=441597303]
+[node name="RouteStrip2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_ReturnGate" unique_id=441597303]
 transform = Transform3D(2.4, 0, 0, 0, 0.12, 0, 0, 0, 0.05, 0, 2.6, -0.22)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_t6rqs")
 
-[node name="S1_PortFrame_UtilityHatch_VentFrame" type="StaticBody3D" parent="VisualDressing" unique_id=945802212 instance=ExtResource("8_k6w8x")]
+[node name="S1_PortFrame_UtilityHatch_VentFrame" parent="VisualDressing" unique_id=945802212 instance=ExtResource("8_k6w8x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -0.95, 24.65)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Frame" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=959129750]
+[node name="Frame2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=959129750]
 transform = Transform3D(2, 0, 0, 0, 0.2, 0, 0, 0, 2, 0, 0.1, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_ccdbw")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=540332907]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=540332907]
 transform = Transform3D(2, 0, 0, 0, 0.2, 0, 0, 0, 2, 0, 0.1, 0)
 shape = SubResource("BoxShape3D_sx1sl")
 disabled = true
 
-[node name="OpeningDark" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=756561622]
+[node name="OpeningDark2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=756561622]
 transform = Transform3D(1.2, 0, 0, 0, 0.04, 0, 0, 0, 1.2, 0, 0.22, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_ccdbw")
 
-[node name="RibA" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=1546530999]
+[node name="RibA2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=1546530999]
 transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 1.3, -0.35, 0.28, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_ccdbw")
 
-[node name="RibB" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=2049912048]
+[node name="RibB2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_VentFrame" unique_id=2049912048]
 transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 1.3, 0.35, 0.28, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_ccdbw")
 
-[node name="S1_PortFrame_UtilityHatch_Grate" type="StaticBody3D" parent="VisualDressing" unique_id=1352652878 instance=ExtResource("11_vxuub")]
+[node name="S1_PortFrame_UtilityHatch_Grate" parent="VisualDressing" unique_id=1352652878 instance=ExtResource("11_vxuub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -0.95, 24.65)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Frame" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=1088740851]
+[node name="Frame2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=1088740851]
 transform = Transform3D(2.2, 0, 0, 0, 0.12, 0, 0, 0, 2.2, 0, 0, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=1130597779]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=1130597779]
 transform = Transform3D(2.2, 0, 0, 0, 0.12, 0, 0, 0, 2.2, 0, 0, 0)
 shape = SubResource("BoxShape3D_gqfbq")
 disabled = true
 
-[node name="SlotA" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=787179337]
+[node name="SlotA2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=787179337]
 transform = Transform3D(0.1, 0, 0, 0, 0.05, 0, 0, 0, 1.6, -0.55, 0.09, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="SlotB" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=842668063]
+[node name="SlotB2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=842668063]
 transform = Transform3D(0.1, 0, 0, 0, 0.05, 0, 0, 0, 1.6, 0, 0.09, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="SlotC" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=2050588375]
+[node name="SlotC2" type="MeshInstance3D" parent="VisualDressing/S1_PortFrame_UtilityHatch_Grate" unique_id=2050588375]
 transform = Transform3D(0.1, 0, 0, 0, 0.05, 0, 0, 0, 1.6, 0.55, 0.09, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="S1_LandingPadTrim_01" type="StaticBody3D" parent="VisualDressing" unique_id=658335272 instance=ExtResource("12_aifrx")]
+[node name="S1_LandingPadTrim_01" parent="VisualDressing" unique_id=658335272 instance=ExtResource("12_aifrx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.16, 0.08, 38.28)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Plate" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=1348439135]
+[node name="Plate2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=1348439135]
 transform = Transform3D(4, 0, 0, 0, 0.12, 0, 0, 0, 4, 0, 0, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=546454496]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=546454496]
 transform = Transform3D(4, 0, 0, 0, 0.12, 0, 0, 0, 4, 0, 0, 0)
 shape = SubResource("BoxShape3D_ihpvs")
 disabled = true
 
-[node name="TrimNorth" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=838118256]
+[node name="TrimNorth2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=838118256]
 transform = Transform3D(4.1, 0, 0, 0, 0.08, 0, 0, 0, 0.12, 0, 0.08, -1.92)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="TrimEast" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=502693479]
+[node name="TrimEast2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_01" unique_id=502693479]
 transform = Transform3D(0.12, 0, 0, 0, 0.08, 0, 0, 0, 4.1, 1.92, 0.08, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="S1_LandingPadTrim_02" type="StaticBody3D" parent="VisualDressing" unique_id=823004193 instance=ExtResource("12_aifrx")]
+[node name="S1_LandingPadTrim_02" parent="VisualDressing" unique_id=823004193 instance=ExtResource("12_aifrx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.559999, 0.08, 38.28)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Plate" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=97534955]
+[node name="Plate2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=97534955]
 transform = Transform3D(4, 0, 0, 0, 0.12, 0, 0, 0, 4, 0, 0, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=1162120829]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=1162120829]
 transform = Transform3D(4, 0, 0, 0, 0.12, 0, 0, 0, 4, 0, 0, 0)
 shape = SubResource("BoxShape3D_ihpvs")
 disabled = true
 
-[node name="TrimNorth" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=888191972]
+[node name="TrimNorth2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=888191972]
 transform = Transform3D(4.1, 0, 0, 0, 0.08, 0, 0, 0, 0.12, 0, 0.08, -1.92)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="TrimEast" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=1779083882]
+[node name="TrimEast2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_02" unique_id=1779083882]
 transform = Transform3D(0.12, 0, 0, 0, 0.08, 0, 0, 0, 4.1, 1.92, 0.08, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="S1_LandingPadTrim_03" type="StaticBody3D" parent="VisualDressing" unique_id=259895692 instance=ExtResource("12_aifrx")]
+[node name="S1_LandingPadTrim_03" parent="VisualDressing" unique_id=259895692 instance=ExtResource("12_aifrx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.96, 0.08, 38.28)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Plate" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=1299009913]
+[node name="Plate2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=1299009913]
 transform = Transform3D(4, 0, 0, 0, 0.12, 0, 0, 0, 4, 0, 0, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=313951087]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=313951087]
 transform = Transform3D(4, 0, 0, 0, 0.12, 0, 0, 0, 4, 0, 0, 0)
 shape = SubResource("BoxShape3D_ihpvs")
 disabled = true
 
-[node name="TrimNorth" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=1551149642]
+[node name="TrimNorth2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=1551149642]
 transform = Transform3D(4.1, 0, 0, 0, 0.08, 0, 0, 0, 0.12, 0, 0.08, -1.92)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_b3ht4")
 
-[node name="TrimEast" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=176656302]
+[node name="TrimEast2" type="MeshInstance3D" parent="VisualDressing/S1_LandingPadTrim_03" unique_id=176656302]
 transform = Transform3D(0.12, 0, 0, 0, 0.08, 0, 0, 0, 4.1, 1.92, 0.08, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_b3ht4")
@@ -6812,91 +6719,91 @@ mesh = SubResource("BoxMesh_366ko")
 [node name="Collision" type="CollisionShape3D" parent="VisualDressing/S1_CustomsBooth_Blockout" unique_id=1567825599]
 shape = SubResource("BoxShape3D_smiu6")
 
-[node name="S1_VisualCargoCrateStack_01" type="StaticBody3D" parent="VisualDressing" unique_id=1160038989 instance=ExtResource("13_dqjfr")]
+[node name="S1_VisualCargoCrateStack_01" parent="VisualDressing" unique_id=1160038989 instance=ExtResource("13_dqjfr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.52, 0, 46.440002)
 
-[node name="CrateA" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=1975664177]
+[node name="CrateA2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=1975664177]
 transform = Transform3D(1.1, 0, 0, 0, 0.9, 0, 0, 0, 1.1, -0.55, 0.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateB" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=88651716]
+[node name="CrateB2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=88651716]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.55, 0.35, 0.1)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateC" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=1011172401]
+[node name="CrateC2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=1011172401]
 transform = Transform3D(0.9, 0, 0, 0, 0.65, 0, 0, 0, 0.9, -0.15, 1.18, -0.1)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=2021603707]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_01" unique_id=2021603707]
 transform = Transform3D(2.2, 0, 0, 0, 1.5, 0, 0, 0, 1.2, 0, 0.75, 0)
 shape = SubResource("BoxShape3D_u6hal")
 
-[node name="S1_VisualCargoCrateStack_02" type="StaticBody3D" parent="VisualDressing" unique_id=1297622738 instance=ExtResource("13_dqjfr")]
+[node name="S1_VisualCargoCrateStack_02" parent="VisualDressing" unique_id=1297622738 instance=ExtResource("13_dqjfr")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.72, 0, 46.440002)
 
-[node name="CrateA" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=2036344032]
+[node name="CrateA2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=2036344032]
 transform = Transform3D(1.1, 0, 0, 0, 0.9, 0, 0, 0, 1.1, -0.55, 0.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateB" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=1512524463]
+[node name="CrateB2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=1512524463]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.55, 0.35, 0.1)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateC" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=1666187794]
+[node name="CrateC2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=1666187794]
 transform = Transform3D(0.9, 0, 0, 0, 0.65, 0, 0, 0, 0.9, -0.15, 1.18, -0.1)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=341110087]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_02" unique_id=341110087]
 transform = Transform3D(2.2, 0, 0, 0, 1.5, 0, 0, 0, 1.2, 0, 0.75, 0)
 shape = SubResource("BoxShape3D_u6hal")
 
-[node name="S1_VisualCargoCrateStack_03" type="StaticBody3D" parent="VisualDressing" unique_id=134214741 instance=ExtResource("13_dqjfr")]
+[node name="S1_VisualCargoCrateStack_03" parent="VisualDressing" unique_id=134214741 instance=ExtResource("13_dqjfr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.52, 0, 49.16)
 
-[node name="CrateA" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=1705374374]
+[node name="CrateA2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=1705374374]
 transform = Transform3D(1.1, 0, 0, 0, 0.9, 0, 0, 0, 1.1, -0.55, 0.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateB" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=1218140250]
+[node name="CrateB2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=1218140250]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.55, 0.35, 0.1)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateC" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=1961030496]
+[node name="CrateC2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=1961030496]
 transform = Transform3D(0.9, 0, 0, 0, 0.65, 0, 0, 0, 0.9, -0.15, 1.18, -0.1)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=754026751]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_03" unique_id=754026751]
 transform = Transform3D(2.2, 0, 0, 0, 1.5, 0, 0, 0, 1.2, 0, 0.75, 0)
 shape = SubResource("BoxShape3D_u6hal")
 
-[node name="S1_VisualCargoCrateStack_04" type="StaticBody3D" parent="VisualDressing" unique_id=855313834 instance=ExtResource("13_dqjfr")]
+[node name="S1_VisualCargoCrateStack_04" parent="VisualDressing" unique_id=855313834 instance=ExtResource("13_dqjfr")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.72, 0, 49.16)
 
-[node name="CrateA" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=148994457]
+[node name="CrateA2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=148994457]
 transform = Transform3D(1.1, 0, 0, 0, 0.9, 0, 0, 0, 1.1, -0.55, 0.45, 0)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateB" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=1404082897]
+[node name="CrateB2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=1404082897]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 1, 0.55, 0.35, 0.1)
 material_override = ExtResource("3_nt3tk")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CrateC" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=1591558743]
+[node name="CrateC2" type="MeshInstance3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=1591558743]
 transform = Transform3D(0.9, 0, 0, 0, 0.65, 0, 0, 0, 0.9, -0.15, 1.18, -0.1)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_d78dv")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=1994081076]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_VisualCargoCrateStack_04" unique_id=1994081076]
 transform = Transform3D(2.2, 0, 0, 0, 1.5, 0, 0, 0, 1.2, 0, 0.75, 0)
 shape = SubResource("BoxShape3D_u6hal")
 
@@ -6912,46 +6819,46 @@ mesh = SubResource("BoxMesh_dq8br")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.1, 5.98, 54.940002)
 mesh = SubResource("BoxMesh_wfbei")
 
-[node name="S1_UpperCatwalkCue_RailingA" type="StaticBody3D" parent="VisualDressing" unique_id=696098045 instance=ExtResource("14_r42r1")]
+[node name="S1_UpperCatwalkCue_RailingA" parent="VisualDressing" unique_id=696098045 instance=ExtResource("14_r42r1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.46, 6.12, 53.24)
 
-[node name="TopRail" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=1202157065]
+[node name="TopRail2" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=1202157065]
 transform = Transform3D(4, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 0, 1.05, 0)
 material_override = ExtResource("15_1nna7")
 mesh = SubResource("BoxMesh_ita3b")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=1645715283]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=1645715283]
 transform = Transform3D(4, 0, 0, 0, 1.24, 0, 0, 0, 0.16, 0, 0.62, 0)
 shape = SubResource("BoxShape3D_fyb04")
 
-[node name="PostA" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=307956329]
+[node name="PostA2" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=307956329]
 transform = Transform3D(0.14, 0, 0, 0, 1.04, 0, 0, 0, 0.14, -1.8, 0.52, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_ita3b")
 
-[node name="PostB" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=556324446]
+[node name="PostB2" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingA" unique_id=556324446]
 transform = Transform3D(0.14, 0, 0, 0, 1.04, 0, 0, 0, 0.14, 1.8, 0.52, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_ita3b")
 
-[node name="S1_UpperCatwalkCue_RailingB" type="StaticBody3D" parent="VisualDressing" unique_id=1722342291 instance=ExtResource("14_r42r1")]
+[node name="S1_UpperCatwalkCue_RailingB" parent="VisualDressing" unique_id=1722342291 instance=ExtResource("14_r42r1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.52, 6.12, 53.24)
 
-[node name="TopRail" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=719697785]
+[node name="TopRail2" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=719697785]
 transform = Transform3D(4, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 0, 1.05, 0)
 material_override = ExtResource("15_1nna7")
 mesh = SubResource("BoxMesh_ita3b")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=525390466]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=525390466]
 transform = Transform3D(4, 0, 0, 0, 1.24, 0, 0, 0, 0.16, 0, 0.62, 0)
 shape = SubResource("BoxShape3D_fyb04")
 
-[node name="PostA" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=584238903]
+[node name="PostA2" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=584238903]
 transform = Transform3D(0.14, 0, 0, 0, 1.04, 0, 0, 0, 0.14, -1.8, 0.52, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_ita3b")
 
-[node name="PostB" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=320747738]
+[node name="PostB2" type="MeshInstance3D" parent="VisualDressing/S1_UpperCatwalkCue_RailingB" unique_id=320747738]
 transform = Transform3D(0.14, 0, 0, 0, 1.04, 0, 0, 0, 0.14, 1.8, 0.52, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_ita3b")
@@ -6983,75 +6890,75 @@ mesh = SubResource("BoxMesh_h064v")
 [node name="Collision" type="CollisionShape3D" parent="VisualDressing/S1_UpperCatwalkCue_Support_03" unique_id=1294397199]
 shape = SubResource("BoxShape3D_wsep6")
 
-[node name="S1_MaintenanceHatch_UtilityGrate" type="StaticBody3D" parent="VisualDressing" unique_id=1144351089 instance=ExtResource("11_vxuub")]
+[node name="S1_MaintenanceHatch_UtilityGrate" parent="VisualDressing" unique_id=1144351089 instance=ExtResource("11_vxuub")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -0.92, 24.8)
 collision_layer = 0
 collision_mask = 0
 
-[node name="Frame" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1501343095]
+[node name="Frame2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1501343095]
 transform = Transform3D(2.2, 0, 0, 0, 0.12, 0, 0, 0, 2.2, 0, 0, 0)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=929998125]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=929998125]
 transform = Transform3D(2.2, 0, 0, 0, 0.12, 0, 0, 0, 2.2, 0, 0, 0)
 shape = SubResource("BoxShape3D_gqfbq")
 disabled = true
 
-[node name="SlotA" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1873719774]
+[node name="SlotA2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1873719774]
 transform = Transform3D(0.1, 0, 0, 0, 0.05, 0, 0, 0, 1.6, -0.55, 0.09, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="SlotB" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1686852784]
+[node name="SlotB2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1686852784]
 transform = Transform3D(0.1, 0, 0, 0, 0.05, 0, 0, 0, 1.6, 0, 0.09, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="SlotC" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1709423621]
+[node name="SlotC2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_UtilityGrate" unique_id=1709423621]
 transform = Transform3D(0.1, 0, 0, 0, 0.05, 0, 0, 0, 1.6, 0.55, 0.09, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_jjsx3")
 
-[node name="S1_MaintenanceHatch_PipeBundle" type="StaticBody3D" parent="VisualDressing" unique_id=878446827 instance=ExtResource("16_nkox3")]
+[node name="S1_MaintenanceHatch_PipeBundle" parent="VisualDressing" unique_id=878446827 instance=ExtResource("16_nkox3")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3.4, 0.55, 26)
 collision_layer = 0
 collision_mask = 0
 
-[node name="PipeA" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=1649424116]
+[node name="PipeA2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=1649424116]
 transform = Transform3D(4, 0, 0, 0, 0.18, 0, 0, 0, 0.18, 0, 0, -0.18)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_fx3a0")
 
-[node name="PipeB" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=273666623]
+[node name="PipeB2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=273666623]
 transform = Transform3D(4, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 0, 0.25, 0.02)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_fx3a0")
 
-[node name="PipeC" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=188268160]
+[node name="PipeC2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=188268160]
 transform = Transform3D(4, 0, 0, 0, 0.14, 0, 0, 0, 0.14, 0, 0.48, 0.2)
 material_override = ExtResource("9_rh4t0")
 mesh = SubResource("BoxMesh_fx3a0")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=815838905]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="VisualDressing/S1_MaintenanceHatch_PipeBundle" unique_id=815838905]
 transform = Transform3D(4, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0, 0.24, 0.02)
 shape = SubResource("BoxShape3D_khq10")
 disabled = true
 
-[node name="S1_MaintenanceHatch_CableBundle" type="Node3D" parent="VisualDressing" unique_id=1121663092 instance=ExtResource("17_ngelg")]
+[node name="S1_MaintenanceHatch_CableBundle" parent="VisualDressing" unique_id=1121663092 instance=ExtResource("17_ngelg")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.8, 1.5, 25.1)
 
-[node name="CableA" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_CableBundle" unique_id=1076056677]
+[node name="CableA2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_CableBundle" unique_id=1076056677]
 transform = Transform3D(3.2, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0, -0.12)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_lat4d")
 
-[node name="CableB" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_CableBundle" unique_id=675278947]
+[node name="CableB2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_CableBundle" unique_id=675278947]
 transform = Transform3D(3.2, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0.14, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_lat4d")
 
-[node name="CableC" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_CableBundle" unique_id=1673214229]
+[node name="CableC2" type="MeshInstance3D" parent="VisualDressing/S1_MaintenanceHatch_CableBundle" unique_id=1673214229]
 transform = Transform3D(3.2, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0.28, 0.12)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_lat4d")
@@ -7060,40 +6967,40 @@ mesh = SubResource("BoxMesh_lat4d")
 transform = Transform3D(0.3585525, 0, 0.9335096, 0, 1, 0, -0.9335096, 0, 0.3585525, 13.200001, 0.14, 39.620003)
 mesh = SubResource("BoxMesh_e2wji")
 
-[node name="S1_GroundRoute_ToBountyHub_NeonModule" type="Node3D" parent="VisualDressing" unique_id=1279955584 instance=ExtResource("18_5syc1")]
+[node name="S1_GroundRoute_ToBountyHub_NeonModule" parent="VisualDressing" unique_id=1279955584 instance=ExtResource("18_5syc1")]
 transform = Transform3D(0.3585525, 0, 0.9335096, 0, 1, 0, -0.9335096, 0, 0.3585525, 13.200001, 0.21000001, 39.620003)
 
-[node name="BaseTrim" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=1328968219]
+[node name="BaseTrim2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=1328968219]
 transform = Transform3D(4.2, 0, 0, 0, 0.08, 0, 0, 0, 0.34, 0, 0, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="ReturnGreen" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=120996424]
+[node name="ReturnGreen2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=120996424]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1.65, 0.08, 0)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="BountyYellow" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=1381701954]
+[node name="BountyYellow2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=1381701954]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1, 0.08, 0)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="InvestigationBlue" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=970341589]
+[node name="InvestigationBlue2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=970341589]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -0.35, 0.08, 0)
 material_override = ExtResource("19_y00pk")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UpperPurple" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=1954819231]
+[node name="UpperPurple2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=1954819231]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 0.35, 0.08, 0)
 material_override = ExtResource("15_1nna7")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UtilityOrange" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=603892069]
+[node name="UtilityOrange2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=603892069]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1, 0.08, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="TargetRed" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=186612235]
+[node name="TargetRed2" type="MeshInstance3D" parent="VisualDressing/S1_GroundRoute_ToBountyHub_NeonModule" unique_id=186612235]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1.65, 0.08, 0)
 material_override = ExtResource("20_0c3c1")
 mesh = SubResource("BoxMesh_lhe60")
@@ -7102,40 +7009,40 @@ mesh = SubResource("BoxMesh_lhe60")
 transform = Transform3D(0.9437269, 0, 0.33072573, 0, 1, 0, -0.33072573, 0, 0.9437269, 8.86, 0.2, 47.239998)
 mesh = SubResource("BoxMesh_11nrn")
 
-[node name="S1_UpperRoute_Cue_NeonModule" type="Node3D" parent="VisualDressing" unique_id=976726842 instance=ExtResource("18_5syc1")]
+[node name="S1_UpperRoute_Cue_NeonModule" parent="VisualDressing" unique_id=976726842 instance=ExtResource("18_5syc1")]
 transform = Transform3D(0.9437269, 0, 0.33072573, 0, 1, 0, -0.33072573, 0, 0.9437269, 8.86, 0.27, 47.239998)
 
-[node name="BaseTrim" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1270317383]
+[node name="BaseTrim2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1270317383]
 transform = Transform3D(4.2, 0, 0, 0, 0.08, 0, 0, 0, 0.34, 0, 0, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="ReturnGreen" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1080151518]
+[node name="ReturnGreen2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1080151518]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1.65, 0.08, 0)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="BountyYellow" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=13265088]
+[node name="BountyYellow2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=13265088]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1, 0.08, 0)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="InvestigationBlue" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1032594637]
+[node name="InvestigationBlue2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1032594637]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -0.35, 0.08, 0)
 material_override = ExtResource("19_y00pk")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UpperPurple" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1960648111]
+[node name="UpperPurple2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1960648111]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 0.35, 0.08, 0)
 material_override = ExtResource("15_1nna7")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UtilityOrange" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=2082047125]
+[node name="UtilityOrange2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=2082047125]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1, 0.08, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="TargetRed" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1012411867]
+[node name="TargetRed2" type="MeshInstance3D" parent="VisualDressing/S1_UpperRoute_Cue_NeonModule" unique_id=1012411867]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1.65, 0.08, 0)
 material_override = ExtResource("20_0c3c1")
 mesh = SubResource("BoxMesh_lhe60")
@@ -7144,40 +7051,40 @@ mesh = SubResource("BoxMesh_lhe60")
 transform = Transform3D(-0.99036074, 0, 0.13851207, 0, 1, 0, -0.13851207, 0, -0.99036074, 5.2, 0.18, 30.52)
 mesh = SubResource("BoxMesh_u2cxq")
 
-[node name="S1_UtilityRoute_Cue_NeonModule" type="Node3D" parent="VisualDressing" unique_id=1969163904 instance=ExtResource("18_5syc1")]
+[node name="S1_UtilityRoute_Cue_NeonModule" parent="VisualDressing" unique_id=1969163904 instance=ExtResource("18_5syc1")]
 transform = Transform3D(-0.99036074, 0, 0.13851207, 0, 1, 0, -0.13851207, 0, -0.99036074, 5.2, 0.25, 30.52)
 
-[node name="BaseTrim" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1902012305]
+[node name="BaseTrim2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1902012305]
 transform = Transform3D(4.2, 0, 0, 0, 0.08, 0, 0, 0, 0.34, 0, 0, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="ReturnGreen" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1897121057]
+[node name="ReturnGreen2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1897121057]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1.65, 0.08, 0)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="BountyYellow" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=886067922]
+[node name="BountyYellow2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=886067922]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1, 0.08, 0)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="InvestigationBlue" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=621756884]
+[node name="InvestigationBlue2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=621756884]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -0.35, 0.08, 0)
 material_override = ExtResource("19_y00pk")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UpperPurple" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1791364058]
+[node name="UpperPurple2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1791364058]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 0.35, 0.08, 0)
 material_override = ExtResource("15_1nna7")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UtilityOrange" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=410271113]
+[node name="UtilityOrange2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=410271113]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1, 0.08, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="TargetRed" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1641359509]
+[node name="TargetRed2" type="MeshInstance3D" parent="VisualDressing/S1_UtilityRoute_Cue_NeonModule" unique_id=1641359509]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1.65, 0.08, 0)
 material_override = ExtResource("20_0c3c1")
 mesh = SubResource("BoxMesh_lhe60")
@@ -7186,132 +7093,132 @@ mesh = SubResource("BoxMesh_lhe60")
 transform = Transform3D(-0.90113616, 0, 0.43353623, 0, 1, 0, -0.43353623, 0, -0.90113616, 7.2, 0.16, 30.420002)
 mesh = SubResource("BoxMesh_m60e2")
 
-[node name="S1_ReturnRoute_Cue_NeonModule" type="Node3D" parent="VisualDressing" unique_id=853653893 instance=ExtResource("18_5syc1")]
+[node name="S1_ReturnRoute_Cue_NeonModule" parent="VisualDressing" unique_id=853653893 instance=ExtResource("18_5syc1")]
 transform = Transform3D(-0.90113616, 0, 0.43353623, 0, 1, 0, -0.43353623, 0, -0.90113616, 7.2, 0.22999999, 30.420002)
 
-[node name="BaseTrim" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1262670908]
+[node name="BaseTrim2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1262670908]
 transform = Transform3D(4.2, 0, 0, 0, 0.08, 0, 0, 0, 0.34, 0, 0, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="ReturnGreen" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=354402680]
+[node name="ReturnGreen2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=354402680]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1.65, 0.08, 0)
 material_override = ExtResource("5_7ggja")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="BountyYellow" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1680598115]
+[node name="BountyYellow2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1680598115]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -1, 0.08, 0)
 material_override = ExtResource("7_2cihy")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="InvestigationBlue" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=502967150]
+[node name="InvestigationBlue2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=502967150]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, -0.35, 0.08, 0)
 material_override = ExtResource("19_y00pk")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UpperPurple" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1196581965]
+[node name="UpperPurple2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1196581965]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 0.35, 0.08, 0)
 material_override = ExtResource("15_1nna7")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="UtilityOrange" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1876115854]
+[node name="UtilityOrange2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1876115854]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1, 0.08, 0)
 material_override = ExtResource("10_yx50u")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="TargetRed" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1847683083]
+[node name="TargetRed2" type="MeshInstance3D" parent="VisualDressing/S1_ReturnRoute_Cue_NeonModule" unique_id=1847683083]
 transform = Transform3D(0.55, 0, 0, 0, 0.08, 0, 0, 0, 0.18, 1.65, 0.08, 0)
 material_override = ExtResource("20_0c3c1")
 mesh = SubResource("BoxMesh_lhe60")
 
-[node name="S1_Sign_ToBountyBoardHub" type="Node3D" parent="VisualDressing" unique_id=488368122 instance=ExtResource("21_mytat")]
+[node name="S1_Sign_ToBountyBoardHub" parent="VisualDressing" unique_id=488368122 instance=ExtResource("21_mytat")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 18.8, 2.8, 43)
 
-[node name="SignPanel" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=539374096]
+[node name="SignPanel2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=539374096]
 transform = Transform3D(2.2, 0, 0, 0, 0.72, 0, 0, 0, 0.12, 0, 0, 0)
 material_override = ExtResource("22_wbc3j")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="TopBar" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=1714778710]
+[node name="TopBar2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=1714778710]
 transform = Transform3D(2.4, 0, 0, 0, 0.08, 0, 0, 0, 0.16, 0, 0.48, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableA" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=1517132753]
+[node name="CableA2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=1517132753]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, -0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableB" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=1190165397]
+[node name="CableB2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToBountyBoardHub" unique_id=1190165397]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, 0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="S1_Sign_ToUpperWalkway" type="Node3D" parent="VisualDressing" unique_id=1935394900 instance=ExtResource("21_mytat")]
+[node name="S1_Sign_ToUpperWalkway" parent="VisualDressing" unique_id=1935394900 instance=ExtResource("21_mytat")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 3.5, 54.2)
 
-[node name="SignPanel" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1656759684]
+[node name="SignPanel2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1656759684]
 transform = Transform3D(2.2, 0, 0, 0, 0.72, 0, 0, 0, 0.12, 0, 0, 0)
 material_override = ExtResource("22_wbc3j")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="TopBar" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1036478984]
+[node name="TopBar2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1036478984]
 transform = Transform3D(2.4, 0, 0, 0, 0.08, 0, 0, 0, 0.16, 0, 0.48, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableA" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1767969114]
+[node name="CableA2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1767969114]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, -0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableB" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1409673735]
+[node name="CableB2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUpperWalkway" unique_id=1409673735]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, 0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="S1_Sign_ToUtilityReturn" type="Node3D" parent="VisualDressing" unique_id=951765130 instance=ExtResource("21_mytat")]
+[node name="S1_Sign_ToUtilityReturn" parent="VisualDressing" unique_id=951765130 instance=ExtResource("21_mytat")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 2, 27.2)
 
-[node name="SignPanel" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=1832985168]
+[node name="SignPanel2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=1832985168]
 transform = Transform3D(2.2, 0, 0, 0, 0.72, 0, 0, 0, 0.12, 0, 0, 0)
 material_override = ExtResource("22_wbc3j")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="TopBar" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=1918755807]
+[node name="TopBar2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=1918755807]
 transform = Transform3D(2.4, 0, 0, 0, 0.08, 0, 0, 0, 0.16, 0, 0.48, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableA" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=109670779]
+[node name="CableA2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=109670779]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, -0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableB" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=423554614]
+[node name="CableB2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToUtilityReturn" unique_id=423554614]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, 0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="S1_Sign_ToExtractionReturn" type="Node3D" parent="VisualDressing" unique_id=2129886998 instance=ExtResource("21_mytat")]
+[node name="S1_Sign_ToExtractionReturn" parent="VisualDressing" unique_id=2129886998 instance=ExtResource("21_mytat")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 2.2, 27)
 
-[node name="SignPanel" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=972744482]
+[node name="SignPanel2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=972744482]
 transform = Transform3D(2.2, 0, 0, 0, 0.72, 0, 0, 0, 0.12, 0, 0, 0)
 material_override = ExtResource("22_wbc3j")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="TopBar" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=511416193]
+[node name="TopBar2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=511416193]
 transform = Transform3D(2.4, 0, 0, 0, 0.08, 0, 0, 0, 0.16, 0, 0.48, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableA" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=672869738]
+[node name="CableA2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=672869738]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, -0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
 
-[node name="CableB" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=1212280710]
+[node name="CableB2" type="MeshInstance3D" parent="VisualDressing/S1_Sign_ToExtractionReturn" unique_id=1212280710]
 transform = Transform3D(0.06, 0, 0, 0, 0.8, 0, 0, 0, 0.06, 0.75, 0.9, 0)
 material_override = ExtResource("4_bm3me")
 mesh = SubResource("BoxMesh_qkqa8")
@@ -8836,28 +8743,19 @@ mesh = SubResource("BoxMesh_o0tlu")
 
 [node name="Gameplay" type="Node3D" parent="." unique_id=619737005]
 
-[node name="Player" type="CharacterBody3D" parent="Gameplay" unique_id=2065891058 instance=ExtResource("2_wdgph")]
+[node name="Player" parent="Gameplay" unique_id=2065891058 instance=ExtResource("2_wdgph")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 3.96, 0.08, 35.9)
-script = ExtResource("3_xe27n")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Gameplay/Player" unique_id=1807206800]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Gameplay/Player" unique_id=1807206800]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_player")
 
-[node name="BodyPreview" type="MeshInstance3D" parent="Gameplay/Player" unique_id=385472691]
+[node name="BodyPreview2" type="MeshInstance3D" parent="Gameplay/Player" unique_id=385472691]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 visible = false
 mesh = SubResource("CapsuleMesh_player")
 
-[node name="Camera3D" type="Camera3D" parent="Gameplay/Player" unique_id=964285099]
+[node name="Camera3D2" type="Camera3D" parent="Gameplay/Player" unique_id=964285099]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
 fov = 78.0
-
-[node name="weapon_mount" type="Node3D" parent="Gameplay/Player/Camera3D" unique_id=1978020599]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, -0.32, -0.62)
-
-[node name="InteractionRay" type="RayCast3D" parent="Gameplay/Player/Camera3D" unique_id=696163509]
-enabled = false
-target_position = Vector3(0, 0, -3)

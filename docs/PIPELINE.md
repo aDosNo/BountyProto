@@ -5,6 +5,9 @@ Claude, Codex, and Nick. The goal: support immersive-sim depth + verticality
 across 2–3 districts **without** every scene collapsing into thousands of bespoke
 hand-placed meshes. Read this before adding geometry to any map.
 
+Status (2026-07-01): this is the target workflow. The live Hesperus scene is
+mid-migration and still generates collision for many imported GLBs.
+
 ## The one principle: keep three layers separate
 Bloat comes from fusing things that should be independent. Every district is
 three layers that must never be tangled:
@@ -73,6 +76,43 @@ iterate slowly and the design calcifies before it's fun. Cheap gray boxes =
 fast iteration = good im-sim design. The separation is what makes the whole
 design tractable for one person.
 
+### Carve-out: `auto_collider` as the GLB material-applicator
+
+`scripts/auto_collider.gd` is doing two unrelated jobs and the distinction
+matters. **Collision generation** (the script's original purpose) is the
+fusion trap — `.tscn` graybox owns collision; GLBs do not. **Material
+application by name-match** (floor materials, the window-glass warm/cool
+tint) is the opposite: it's a thin runtime hook that keeps art data out of
+the Blender export and in the project's `.tres` files, which is exactly the
+layer separation this doc preaches.
+
+The bridge state, until a building has a confirmed graybox underneath:
+- Leave the `auto_collider` script attached to building GLBs.
+- `enabled = true` while the graybox is missing (script generates collision
+  as a stopgap so the scene is walkable).
+- Once a graybox slab is authored beneath the GLB and verified in playtest,
+  set `enabled = false` on that building. Collision drops out; the floor /
+  window / accent material hooks keep working.
+- Hidden-mesh prefixes and material exports stay as-is — they're the
+  material/visibility layer, not the collision layer.
+
+This means "retrofit `auto_collider` off" is a **per-building toggle**, not a
+script removal. The script lives until every building has graybox under it;
+then the collision branch can be deleted and only the material branch
+remains.
+
+Two current exceptions must not be mistaken for the finished architecture:
+
+- `HoloCantina` uses authored `HC_collision_*` proxy meshes from its GLB.
+- `Hesperus_Market2_Street_gallery` uses authored `GAL_collision_*` proxies;
+  its five June 30 modular stalls are assembled in Blender and exported with the
+  gallery.
+
+These proxies are materially better than generating collision from every visual
+mesh, but collision is still coupled to the GLB export. Keep them until explicit
+Godot graybox replacements are playtested; do not claim the layer migration is
+complete.
+
 ## Anti-bloat checklist (apply before adding geometry)
 - Am I about to hand-place unique meshes that should be kit instances? → make/
   reuse a kit piece instead.
@@ -91,6 +131,9 @@ Instead:
   the East side — remove the orphaned `EastBalconyRun` .tscn nodes + stale
   orphan-balcony-era lights now that the real gallery GLB exists, and confirm the
   graybox under the gallery owns collision while the GLB is visual-only.
+
+As of 2026-07-01 `EastBalconyRun` still exists and the gallery still owns proxy
+collision, so this remains proposed cleanup rather than completed work.
 
 ## Where this connects
 - **Verticality bands + measured layout:** docs/level_design/01_VERTICALITY_PLAN.md

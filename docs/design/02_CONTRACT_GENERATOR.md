@@ -4,6 +4,10 @@ pipeline, its dependency ordering, the district descriptor that keeps it
 district-agnostic, determinism, and graceful degradation. Design only — no
 scene/code. **[NICK]** = your balance/product call.
 
+Status (2026-07-01): not implemented. Hesperus has seeded dynamic evidence and an
+authored candidate field, which are prototypes for S6/S7, but there is no
+general `generate()` pipeline or district descriptor yet.
+
 ## What it is / isn't
 - **Is:** a pure, seeded function
   `generate(seed, district_descriptor, difficulty_request, nemesis_pool) -> contract_definition`.
@@ -138,7 +142,9 @@ contract_definition:
 
 ## Build order when it's time to implement (post-sprint)
 1. District descriptor schema + author Hesperus's (read real node positions from
-   the .tscn — vantage = balcony, clue_spawns = existing ClueObject anchors, etc.).
+   the `.tscn` — use the tagged
+   `Gameplay/Investigation/EvidenceAnchors`, not the removed fixed ClueObject
+   chain; include legal witness, evidence, vantage, and extraction slots).
 2. S6 decoy algorithm + validator in isolation (unit-testable, no scene).
 3. S7 source placement against the descriptor.
 4. S1–S5/S8 sampling wrappers (cheap once 2–3 exist).

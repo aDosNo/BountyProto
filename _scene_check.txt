@@ -1,0 +1,7 @@
+checking: res://scenes/maps/HesperusMarket_Blockout.tscn
+material exists? res://assets/materials/generated/M_Hesperus_WindowGlass_Warm.tres -> true
+  loaded: M_Hesperus_WindowGlass_Warm (res://assets/materials/generated/M_Hesperus_WindowGlass_Warm.tres):<StandardMaterial3D#-9223372010581654079>
+material exists? res://assets/materials/generated/M_Hesperus_WindowGlass_Cool.tres -> true
+  loaded: M_Hesperus_WindowGlass_Cool (res://assets/materials/generated/M_Hesperus_WindowGlass_Cool.tres):<StandardMaterial3D#-9223372010430659136>
+scene exists? true
+SCENE LOADED OK: (res://scenes/maps/HesperusMarket_Blockout.tscn):<PackedScene#-9223371744360777391>

@@ -20,7 +20,7 @@ func _ready() -> void:
 	_awning_material = _make_material(awning_lockdown_color, Color(0.5, 0.02, 0.01), 0.55)
 
 
-func set_lockdown(reason: String = "") -> void:
+func set_lockdown(reason: String = "", _quiet: bool = false) -> void:
 	if _locked_down:
 		return
 	_locked_down = true

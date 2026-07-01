@@ -1,5 +1,9 @@
 # Hesperus Market Visual Kit Pass 4A
 
+**Historical/reference audit.** This kit belongs to the generated
+`levels/hesperus_market/` branch. It remains reusable reference material but is
+not evidence that these modules are present in the canonical live map.
+
 Date: 2026-06-09
 
 ## Files Created

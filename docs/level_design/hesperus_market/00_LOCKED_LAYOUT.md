@@ -1,9 +1,14 @@
 # Hesperus Market / Lower Spire Bazaar
 ## Master Seam Map / Locked Layout
 
-This document is the source of truth for all Hesperus Market subsection maps, graybox generation, route validation, and future art/blockout passes.
+**REFERENCE-ONLY GENERATED BRANCH (reconciled 2026-07-01).** This document is
+the source of truth only for `levels/hesperus_market/` graybox generation and
+its validator. It is not the source of truth for the live game map. The
+canonical map is `scenes/maps/HesperusMarket_Blockout.tscn`; its contract is
+`docs/level_design/hesperus_market_blockout/00_LOCKED_LAYOUT_BLOCKOUT.md`.
 
-Do not invent additional sections, exits, routes, connector ports, ladders, hatches, shortcuts, or neighboring areas unless this document is explicitly updated first.
+Do not merge these coordinates or ports into the live map. Preserve this branch
+as a historical/reference layout unless Nick explicitly revives it.
 
 ---
 

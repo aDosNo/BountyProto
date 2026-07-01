@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "definitions": [
+    {
+      "definition_id": "korvaxi_footprint_trail",
+      "evidence_kind": "footprint_trail",
+      "trait_category": "movement_tell",
+      "value_source": "movement_tell",
+      "source_types": ["found_evidence", "witness", "vantage", "broker"],
+      "anchor_tags": ["ground", "trail"],
+      "lead_title": "Uneven market footprints",
+      "lead_text": "A Korvaxi-class set of prints crosses a public market route.",
+      "scan_text": "Analyzing stride depth and cadence...",
+      "result_template": "Footprint pressure confirms movement tell: %s.",
+      "followup_categories": ["location_habit"]
+    },
+    {
+      "definition_id": "clothing_fiber_transfer",
+      "evidence_kind": "fiber",
+      "trait_category": "appearance",
+      "value_source": "appearance",
+      "source_types": ["found_evidence", "witness", "direct_observation", "broker"],
+      "anchor_tags": ["edge", "fabric"],
+      "lead_title": "Snagged clothing fibers",
+      "lead_text": "A witness remembers cloth catching on a market edge.",
+      "scan_text": "Comparing fiber pigment and weave...",
+      "result_template": "Recovered fibers match appearance: %s.",
+      "followup_categories": []
+    },
+    {
+      "definition_id": "courtyard_delivery_trace",
+      "evidence_kind": "delivery_trace",
+      "trait_category": "location_habit",
+      "value_source": "location_habit",
+      "source_types": ["found_evidence", "witness", "activity", "broker"],
+      "anchor_tags": ["counter", "service"],
+      "lead_title": "Repeated delivery residue",
+      "lead_text": "A recurring delivery mark links the subject to one district pocket.",
+      "scan_text": "Cross-referencing delivery residue...",
+      "result_template": "Repeated trace establishes location habit: %s.",
+      "followup_categories": ["appearance", "scanner_signature"]
+    },
+    {
+      "definition_id": "implant_coolant_residue",
+      "evidence_kind": "tech_residue",
+      "trait_category": "scanner_signature",
+      "value_source": "scanner_signature",
+      "source_types": ["found_evidence", "clinic_activity"],
+      "anchor_tags": ["clinic", "tech"],
+      "lead_title": "Implant coolant residue",
+      "lead_text": "Clinic waste carries a traceable implant coolant signature.",
+      "scan_text": "Resolving implant emission family...",
+      "result_template": "Expected scanner signature registered: %s.",
+      "followup_categories": []
+    }
+  ]
+}

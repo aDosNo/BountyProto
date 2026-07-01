@@ -4,6 +4,10 @@ Fills the payout/cost slots the generator (02, S8) and nemesis grudge premium
 here are starting ratios to tune in-engine, not gospel. **[NICK]** = your balance
 call (most of this doc is, by nature).
 
+Status (2026-07-01): the full shop/upgrade economy and generator formula are
+design-only. The persistent wallet, contract payouts/fines, and several
+district-activity spends/rewards are implemented.
+
 ## Unit & mental model
 Currency = **CR**. The whole economy is balanced around one yardstick: **a clean
 baseline contract pays ~1000 CR.** Every price below is expressed as a multiple of
@@ -94,8 +98,9 @@ economy needs. **[NICK]** stake sizes / payout multiple.
 - **Generator S8** consumes the income formula above; `base`/`type_mult`/`diff_mult`/
   `risk_premium` are the slots it already reserves.
 - **NemesisRegistry** grudge → `nemesis_premium` (flat +250×grudge).
-- **HunterLedger** (existing `/root/HunterLedger`, `add()`) is the wallet — spending
-  needs a matching `spend()/can_afford()` when shops go in (not built yet; flag).
+- **HunterLedger** is the wallet; `add()`, `spend()`, and `can_afford()` are
+  implemented and already used by district activities. A general shop/catalog
+  for the verb and scalar tables above is not built.
 - **BountyManager** fines already implemented and unchanged.
 
 ## Open calls reserved for Nick

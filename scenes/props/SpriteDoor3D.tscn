@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://caq61f7s3esis"]
+
+[ext_resource type="Script" uid="uid://cl71i4xevnlq" path="res://scripts/sprite_door_3d.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b4ya8khl8a67e" path="res://art/sprites/doors/door1_open/Door1_001.png" id="2_preview"]
+[ext_resource type="Material" path="res://levels/hesperus_market/visual_kit/materials/DBG_Dark_Trim.tres" id="3_trim"]
+[ext_resource type="Material" path="res://levels/hesperus_market/visual_kit/materials/DBG_Service_ConcreteMetal.tres" id="4_service"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_frame"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blocker"]
+size = Vector3(2, 2.5, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interact"]
+size = Vector3(2.25, 2.75, 0.6)
+
+[node name="SpriteDoor3D" type="Node3D" unique_id=1297318281]
+script = ExtResource("1_script")
+
+[node name="PlaceholderFrame" type="Node3D" parent="." unique_id=1826026681]
+
+[node name="LeftJamb" type="MeshInstance3D" parent="PlaceholderFrame" unique_id=339229952]
+transform = Transform3D(0.3, 0, 0, 0, 2.85, 0, 0, 0, 0.5, -1.04, 0, 0.02)
+material_override = ExtResource("3_trim")
+mesh = SubResource("BoxMesh_frame")
+
+[node name="RightJamb" type="MeshInstance3D" parent="PlaceholderFrame" unique_id=1313847698]
+transform = Transform3D(0.3, 0, 0, 0, 2.85, 0, 0, 0, 0.5, 1.04, 0, 0.02)
+material_override = ExtResource("3_trim")
+mesh = SubResource("BoxMesh_frame")
+
+[node name="Header" type="MeshInstance3D" parent="PlaceholderFrame" unique_id=517262067]
+transform = Transform3D(2.55, 0, 0, 0, 0.32, 0, 0, 0, 0.52, 0, 1.3, 0.02)
+material_override = ExtResource("3_trim")
+mesh = SubResource("BoxMesh_frame")
+
+[node name="Threshold" type="MeshInstance3D" parent="PlaceholderFrame" unique_id=1271688588]
+transform = Transform3D(2.55, 0, 0, 0, 0.22, 0, 0, 0, 0.56, 0, -1.28, 0.02)
+material_override = ExtResource("4_service")
+mesh = SubResource("BoxMesh_frame")
+
+[node name="DoorSprite" type="Sprite3D" parent="." unique_id=435912178]
+position = Vector3(0, 0, -0.04)
+pixel_size = 0.012
+texture_filter = 0
+texture = ExtResource("2_preview")
+
+[node name="DoorBlocker" type="StaticBody3D" parent="." unique_id=46199281]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorBlocker" unique_id=959621631]
+shape = SubResource("BoxShape3D_blocker")
+
+[node name="InteractArea" type="Area3D" parent="." unique_id=796288884]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea" unique_id=1744664879]
+shape = SubResource("BoxShape3D_interact")
